@@ -6,8 +6,8 @@ namespace GANN.NN
 {
     public abstract class NeuralNetwork
     {
-        //TODO more general input/output
-        public abstract void Train(List<List<double>> inputs, List<List<double>> outputs, int epochs, int batchSize);
-        public abstract List<double> Run(List<double> input);
+        //TODO - A - more general input/output
+        public abstract void Train(double[][] inputs, double[][] s, int epochs, int batchSize);
+        public abstract double[] Run(double[] input);
     }
 }

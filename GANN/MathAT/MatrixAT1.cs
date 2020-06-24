@@ -21,12 +21,26 @@ namespace GANN.MathAT
             cells = array;
         }
 
-        public MatrixAT1(double[] array)
+        public MatrixAT1(double[] array, bool column = true)
         {
-            cells = new double[1, array.Length];
-            for (int i = 0; i < array.Length; i++)
+            //TODO - C - Simplify
+            if (!column)
             {
-                cells[1, i] = array[i];
+                cells = new double[1, array.Length];
+                for (int i = 0; i < array.Length; i++)
+                {
+                    cells[1, i] = array[i];
+                }
+            }
+            else
+            {
+                cells = new double[array.Length, 1];
+
+                cells = new double[1, array.Length];
+                for (int i = 0; i < array.Length; i++)
+                {
+                    cells[i, 1] = array[i];
+                }
             }
         }
 
@@ -61,14 +75,14 @@ namespace GANN.MathAT
 
         public static MatrixAT1 operator+(MatrixAT1 m1, MatrixAT1 m2)
         {
-            //TODO implement
+            //TODO - A - implement
             throw new NotImplementedException();
         }
 
         public static MatrixAT1 operator*(MatrixAT1 m1, MatrixAT1 m2)
         {
-            //TODO Recognise identity matrix as argument
-            //TODO Make faster
+            //TODO - A - Recognise identity matrix as argument
+            //TODO - A - Make faster
             CheckDimensions(m1, m2, true);
 
             MatrixAT1 result = new MatrixAT1(m1.Rows, m2.Columns);
