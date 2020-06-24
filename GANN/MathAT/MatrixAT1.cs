@@ -21,6 +21,15 @@ namespace GANN.MathAT
             cells = array;
         }
 
+        public MatrixAT1(double[] array)
+        {
+            cells = new double[1, array.Length];
+            for (int i = 0; i < array.Length; i++)
+            {
+                cells[1, i] = array[i];
+            }
+        }
+
         static void CheckDimensions(MatrixAT1 m1, MatrixAT1 m2, bool trans)
         {
             if(!trans)
@@ -52,6 +61,7 @@ namespace GANN.MathAT
 
         public static MatrixAT1 operator+(MatrixAT1 m1, MatrixAT1 m2)
         {
+            //TODO implement
             throw new NotImplementedException();
         }
 
