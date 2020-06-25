@@ -6,6 +6,6 @@ namespace GANN.GA.GA_Elements
 {
     public abstract class Chromosome
     {
-
+        public abstract Chromosome DeepCopy();
     }
 }
