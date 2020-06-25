@@ -7,6 +7,6 @@ namespace GANN.GA.Operators.MutationOperators
 {
     public abstract class MutationOperator
     {
-        public abstract Chromosome Mutate(Chromosome m);
+        public abstract Chromosome Mutate(Chromosome m, Random radoms);
     }
 }

@@ -13,6 +13,6 @@ namespace GANN.GA.SamplingStrategies
         /// </summary>
         /// <param name="population"></param>
         /// <returns></returns>
-        public abstract Chromosome Sample(Chromosome[] population, FitnessFunction fitnessFunction);
+        public abstract Chromosome Sample(Chromosome[] population, FitnessFunction fitnessFunction, Random random);
     }
 }

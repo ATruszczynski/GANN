@@ -7,6 +7,6 @@ namespace GANN.GA.Operators.CrossoverOperators
 {
     public abstract class CrossoverOperator
     {
-        public abstract Chromosome Crossover(Chromosome ch1, Chromosome ch2);
+        public abstract (Chromosome, Chromosome) Crossover(Chromosome ch1, Chromosome ch2, Random random);
     }
 }

@@ -10,8 +10,9 @@ using System.Text;
 
 namespace GANN.GA
 {
-    public abstract class GeneticAlgorithm
+    public class GeneticAlgorithm
     {
+        //TODO - B - enforce all paramaters present
         public double crossoverProbability = 0.5;
         public double mutationProbability = 1;
 
@@ -27,7 +28,7 @@ namespace GANN.GA
 
         public Random random;
 
-        public void Run(int seed)
+        public Chromosome Run(int seed)
         {
             random = new Random(seed);
 
@@ -36,16 +37,38 @@ namespace GANN.GA
             {
                 for (int pop = 0; pop < PopulationCount; pop++)
                 {
-                    Chromosome chosen = SamplingStrategy.Sample(population, FitnessFunction);
+                    Chromosome chosen = SamplingStrategy.Sample(population, FitnessFunction, random);
 
                     chosen = MaybeMutate(chosen);
-                    chosen = MaybeCrossover(chosen);
+                    bool did = MaybeCrossover(chosen, out Chromosome[] crossRes);
 
-                    newPopulation[iter] = chosen;
+                    newPopulation[pop] = crossRes[0];
+
+                    if(did && pop < PopulationCount - 1)
+                    {
+                        pop++;
+                        newPopulation[pop] = crossRes[1];
+                    }
                 }
 
                 population = ReplacementStrategy.Replace(population, newPopulation);
             }
+
+            double maxF = double.MinValue;
+            Chromosome maxC = null;
+
+            for (int i = 0; i < population.Length; i++)
+            {
+                //TODO - B - Remove args from fitness and any other where it makes no sense
+                double f = FitnessFunction.ComputeFitness(population[i]);
+                if(f > maxF)
+                {
+                    maxF = f;
+                    maxC = population[i];
+                }
+            }
+
+            return maxC;
         }
 
         public Chromosome MaybeMutate(Chromosome c)
@@ -54,27 +77,31 @@ namespace GANN.GA
 
             if(pm <= mutationProbability)
             {
-                c = MutationOperator.Mutate(c);
+                c = MutationOperator.Mutate(c, random);
             }
 
             return c;
         }
 
-        public Chromosome MaybeCrossover(Chromosome c1)
+        public bool MaybeCrossover(Chromosome c1, out Chromosome[] result)
         {
-            Chromosome result = c1;
+            bool did = false;
+
+            result = new Chromosome[] { c1 };
 
             double pc = random.NextDouble();
             
             if(pc <= crossoverProbability)
             {
-                Chromosome c2 = SamplingStrategy.Sample(population, FitnessFunction);
+                did = true;
+                Chromosome c2 = SamplingStrategy.Sample(population, FitnessFunction, random);
                 c2 = MaybeMutate(c2);
 
-                result = CrossoverOperator.Crossover(c1, c2);
+                (c1, c2) = CrossoverOperator.Crossover(c1, c2, random);
+                result = new Chromosome[] { c1, c2 };
             }
 
-            return result;
+            return did;
         }
     }
 }
