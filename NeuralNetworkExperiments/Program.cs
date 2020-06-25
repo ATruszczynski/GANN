@@ -8,7 +8,7 @@ namespace NeuralNetworkExperiments
     {
         static void Main(string[] args)
         {
-            
+            TestGenerator.TestScenario1();
 
             
         }

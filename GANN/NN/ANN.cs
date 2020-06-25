@@ -26,8 +26,10 @@ namespace GANN.NN
         //TODO - A - Add argument validation
         //TODO - B - custom edges
         //TODO - A - is this suitable for GA
+        //TODO - A - weight initialization
         public ANN(int[] neurons, Func<double, double>[] actFunc, Func<double, double>[] derActFunc, Func<double, double, double> lossF, Func<double, double, double> derLossF)
         {
+            Random random = new Random(1001);
             neuronCounts = new int[neurons.Length];
             for (int i = 0; i < neurons.Length; i++)
             {
@@ -55,7 +57,7 @@ namespace GANN.NN
                 {
                     for (int c = 0; c < weights[w].Columns; c++)
                     {
-                        weights[w][r, c] = 1;
+                        weights[w][r, c] = random.NextDouble();
                     }
                 }
             }
@@ -104,35 +106,23 @@ namespace GANN.NN
                 }
             }
 
-            double[] result = new double[neuronCounts[LayerCount - 1]]; //źle?
+            double[] result = new double[neuronCounts[LayerCount - 1]];
             double sum = 0;
             for (int i = 0; i < result.Length; i++)
             {
                 result[i] = ases[LayerCount - 1][i, 0];
-                if (outputsum1)
-                    sum += result[i];
+                sum += result[i];
             }
 
-            if (sum != 0)
-            {
-                if (outputsum1)
-                    for (int i = 0; i < result.Length; i++)
-                    {
-                        result[i] = result[i] / sum;
-                    }
-            }
-            else
-            {
-                //TODO - B - temporary fix removal?
-                for (int r = 0; r < result.Length; r++)
-                {
-                    result[r] = 1 / result.Length;
-                }
-            }
+            //if(sum != 0)
+            //    for (int i = 0; i < result.Length; i++)
+            //    {
+            //        result[i] /= sum;
+            //    }
 
             return result;
         }
-
+        //TODO - 0 - the function that normalizes output doesn't make sense?
         public override void Train(double[][] inputs, double[][] outputs, int epochs, int batchSize)
         {
             double batches = Ceiling((double)inputs.Length / (double)batchSize);

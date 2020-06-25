@@ -28,7 +28,7 @@ namespace NeuralNetworkExperiments
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    inputs[i][j] = r.Next(3);
+                    inputs[i][j] = r.Next(3)/2;
                 }
 
                 bool cross = CheckForWinning(inputs[i], 1);
@@ -71,28 +71,33 @@ namespace NeuralNetworkExperiments
             return false;
         }
 
-        static void TestScenario1()
+        public static void TestScenario1()
         {
 
-            int num = 1000;
+            int num = 2000;
             (var i, var o) = TestGenerator.TTT(num); 
             
             ANN nn = new ANN
                  (
                   new int[] { 9, 4, 4, 4 },
-                  new Func<double, double>[] { Relu, Relu, Relu },
-                  new Func<double, double>[] { DerRelu, DerRelu, DerRelu },
+                  //new Func<double, double>[] { Relu, Sigma },
+                  //new Func<double, double>[] { DerRelu, DerSigma },
+                  //new int[] { 9, 20, 20, 4 },
+                  new Func<double, double>[] { Relu, Relu, Sigma },
+                  new Func<double, double>[] { DerRelu, Relu, DerSigma },
+                  //new Func<double, double>[] { Sigma, Sigma, Sigma },
+                  //new Func<double, double>[] { DerSigma, DerSigma, DerSigma },
                   null,
                   DerLoss
                  );
 
-            nn.Train(i, o, 5, 100);
+            nn.Train(i, o, 20, 100);
 
-            var res = nn.Run(new double[] { 0, 0, 0, 1, 1, 1, 0, 0, 0 });
+            var res = nn.Run(new double[] { 0, 0, 0, 1, 2, 1, 2, 2, 2 });
             Console.WriteLine($"{res[0]},{res[1]},{res[2]},{res[3]}");
         }
 
-        static void TestScenario2()
+        public static void TestScenario2()
         {
             ANN nn = new ANN
                 (

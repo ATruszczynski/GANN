@@ -22,9 +22,23 @@ namespace GANN.MathAT
             return result;
         }
 
+        public static double Sigma(double arg)
+        {
+            return 1d / (1 + Exp(-arg));
+        }
+
+        public static double DerSigma(double arg)
+        {
+            return Sigma(arg) * (1 - Sigma(arg));
+        }
+
         public static double DerLoss(double act, double y)
         {
             return 2 * (act - y);
+        }
+        public static double DerLoss2(double act, double y)
+        {
+            return (act - y);
         }
     }
 }

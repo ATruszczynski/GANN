@@ -67,7 +67,7 @@ namespace GANN.MathAT
             {
                 if(m1.Columns != m2.Rows)
                 {
-                    throw new ArgumentException($"First matrix row number ({m1.Rows}) is different than second matrix's column number ({m2.Columns})");
+                    throw new ArgumentException($"First matrix row number ({m1.Columns}) is different than second matrix's column number ({m2.Rows})");
                 }
             }
 
@@ -229,6 +229,32 @@ namespace GANN.MathAT
             }
 
             return false;
+        }
+
+        //TODO - B - copying
+        public void Squish() //TODO should this do something else?
+        {
+            //TODO - B - test
+            //TODO - B - what if max == 0
+            double max = double.MinValue;
+            for (int r = 0; r < Rows; r++)
+            {
+                for (int c = 0; c < Columns; c++)
+                {
+                    double elem = cells[r, c];
+                    if (elem > max)
+                        max = elem;
+
+                }
+            }
+
+            for (int r = 0; r < Rows; r++)
+            {
+                for (int c = 0; c < Columns; c++)
+                {
+                    cells[r, c] /= max;
+                }
+            }
         }
     }
 }
