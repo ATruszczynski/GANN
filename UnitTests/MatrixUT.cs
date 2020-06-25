@@ -9,6 +9,7 @@ namespace UnitTests
     {
         public static bool CompareMatrixes(MatrixAT1 m1, MatrixAT1 m2)
         {
+            //TODO - B - move to matrix class and test
             if (m1.Rows != m2.Rows)
                 return false;
             if (m1.Columns != m2.Columns)

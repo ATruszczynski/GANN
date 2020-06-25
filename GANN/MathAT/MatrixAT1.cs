@@ -6,18 +6,24 @@ namespace GANN.MathAT
 {
     public class MatrixAT1
     {
+        //TODO - B - Vector subclass?
+        //TODO - B - Diagonal subclass?
         double[,] cells;
 
+        //TODO - B - Test
         public int Rows { get => cells.GetLength(0); }
+        //TODO - B - Test
         public int Columns { get => cells.GetLength(1); }
 
         public MatrixAT1(int r, int c)
         {
+            //TODO - B - Test
             cells = new double[r, c];
         }
 
         public MatrixAT1(double[,] array)
         {
+            //TODO - B - Test
             cells = array;
         }
 
@@ -29,24 +35,24 @@ namespace GANN.MathAT
                 cells = new double[1, array.Length];
                 for (int i = 0; i < array.Length; i++)
                 {
-                    cells[1, i] = array[i];
+                    cells[0, i] = array[i];
                 }
             }
             else
             {
                 cells = new double[array.Length, 1];
 
-                cells = new double[1, array.Length];
                 for (int i = 0; i < array.Length; i++)
                 {
-                    cells[i, 1] = array[i];
+                    cells[i, 0] = array[i];
                 }
             }
         }
 
-        static void CheckDimensions(MatrixAT1 m1, MatrixAT1 m2, bool trans)
+        static void CheckDimensions(MatrixAT1 m1, MatrixAT1 m2, bool trans = false)
         {
-            if(!trans)
+            //TODO - B - Test
+            if (!trans)
             {
                 if(m1.Rows != m2.Rows)
                 {
@@ -69,14 +75,41 @@ namespace GANN.MathAT
 
         public double this[int a, int b]
         {
+            //TODO - B - Test
             get { return cells[a, b]; }
             set { cells[a, b] = value; }
         }
 
         public static MatrixAT1 operator+(MatrixAT1 m1, MatrixAT1 m2)
         {
-            //TODO - A - implement
-            throw new NotImplementedException();
+            //TODO - B - Test
+            CheckDimensions(m1, m2);
+            MatrixAT1 result = new MatrixAT1(m1.Rows, m1.Columns);
+            for (int i = 0; i < m1.Rows; i++)
+            {
+                for (int j = 0; j < m2.Columns; j++)
+                {
+                    result[i, j] = m1[i, j] + m2[i, j];
+                }
+            }
+
+            return result;
+        }
+        //TODO - B - ToString
+        public static MatrixAT1 operator-(MatrixAT1 m1, MatrixAT1 m2)
+        {
+            //TODO - B - Test
+            CheckDimensions(m1, m2);
+            MatrixAT1 result = new MatrixAT1(m1.Rows, m1.Columns);
+            for (int i = 0; i < m1.Rows; i++)
+            {
+                for (int j = 0; j < m2.Columns; j++)
+                {
+                    result[i, j] = m1[i, j] - m2[i, j];
+                }
+            }
+
+            return result;
         }
 
         public static MatrixAT1 operator*(MatrixAT1 m1, MatrixAT1 m2)
@@ -105,6 +138,7 @@ namespace GANN.MathAT
 
         public void Transpose()
         {
+            //TODO - B - Test
             double[,] results = new double[Columns, Rows];
 
             for (int or = 0; or < Rows; or++)
@@ -116,6 +150,61 @@ namespace GANN.MathAT
             }
 
             cells = results;
+        }
+
+        public static MatrixAT1 operator*(double d, MatrixAT1 m)
+        {
+            //TODO - B - Test
+            MatrixAT1 result = new MatrixAT1(m.Rows, m.Columns);
+
+            for (int r = 0; r < result.Rows; r++)
+            {
+                for (int c = 0; c < result.Columns; c++)
+                {
+                    result[r, c] = m[r,c] * d;
+                }
+            }
+
+            return result;
+        }
+
+        public double ElementSum()
+        {
+            //TODO - B - Test
+            double sum = 0;
+
+            for (int r = 0; r < Rows; r++)
+            {
+                for (int c = 0; c < Columns; c++)
+                {
+                    sum += cells[r, c];
+                }
+            }
+
+            return sum;
+        }
+
+        public override string ToString()
+        {
+            string result = "";
+
+            for (int r = 0; r < Rows; r++)
+            {
+                for (int c = 0; c < Columns; c++)
+                {
+                    result += $"{cells[r, c]}";
+                    if(c == Columns - 1)
+                    {
+                        result += "|" + Environment.NewLine;
+                    }
+                    else
+                    {
+                        result += ",";
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }

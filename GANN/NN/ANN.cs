@@ -6,9 +6,10 @@ using static System.Math;
 
 namespace GANN.NN
 {
-    class ANN : NeuralNetwork
+    public class ANN : NeuralNetwork
     {
         //TODO - D - remove needless pubilc
+        //TODO - A - last layer function change?
         public MatrixAT1[] weights;
         public MatrixAT1[] biases;
         public Func<double,double>[] activationFuncs;
@@ -19,6 +20,9 @@ namespace GANN.NN
         public MatrixAT1[] ases;
         public int[] neuronCounts;
         public int LayerCount { get => neuronCounts.Length; }
+        public double gradientVelocity = 1;
+
+        public bool normaliseOutput = true;
 
         //TODO - B - custom edges
         //TODO - A - is this suitable for GA
@@ -44,16 +48,31 @@ namespace GANN.NN
             derActivationFuncs = derActFunc;
 
             weights = new MatrixAT1[LayerCount - 1];
+            for (int w = 0; w < weights.Length; w++)
+            {
+                weights[w] = new MatrixAT1(neuronCounts[w + 1], neuronCounts[w]);
+            }
+
             biases = new MatrixAT1[LayerCount - 1];
+            for (int b = 0; b < biases.Length; b++)
+            {
+                biases[b] = new MatrixAT1(neuronCounts[b + 1], 1);
+            }
 
             lossFunction = lossF;
             derLossFunction = derLossF;
 
             zs = new MatrixAT1[LayerCount];
             ases = new MatrixAT1[LayerCount];
+
+            for (int a = 0; a < ases.Length; a++)
+            {
+                zs[a] = new MatrixAT1(neuronCounts[a], 1);
+                ases[a] = new MatrixAT1(neuronCounts[a], 1);
+            }
         }
 
-        public override double[] Run(double[] input)
+        public override double[] Run(double[] input, bool outputsum1 = true)
         {
             if (input.Length != neuronCounts[0])
                 throw new ArgumentException($"Wrong numbers of arguments in input - {input.Length} (expected {neuronCounts[0]})");
@@ -73,16 +92,24 @@ namespace GANN.NN
 
                 for (int j = 0; j < neuronCounts[layer]; j++)
                 {
-                    ases[layer][j, 1] = activationFuncs[layer - 1](zs[layer][j, 1]); 
+                    ases[layer][j, 0] = activationFuncs[layer - 1](zs[layer][j, 0]); 
                 }
             }
 
             double[] result = new double[neuronCounts[LayerCount - 1]]; //źle?
-
+            double sum = 0;
             for (int i = 0; i < result.Length; i++)
             {
-                result[i] = ases[LayerCount - 1][i, 1];
+                result[i] = ases[LayerCount - 1][i, 0];
+                if (outputsum1)
+                    sum += result[i];
             }
+
+            if (outputsum1)
+                for (int i = 0; i < result.Length; i++)
+                {
+                    result[i] = result[i] / sum;
+                }
 
             return result;
         }
@@ -94,7 +121,7 @@ namespace GANN.NN
             {
                 for (int b = 0; b < batches; b++)
                 {
-                    (MatrixAT1[] weightGrad, MatrixAT1[] biasesGrad, MatrixAT1[] activationsGrad) = InitialiseComponents();
+                    (MatrixAT1[] weightGradChange, MatrixAT1[] biasesGradChange, _) = InitialiseComponents();
 
                     int startIndInc = b * batchSize;
                     int endIndExc = Min(inputs.Length, (b + 1) * batchSize);
@@ -102,11 +129,12 @@ namespace GANN.NN
 
                     for (int inputInd = startIndInc; inputInd < endIndExc; inputInd++)
                     {
+                        (MatrixAT1[] weightGrad, MatrixAT1[] biasesGrad, MatrixAT1[] activationsGrad) = InitialiseComponents();
                         for (int layer = LayerCount - 1; layer >= 1; layer--)
                         {
                             if(layer == LayerCount - 1)
                             {
-                                MatrixAT1 currOutput = new MatrixAT1(Run(inputs[inputInd]));
+                                MatrixAT1 currOutput = new MatrixAT1(Run(inputs[inputInd], normaliseOutput));
 
                                 MatrixAT1 goodOutput = new MatrixAT1(outputs[inputInd]);
 
@@ -115,17 +143,36 @@ namespace GANN.NN
                             }
                             else
                             {
-                                activationsGrad[layer] = CalculateActivationGradient(layer);
+                                activationsGrad[layer] = CalculateActivationGradient(layer, biasesGrad[layer]);
                             }
 
                             biasesGrad[layer - 1] = CalculateBiasGradientForLayer(layer, activationsGrad[layer]);
                             weightGrad[layer - 1] = CalculateWeightGradientForLayer(layer, biasesGrad[layer - 1]);
                         }
+
+                        for (int i = 0; i < weightGrad.Length; i++)
+                        {
+                            weightGradChange[i] += weightGrad[i];
+                            biasesGradChange[i] += biasesGrad[i];
+                        }
+
                     }
+
+                    for (int i = 0; i < weightGradChange.Length; i++)
+                    {
+                        weightGradChange[i] = 1d / n * weightGradChange[i];
+                        biasesGradChange[i] = 1d / n * biasesGradChange[i];
+                    }
+
+                    for (int w = 0; w < weights.Length; w++)
+                    {
+                        weights[w] = weights[w] - gradientVelocity * weightGradChange[w];
+                        biases[w] = biases[w] - gradientVelocity * biasesGradChange[w];
+                    }
+
+                    
                 }
             }
-
-            throw new NotImplementedException();
         }
         (MatrixAT1[], MatrixAT1[], MatrixAT1[]) InitialiseComponents()
         {
@@ -156,17 +203,16 @@ namespace GANN.NN
 
             for (int i = 0; i < ag_L.Rows; i++)
             {
-                ag_L[i, 1] = derLossFunction(current[i, 1], expected[i, 1]);
+                ag_L[i, 0] = derLossFunction(current[i, 0], expected[i, 0]);
             }
 
             return ag_L;
         }
 
         //TODO - B - Nomenclature of functions
-        MatrixAT1 CalculateActivationGradient(int layer)
+        MatrixAT1 CalculateActivationGradient(int layer, MatrixAT1 biasLplus1)
         {
             MatrixAT1 weightsLplus1 = weights[layer];
-            MatrixAT1 biasLplus1 = biases[layer];
             MatrixAT1 ag_L = new MatrixAT1(neuronCounts[layer], 1);
 
             for (int k = 0; k < ag_L.Rows; k++)
@@ -174,9 +220,9 @@ namespace GANN.NN
                 double sum = 0;
                 for (int j = 0; j < biasLplus1.Rows; j++)
                 {
-                    sum += weightsLplus1[j, k] * biasLplus1[j, 1];
+                    sum += weightsLplus1[j, k] * biasLplus1[j, 0];
                 }
-                ag_L[k, 1] = sum;
+                ag_L[k, 0] = sum;
             }
 
             return ag_L;
@@ -184,7 +230,7 @@ namespace GANN.NN
 
         MatrixAT1 CalculateBiasGradientForLayer(int layer, MatrixAT1 ag_L)
         {
-            MatrixAT1 bg_L = new MatrixAT1(neuronCounts[layer - 1], 1);
+            MatrixAT1 bg_L = new MatrixAT1(neuronCounts[layer], 1);
 
             MatrixAT1 z_L = zs[layer];
 
@@ -192,7 +238,7 @@ namespace GANN.NN
 
             for (int j = 0; j < bg_L.Rows; j++)
             {
-                bg_L[j, 1] = derAct(z_L[j, 1]) * ag_L[j, 1];
+                bg_L[j, 0] = derAct(z_L[j, 0]) * ag_L[j, 0];
             }
 
             return bg_L;
@@ -207,7 +253,7 @@ namespace GANN.NN
             {
                 for (int k = 0; k < wg_L.Columns; k++)
                 {
-                    wg_L[j, k] = a_Lminus1[k, 1] * bg_L[j, 1];
+                    wg_L[j, k] = a_Lminus1[k, 0] * bg_L[j, 0];
                 }
             }
 
