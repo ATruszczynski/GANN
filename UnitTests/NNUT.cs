@@ -35,6 +35,50 @@ namespace UnitTests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void NN_MismatchedInput()
+        {
+            ANN nn = new ANN
+               (
+                new int[] { 2, 2, 2 },
+                new Func<double, double>[] { Relu, Relu },
+                new Func<double, double>[] { DerRelu, DerRelu },
+                null,
+                DerLoss
+               );
+            
+            nn.Train
+                 (
+                 new double[][] { new double[] { 2, 1, 3 } },
+                 new double[][] { new double[] { 1, 0 } },
+                 1,
+                 1
+                 );
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void NN_MismatchedOutput()
+        {
+            ANN nn = new ANN
+               (
+                new int[] { 2, 2, 2 },
+                new Func<double, double>[] { Relu, Relu },
+                new Func<double, double>[] { DerRelu, DerRelu },
+                null,
+                DerLoss
+               );
+
+            nn.Train
+                 (
+                 new double[][] { new double[] { 2, 1 } },
+                 new double[][] { new double[] { 1, 0, 1 } },
+                 1,
+                 1
+                 );
+        }
+
+        [TestMethod]
         public void NNTrain_SingleInput()
         {
             //TODO - A - not good enough test; should have different weights

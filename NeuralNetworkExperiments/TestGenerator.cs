@@ -16,10 +16,10 @@ namespace NeuralNetworkExperiments
             for (int i = 0; i < number; i++)
             {
                 inputs[i] = new double[9];
-                outputs[i] = new double[3]; //0 - remis, 1 - krzyżyk, 2 - kółko
+                outputs[i] = new double[4]; //0 - remis, 1 - krzyżyk, 2 - kółko
             }
 
-            Random r = new Random();
+            Random r = new Random(1001);
 
             for (int i = 0; i < inputs.Length; i++)
             {
@@ -35,6 +35,8 @@ namespace NeuralNetworkExperiments
                     outputs[i][1] = 1;
                 else if (circle)
                     outputs[i][2] = 1;
+                else if (cross && circle)
+                    outputs[i][3] = 1;
                 else
                     outputs[i][0] = 1;
             }
@@ -42,7 +44,7 @@ namespace NeuralNetworkExperiments
             return (inputs, outputs);
         }
 
-        bool static CheckForWinning(double[] b, double fig)
+        static bool CheckForWinning(double[] b, double fig)
         {
             int[][] winningCom = new int[8][]
             {

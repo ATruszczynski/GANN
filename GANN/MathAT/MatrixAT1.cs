@@ -206,5 +206,29 @@ namespace GANN.MathAT
 
             return result;
         }
+
+        public static bool CheckSameDimensions(MatrixAT1 m, MatrixAT1 m2)
+        {
+            //TODO - B - test
+            return m.Rows == m2.Rows && m.Columns == m2.Columns;
+        }
+
+        public static bool Compare(MatrixAT1 m, MatrixAT1 m2)
+        {
+            //TODO - B - test
+            if (!CheckSameDimensions(m, m2))
+                return false;
+
+            for (int r = 0; r < m.Rows; r++)
+            {
+                for (int c = 0; c < m.Columns; c++)
+                {
+                    if (m[r, c] != m2[r, c])
+                        return false;
+                }
+            }
+
+            return false;
+        }
     }
 }

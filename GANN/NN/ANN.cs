@@ -23,7 +23,7 @@ namespace GANN.NN
         public double gradientVelocity = 1;
 
         public bool normaliseOutput = true;
-
+        //TODO - A - Add argument validation
         //TODO - B - custom edges
         //TODO - A - is this suitable for GA
         public ANN(int[] neurons, Func<double, double>[] actFunc, Func<double, double>[] derActFunc, Func<double, double, double> lossF, Func<double, double, double> derLossF)
@@ -51,6 +51,13 @@ namespace GANN.NN
             for (int w = 0; w < weights.Length; w++)
             {
                 weights[w] = new MatrixAT1(neuronCounts[w + 1], neuronCounts[w]);
+                for (int r = 0; r < weights[w].Rows; r++)
+                {
+                    for (int c = 0; c < weights[w].Columns; c++)
+                    {
+                        weights[w][r, c] = 1;
+                    }
+                }
             }
 
             biases = new MatrixAT1[LayerCount - 1];
@@ -74,6 +81,7 @@ namespace GANN.NN
 
         public override double[] Run(double[] input, bool outputsum1 = true)
         {
+            //TODO - A - what to do when results are only zeroes? Does it even happen, when everything works correctly?
             if (input.Length != neuronCounts[0])
                 throw new ArgumentException($"Wrong numbers of arguments in input - {input.Length} (expected {neuronCounts[0]})");
 
@@ -121,11 +129,15 @@ namespace GANN.NN
             {
                 for (int b = 0; b < batches; b++)
                 {
-                    (MatrixAT1[] weightGradChange, MatrixAT1[] biasesGradChange, _) = InitialiseComponents();
-
                     int startIndInc = b * batchSize;
                     int endIndExc = Min(inputs.Length, (b + 1) * batchSize);
                     int n = endIndExc - startIndInc;
+
+                    if (n == 0)
+                        break;
+
+                    (MatrixAT1[] weightGradChange, MatrixAT1[] biasesGradChange, _) = InitialiseComponents();
+
 
                     for (int inputInd = startIndInc; inputInd < endIndExc; inputInd++)
                     {
@@ -139,7 +151,7 @@ namespace GANN.NN
                                 MatrixAT1 goodOutput = new MatrixAT1(outputs[inputInd]);
 
                                 activationsGrad[layer] = CalculateLastLayerLossGradient(currOutput, goodOutput);
-
+                                ;
                             }
                             else
                             {
@@ -170,7 +182,7 @@ namespace GANN.NN
                         biases[w] = biases[w] - gradientVelocity * biasesGradChange[w];
                     }
 
-                    
+                    ;
                 }
             }
         }
@@ -199,6 +211,8 @@ namespace GANN.NN
 
         MatrixAT1 CalculateLastLayerLossGradient(MatrixAT1 current, MatrixAT1 expected)
         {
+            if (!MatrixAT1.CheckSameDimensions(current, expected))
+                throw new ArgumentException($"Network output has wrong dimensions {current.Rows}x{current.Columns} (expected {expected.Rows}x{expected.Columns})");
             MatrixAT1 ag_L = new MatrixAT1(current.Rows, 1);
 
             for (int i = 0; i < ag_L.Rows; i++)
