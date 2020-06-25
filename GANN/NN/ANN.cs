@@ -113,11 +113,22 @@ namespace GANN.NN
                     sum += result[i];
             }
 
-            if (outputsum1)
-                for (int i = 0; i < result.Length; i++)
+            if (sum != 0)
+            {
+                if (outputsum1)
+                    for (int i = 0; i < result.Length; i++)
+                    {
+                        result[i] = result[i] / sum;
+                    }
+            }
+            else
+            {
+                //TODO - B - temporary fix removal?
+                for (int r = 0; r < result.Length; r++)
                 {
-                    result[i] = result[i] / sum;
+                    result[r] = 1 / result.Length;
                 }
+            }
 
             return result;
         }
@@ -213,6 +224,7 @@ namespace GANN.NN
         {
             if (!MatrixAT1.CheckSameDimensions(current, expected))
                 throw new ArgumentException($"Network output has wrong dimensions {current.Rows}x{current.Columns} (expected {expected.Rows}x{expected.Columns})");
+            
             MatrixAT1 ag_L = new MatrixAT1(current.Rows, 1);
 
             for (int i = 0; i < ag_L.Rows; i++)
