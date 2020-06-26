@@ -8,6 +8,11 @@ namespace GANN.GA.SamplingStrategies
 {
     public class RouletteSamplingStrategy : SamplingStrategy
     {
+        double a;
+        public RouletteSamplingStrategy(double aa = 0.01)
+        {
+            a = aa;
+        }
         //TODO - C - could do something with calculating fitness multiple times?
         public override Chromosome Sample(Chromosome[] population, FitnessFunction fitnessFunction, Random random)
         {
@@ -18,7 +23,8 @@ namespace GANN.GA.SamplingStrategies
 
             for (int i = 1; i < fitnesses.Length; i++)
             {
-                fitnesses[i] = fitnesses[i - 1] + fitnessFunction.ComputeFitness(population[i]);
+                //TODO - B - correct adding a?
+                fitnesses[i] = fitnesses[i - 1] + fitnessFunction.ComputeFitness(population[i]) + a;
             }
 
             for (int i = 0; i < fitnesses.Length; i++)
@@ -28,19 +34,27 @@ namespace GANN.GA.SamplingStrategies
 
             double p = random.NextDouble();
 
-            int cind = -1;
-            while(cind + 1 < fitnesses.Length && fitnesses[cind + 1] <= p)
-            {
-                cind++;
-            }
+            //while(cind + 1 < fitnesses.Length && fitnesses[cind + 1] <= p)
+            //{
+            //    cind++;
+            //}
 
-            for(cind = population.Length - 1; cind >= 0; cind--)
+            //for(cind = population.Length - 1; cind >= 0; cind--)
+            //{
+            //    if (p <= fitnesses[cind])
+            //        break;
+            //}
+            //TODO - B - works with only 0 in fitnesses?
+
+            int cind = 0;
+            int ind = 0;
+            for(ind = 0; ind < population.Length; ind++)
             {
-                if (p <= fitnesses[cind])
+                if (p < fitnesses[ind])
                     break;
             }
 
-            return population[cind];
+            return population[ind];
         }
     }
 }

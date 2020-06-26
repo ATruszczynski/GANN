@@ -31,8 +31,8 @@ namespace UnitTests
 
             var resutl = nn.Run(new double[] { 2, 1 }, false);
 
-            Assert.AreEqual(17d/26, resutl[0]);
-            Assert.AreEqual(9d/26, resutl[1]);
+            Assert.AreEqual(17, resutl[0]);
+            Assert.AreEqual(9, resutl[1]);
         }
 
         [TestMethod]
@@ -120,7 +120,7 @@ namespace UnitTests
             Assert.AreEqual(1, resutl[0]);
             Assert.AreEqual(0, resutl[1]);
         }
-
+        
         [TestMethod]
         public void NNTrain_SingleInput2()
         {

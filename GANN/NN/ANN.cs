@@ -8,6 +8,7 @@ namespace GANN.NN
 {
     public class ANN : NeuralNetwork
     {
+        //TODO - A - change zs to match other weieght layers
         //TODO - D - remove needless pubilc
         //TODO - A - last layer function change?
         public MatrixAT1[] weights;

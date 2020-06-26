@@ -7,14 +7,23 @@ namespace UnitTests
     class PseudoRandom: Random
     {
         //TODO - D - kinda stupid implementation
-        List<double> cycleList;
+        double[] cycleList;
         int ind = 0;
-        public PseudoRandom(List<double> values)
+        //public PseudoRandom(double[] values)
+        //{
+        //    cycleList = new double[values.Length];
+        //    for (int i = 0; i < values.Length; i++)
+        //    {
+        //        cycleList[i] = values[i];
+        //    }
+        //}
+
+        public PseudoRandom(params double[] values)
         {
-            cycleList = new List<double>();
-            for (int i = 0; i < values.Count; i++)
+            cycleList = new double[values.Length];
+            for (int i = 0; i < values.Length; i++)
             {
-                cycleList.Add(values[i]);
+                cycleList[i] = values[i];
             }
         }
 
@@ -35,8 +44,9 @@ namespace UnitTests
 
         public override double NextDouble()
         {
-            ind = (ind + 1) % cycleList.Count;
-            return cycleList[ind];
+            double result = cycleList[ind];
+            ind = (ind + 1) % cycleList.Length;
+            return result;
         }
     }
 }

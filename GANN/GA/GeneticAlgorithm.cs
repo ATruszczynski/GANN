@@ -37,7 +37,7 @@ namespace GANN.GA
             {
                 for (int pop = 0; pop < PopulationCount; pop++)
                 {
-                    Chromosome chosen = SamplingStrategy.Sample(population, FitnessFunction, random);
+                    Chromosome chosen = SamplingStrategy.Sample(population, FitnessFunction, random).DeepCopy();
 
                     chosen = MaybeMutate(chosen);
                     bool did = MaybeCrossover(chosen, out Chromosome[] crossRes);
