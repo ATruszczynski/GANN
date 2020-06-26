@@ -84,7 +84,6 @@ namespace GANN.NN
 
         public override double[] Run(double[] input, bool outputsum1 = true)
         {
-            //TODO - A - what to do when results are only zeroes? Does it even happen, when everything works correctly?
             if (input.Length != neuronCounts[0])
                 throw new ArgumentException($"Wrong numbers of arguments in input - {input.Length} (expected {neuronCounts[0]})");
 
@@ -108,22 +107,14 @@ namespace GANN.NN
             }
 
             double[] result = new double[neuronCounts[LayerCount - 1]];
-            double sum = 0;
             for (int i = 0; i < result.Length; i++)
             {
                 result[i] = ases[LayerCount - 1][i, 0];
-                sum += result[i];
             }
-
-            //if(sum != 0)
-            //    for (int i = 0; i < result.Length; i++)
-            //    {
-            //        result[i] /= sum;
-            //    }
 
             return result;
         }
-        //TODO - 0 - the function that normalizes output doesn't make sense?
+
         public override void Train(double[][] inputs, double[][] outputs, int epochs, int batchSize)
         {
             double batches = Ceiling((double)inputs.Length / (double)batchSize);

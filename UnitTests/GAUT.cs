@@ -16,7 +16,6 @@ namespace UnitTests
     {
         //TODO - C - Move and test utility functions
         //TODO - B - test matrix compare functions
-        //TODO - 0 - fix tests for nn
         [TestMethod]
         public void InterFFTest()
         {

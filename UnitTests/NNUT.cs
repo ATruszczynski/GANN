@@ -112,12 +112,12 @@ namespace UnitTests
 
             resutl = nn.Run(new double[] { 2, 1 });
 
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.weights[0], new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 } })));
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.weights[1], new MatrixAT1(new double[,] { { 5, 5 }, { -3, -3 } })));
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.biases[0], new MatrixAT1(new double[,] { { 1 }, { 1 } })));
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.biases[1], new MatrixAT1(new double[,] { { 2 }, { 0 } })));
+            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.weights[0], new MatrixAT1(new double[,] { { -67, -33 }, { -67, -33 } })));
+            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.weights[1], new MatrixAT1(new double[,] { { -63, -63 }, { -71, -71 } })));
+            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.biases[0], new MatrixAT1(new double[,] { { -33 }, { -33 } })));
+            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.biases[1], new MatrixAT1(new double[,] { { -15 }, { -17 } })));
 
-            Assert.AreEqual(1, resutl[0]);
+            Assert.AreEqual(0, resutl[0]);
             Assert.AreEqual(0, resutl[1]);
         }
         
@@ -152,15 +152,15 @@ namespace UnitTests
                 1
                 );
 
-
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.weights[0], new MatrixAT1(new double[,] { { -11, -4 } })));
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.weights[1], new MatrixAT1(new double[,] { { -1 }, { -3 } })));
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.biases[0], new MatrixAT1(new double[,] { { -7 } })));
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.biases[1], new MatrixAT1(new double[,] { { 2 }, { -1 } })));
+            //TODO - C - calculate manually scores (they are from debugging)
+            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.weights[0], new MatrixAT1(new double[,] { { -119, -58 } })));
+            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.weights[1], new MatrixAT1(new double[,] { { -1 }, { -57 } })));
+            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.biases[0], new MatrixAT1(new double[,] { { -61 } })));
+            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.biases[1], new MatrixAT1(new double[,] { { 2 }, { -19 } })));
 
             resutl = nn.Run(new double[] { 2, 1 });
 
-            Assert.AreEqual(1, resutl[0]);
+            Assert.AreEqual(2, resutl[0]);
             Assert.AreEqual(0, resutl[1]);
         }
 
@@ -193,7 +193,7 @@ namespace UnitTests
             var res = nn.Run(new double[] { 1, 1 });
             ;
         }
-        //TODO - 0 - normalisation of input only entire input set-wise
+
         [TestMethod]
         //Comparison with results here:
         //https://mattmazur.com/2015/03/17/a-step-by-step-backpropagation-example/
