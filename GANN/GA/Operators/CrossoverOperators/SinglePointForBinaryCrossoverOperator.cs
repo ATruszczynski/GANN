@@ -8,6 +8,7 @@ namespace GANN.GA.Operators.CrossoverOperators
     public class SinglePointForBinaryCrossoverOperator : CrossoverOperator
     {
         //TODO - C - drop random as arguemt? Use params instead?
+        //TODO - B - validate arguments
         public override (Chromosome, Chromosome) Crossover(Chromosome ch1, Chromosome ch2, Random random)
         {
             BinaryChromosome c1 = (BinaryChromosome)ch1;

@@ -22,22 +22,7 @@ namespace NeuralNetworkExperiments
             ga.MutationOperator = new SinglePointBinaryMutation();
             ga.SamplingStrategy = new RouletteSamplingStrategy();
             ga.ReplacementStrategy = new GenerationalReplacementStrategy();
-            ga.FitnessFunction = new CustomFitnessFunction
-                (
-                    (c, arr) => 
-                    {
-                        BinaryChromosome b = (BinaryChromosome)c;
-                        double sum = 0;
-                        for (int i = 0; i < b.Array.Length; i++)
-                        {
-                            if (i % 2 == 0 && b.Array[i] == true)
-                                sum++;
-                            if (i % 2 == 1 && b.Array[i] == false)
-                                sum++;
-                        }
-                        return sum; 
-                    }
-                );
+            ga.FitnessFunction = new InterchangableBinaryFF();
 
             int pop = 100;
             int len = 20;
@@ -55,9 +40,17 @@ namespace NeuralNetworkExperiments
                 ga.population[i] = new BinaryChromosome(array);
             }
 
-            ga.Iterations = 100;
+            ga.crossoverProbability = 0.9;
+            ga.mutationProbability = 0.05;
+
+            ga.Iterations = 1000;
 
             Console.WriteLine(ga.Run(1001).ToString());
+
+            foreach (var c in ga.population)
+            {
+                Console.WriteLine(c.ToString());
+            }
         }
     }
 }

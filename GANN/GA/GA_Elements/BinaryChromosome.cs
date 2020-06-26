@@ -21,7 +21,7 @@ namespace GANN.GA.GA_Elements
             for (int i = 0; i < Array.Length; i++)
             {
                 result += (Array[i] == true) ? "1" : "0";
-                if (i == Array.Length - 1)
+                if (i != Array.Length - 1)
                     result += ",";
             }
 

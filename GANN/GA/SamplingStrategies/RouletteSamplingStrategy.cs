@@ -34,7 +34,13 @@ namespace GANN.GA.SamplingStrategies
                 cind++;
             }
 
-            return chosen;
+            for(cind = population.Length - 1; cind >= 0; cind--)
+            {
+                if (p <= fitnesses[cind])
+                    break;
+            }
+
+            return population[cind];
         }
     }
 }
