@@ -1,4 +1,5 @@
 ﻿using GANN.MathAT;
+using GANN.MathAT.Distributions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,15 +26,14 @@ namespace GANN.NN
         //TODO - B - alternative to Relu?
         //TODO - B - Add argument validation
         //TODO - B - custom edges
-        //TODO - A - gradient step strategy
+        //TODO - A - use hyperparameter class
         //TODO - A - is this suitable for GA
-        //TODO - A - determine all parameters that you want to control. Maybe rather only hyperparameters?
         //TODO - B - extract all suitable parameters to a separate class
         public ANN(int[] neurons, Func<double, double>[] actFunc, Func<double, double>[] derActFunc, Func<double, double, double> lossF, Func<double, double, double> derLossF)
         {
             //TODO - B - paramterize seeds
             Random random = new Random(1001);
-            GaussianDistribution gd = new GaussianDistribution(random.Next(), 0, 0.5);
+            GaussianDistribution gd = new GaussianDistribution(0, 0.5);
             neuronCounts = new int[neurons.Length];
             for (int i = 0; i < neurons.Length; i++)
             {
@@ -61,7 +61,7 @@ namespace GANN.NN
                 {
                     for (int c = 0; c < weights[w].Columns; c++)
                     {
-                        weights[w][r, c] = gd.Next();
+                        weights[w][r, c] = gd.GetNext(random);
                     }
                 }
             }

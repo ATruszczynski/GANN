@@ -1,4 +1,5 @@
-﻿using GANN.GA.FitnessFunctions;
+﻿using GANN.GA;
+using GANN.GA.FitnessFunctions;
 using GANN.GA.GA_Elements;
 using GANN.GA.Operators.CrossoverOperators;
 using GANN.GA.Operators.MutationOperators;
@@ -131,6 +132,43 @@ namespace UnitTests
             Assert.AreEqual(false, s5.Array[0]);
             Assert.AreEqual(true, s5.Array[1]);
 
+        }
+
+        [TestMethod]
+        public void GATest()
+        {
+            GeneticAlgorithm ga = new GeneticAlgorithm();
+            ga.CrossoverOperator = new SinglePointForBinaryCrossoverOperator();
+            ga.MutationOperator = new SinglePointBinaryMutation();
+            ga.SamplingStrategy = new RouletteSamplingStrategy();
+            ga.ReplacementStrategy = new GenerationalReplacementStrategy();
+            ga.FitnessFunction = new InterchangableBinaryFF();
+
+            int pop = 100;
+            int len = 20;
+            Random random = new Random(1001);
+            ga.population = new Chromosome[pop];
+            for (int i = 0; i < pop; i++)
+            {
+                bool[] array = new bool[len];
+                for (int l = 0; l < len; l++)
+                {
+                    int r = random.Next(2);
+                    if (r == 1)
+                        array[l] = true;
+                }
+                ga.population[i] = new BinaryChromosome(array);
+            }
+
+            ga.crossoverProbability = 0.9;
+            ga.mutationProbability = 0.05;
+
+            ga.Iterations = 50;
+
+            string expected = "1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0";
+            var Chromosome = ga.Run(1001);
+
+            Assert.AreEqual(expected, Chromosome.ToString());
         }
     }
 }

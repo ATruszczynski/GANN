@@ -6,7 +6,6 @@ namespace GANN.NN.GradientStepStrategies
 {
     public abstract class GradientStepStrategy
     {
-        //TODO - A - implement
         public abstract double GetStepSize();
     }
 }

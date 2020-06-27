@@ -1,5 +1,6 @@
 ﻿using GANN.GA.FitnessFunctions;
 using GANN.GA.GA_Elements;
+using GANN.MathAT;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -19,7 +20,7 @@ namespace GANN.GA.SamplingStrategies
             Chromosome chosen = null;
 
             double[] fitnesses = new double[population.Length];
-            fitnesses[0] = fitnessFunction.ComputeFitness(population[0]);
+            fitnesses[0] = fitnessFunction.ComputeFitness(population[0]) + a;
 
             for (int i = 1; i < fitnesses.Length; i++)
             {
@@ -32,27 +33,29 @@ namespace GANN.GA.SamplingStrategies
                 fitnesses[i] /= fitnesses[fitnesses.Length - 1];
             }
 
-            double p = random.NextDouble();
+            //double p = random.NextDouble();
 
-            //while(cind + 1 < fitnesses.Length && fitnesses[cind + 1] <= p)
-            //{
-            //    cind++;
-            //}
+            ////while(cind + 1 < fitnesses.Length && fitnesses[cind + 1] <= p)
+            ////{
+            ////    cind++;
+            ////}
 
-            //for(cind = population.Length - 1; cind >= 0; cind--)
+            ////for(cind = population.Length - 1; cind >= 0; cind--)
+            ////{
+            ////    if (p <= fitnesses[cind])
+            ////        break;
+            ////}
+            ////TODO - B - works with only 0 in fitnesses?
+
+            ////TODO - B - test for last one having 0 prob
+            //int ind = 0;
+            //for(ind = 0; ind < population.Length; ind++)
             //{
-            //    if (p <= fitnesses[cind])
+            //    if (p < fitnesses[ind])
             //        break;
             //}
-            //TODO - B - works with only 0 in fitnesses?
 
-            //TODO - B - test for last one having 0 prob
-            int ind = 0;
-            for(ind = 0; ind < population.Length; ind++)
-            {
-                if (p < fitnesses[ind])
-                    break;
-            }
+            int ind = Utility.Roulette(fitnesses, random);
 
             return population[ind];
         }

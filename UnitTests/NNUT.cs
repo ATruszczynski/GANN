@@ -29,7 +29,7 @@ namespace UnitTests
             nn.biases[0] = new MatrixAT1(new double[,] { { 1 }, { 0 } });
             nn.biases[1] = new MatrixAT1(new double[,] { { 2 }, { -2 } });
 
-            var resutl = nn.Run(new double[] { 2, 1 }, false);
+            var resutl = nn.Run(new double[] { 2, 1 });
 
             Assert.AreEqual(17, resutl[0]);
             Assert.AreEqual(9, resutl[1]);

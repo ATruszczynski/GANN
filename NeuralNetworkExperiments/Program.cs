@@ -17,37 +17,37 @@ namespace NeuralNetworkExperiments
         //TODO - A - make testing class
         static void Main(string[] args)
         {
-            TestGenerator.TestScenario1();
+            //TestGenerator.TestScenario1();
 
-            //GeneticAlgorithm ga = new GeneticAlgorithm();
-            //ga.CrossoverOperator = new SinglePointForBinaryCrossoverOperator();
-            //ga.MutationOperator = new SinglePointBinaryMutation();
-            //ga.SamplingStrategy = new RouletteSamplingStrategy();
-            //ga.ReplacementStrategy = new GenerationalReplacementStrategy();
-            //ga.FitnessFunction = new InterchangableBinaryFF();
+            GeneticAlgorithm ga = new GeneticAlgorithm();
+            ga.CrossoverOperator = new SinglePointForBinaryCrossoverOperator();
+            ga.MutationOperator = new SinglePointBinaryMutation();
+            ga.SamplingStrategy = new RouletteSamplingStrategy();
+            ga.ReplacementStrategy = new GenerationalReplacementStrategy();
+            ga.FitnessFunction = new InterchangableBinaryFF();
 
-            //int pop = 100;
-            //int len = 20;
-            //Random random = new Random(1001);
-            //ga.population = new Chromosome[pop];
-            //for (int i = 0; i < pop; i++)
-            //{
-            //    bool[] array = new bool[len];
-            //    for (int l = 0; l < len; l++)
-            //    {
-            //        int r = random.Next(2);
-            //        if (r == 1)
-            //            array[l] = true;
-            //    }
-            //    ga.population[i] = new BinaryChromosome(array);
-            //}
+            int pop = 100;
+            int len = 20;
+            Random random = new Random(1001);
+            ga.population = new Chromosome[pop];
+            for (int i = 0; i < pop; i++)
+            {
+                bool[] array = new bool[len];
+                for (int l = 0; l < len; l++)
+                {
+                    int r = random.Next(2);
+                    if (r == 1)
+                        array[l] = true;
+                }
+                ga.population[i] = new BinaryChromosome(array);
+            }
 
-            //ga.crossoverProbability = 0.9;
-            //ga.mutationProbability = 0.05;
+            ga.crossoverProbability = 0.9;
+            ga.mutationProbability = 0.05;
 
-            //ga.Iterations = 1000;
+            ga.Iterations = 50;
 
-            //Console.WriteLine(ga.Run(1001).ToString());
+            Console.WriteLine(ga.Run(1001).ToString());
 
             //foreach (var c in ga.population)
             //{

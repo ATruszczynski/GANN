@@ -1,0 +1,31 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace GANN.MathAT.Distributions
+{
+    public class GaussianDistribution: Distribution
+    {
+        public double Mean = 0;
+        public double Std = 1;
+        public GaussianDistribution(double mean = 0, double std = 1)
+        {
+            Mean = mean;
+            Std = std;
+        }
+
+        public override double GetNext(Random random)
+        {
+            //TODO - B - test
+            //Random rand = new Random(); //reuse this if you are generating many
+            double u1 = 1.0 - random.NextDouble(); //uniform(0,1] random doubles
+            double u2 = 1.0 - random.NextDouble();
+            double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) *
+                         Math.Sin(2.0 * Math.PI * u2); //random normal(0,1)
+            double randNormal =
+                         Mean + Std * randStdNormal; //random normal(mean,stdDev^2)}
+            return randNormal;
+        }
+
+    }
+}
