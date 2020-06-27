@@ -232,7 +232,7 @@ namespace GANN.MathAT
         }
 
         //TODO - B - copying
-        public void Squish() //TODO should this do something else?
+        public void Squish() //TODO - C - should this do something else?
         {
             //TODO - B - test
             //TODO - B - what if max == 0

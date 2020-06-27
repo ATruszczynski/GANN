@@ -13,6 +13,8 @@ namespace NeuralNetworkExperiments
 {
     class Program
     {
+        //TODO - A - make GANN class
+        //TODO - A - make testing class
         static void Main(string[] args)
         {
             TestGenerator.TestScenario1();

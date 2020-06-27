@@ -16,17 +16,21 @@ namespace GANN.NN
         public Func<double,double>[] activationFuncs;
         public Func<double,double>[] derActivationFuncs;
         public Func<double, double, double> lossFunction;
+        //TODO - B - loss function should take output and expected verctor as arguemtns
         public Func<double, double, double> derLossFunction;
         public MatrixAT1[] zs;
         public MatrixAT1[] ases;
         public int[] neuronCounts;
         public int LayerCount { get => neuronCounts.Length; }
         public double gradientVelocity = 1;
-
-        public bool normaliseOutput = true;
-        //TODO - A - Add argument validation
+        //TODO - B - alternative to Relu?
+        public bool normaliseOutput = true; //TODO - C - remove
+        //TODO - B - Add argument validation
         //TODO - B - custom edges
+        //TODO - A - gradient step strategy
         //TODO - A - is this suitable for GA
+        //TODO - A - determine all parameters that you want to control. Maybe rather only hyperparameters?
+        //TODO - B - extract all suitable parameters to a separate class
         public ANN(int[] neurons, Func<double, double>[] actFunc, Func<double, double>[] derActFunc, Func<double, double, double> lossF, Func<double, double, double> derLossF)
         {
             //TODO - B - paramterize seeds

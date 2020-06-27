@@ -46,7 +46,7 @@ namespace GANN.GA.SamplingStrategies
             //}
             //TODO - B - works with only 0 in fitnesses?
 
-            int cind = 0;
+            //TODO - B - test for last one having 0 prob
             int ind = 0;
             for(ind = 0; ind < population.Length; ind++)
             {
