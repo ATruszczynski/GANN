@@ -223,15 +223,15 @@ namespace UnitTests
             double eps = 0.00001;
 
             Assert.AreEqual(input[0], nn.ases[0][0, 0]);
-            Assert.AreEqual(input[1], nn.zs[0][1, 0]);
-            Assert.AreEqual(input[0], nn.zs[0][0, 0]);
+            //Assert.AreEqual(input[1], nn.zs[0][1, 0]);
+            //Assert.AreEqual(input[0], nn.zs[0][0, 0]);
             Assert.AreEqual(input[1], nn.ases[0][1, 0]);
 
-            Assert.AreEqual(0.3775, nn.zs[1][0,0]);
+            Assert.AreEqual(0.3775, nn.zs[0][0,0]);
             Assert.IsTrue(CloseCompare(0.593269992, nn.ases[1][0, 0], eps));
             Assert.IsTrue(CloseCompare(0.596884378, nn.ases[1][1, 0], eps));
 
-            Assert.IsTrue(CloseCompare(1.105905967, nn.zs[2][0,0], eps));
+            Assert.IsTrue(CloseCompare(1.105905967, nn.zs[1][0,0], eps));
             Assert.IsTrue(CloseCompare(0.75136507, nn.ases[2][0, 0], eps));
             Assert.IsTrue(CloseCompare(0.772928465, nn.ases[2][1, 0], eps));
 

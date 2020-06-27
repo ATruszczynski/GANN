@@ -6,6 +6,6 @@ namespace GANN.NN.Parameters
 {
     public class Hyperparameters
     {
-
+        //TODO - A - implement
     }
 }
