@@ -28,14 +28,14 @@ namespace GANN.NN.ParameterRanges
             //TODO - B - test
             //TODO - C - can there be layer count == 0?
 
-            var meanW = WeightDistribution.GetNext(random);
-            var stdW = StdDistribution.GetNext(random);
-            var neuronCounts = new int[(int)LayerCountDistribution.GetNext(random) + 2];
+            var meanW = WeightDistribution.GetNext();
+            var stdW = StdDistribution.GetNext();
+            var neuronCounts = new int[(int)LayerCountDistribution.GetNext() + 2];
             neuronCounts[0] = inputSize;
             neuronCounts[neuronCounts.Length - 1] = outputSize;
             for (int i = 1; i < neuronCounts.Length - 1; i++)
             {
-                neuronCounts[i] = (int)NeuronCountDistribution.GetNext(random);
+                neuronCounts[i] = (int)NeuronCountDistribution.GetNext();
             }
             var ActivationFunctions = new ActivationFunction[neuronCounts.Length - 1];
             for (int i = 0; i < ActivationFunctions.Length; i++)

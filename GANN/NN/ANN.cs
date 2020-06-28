@@ -14,7 +14,6 @@ namespace GANN.NN
     public class ANN : NeuralNetwork
     {
         //TODO - D - remove needless pubilc
-        //TODO - A - last layer function change?
         public MatrixAT1[] weights;
         public MatrixAT1[] biases;
         public ActivationFunction[] activationFuncs;
@@ -29,7 +28,6 @@ namespace GANN.NN
         //TODO - B - Add argument validation
         //TODO - B - custom edges
         //TODO - A - use hyperparameter class
-        //TODO - A - is this suitable for GA
         //TODO - B - extract all suitable parameters to a separate class
         public ANN(Hyperparameters hyperparameters, Random random = null)
         {
@@ -52,7 +50,7 @@ namespace GANN.NN
             if (random == null)
                 random = new Random();
 
-            GaussianDistribution gd = new GaussianDistribution(hyperparameters.meanW, hyperparameters.stdW);
+            GaussianDistribution gd = new GaussianDistribution(random, hyperparameters.meanW, hyperparameters.stdW);
             weights = new MatrixAT1[LayerCount - 1];
             for (int w = 0; w < weights.Length; w++)
             {
@@ -61,7 +59,7 @@ namespace GANN.NN
                 {
                     for (int c = 0; c < weights[w].Columns; c++)
                     {
-                        weights[w][r, c] = gd.GetNext(random);
+                        weights[w][r, c] = gd.GetNext();
                     }
                 }
             }

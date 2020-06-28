@@ -7,7 +7,6 @@ namespace GANN.NN.LossFunctions
 {
     public abstract class LossFunction
     {
-        //TODO - A - reimplement loss
         public abstract double Compute(MatrixAT1 m1, MatrixAT1 m2);
         public abstract double ComputeDerivative(double output, double expected);
     }

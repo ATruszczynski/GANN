@@ -9,15 +9,15 @@ namespace GANN.MathAT.Distributions
         //TODO - B - discrete distributions are quite differently madae from each other
         public int minInc;
         public int maxEx;
-        public UniformDiscreteDistribution(int minnInc, int maxEx)
+        public UniformDiscreteDistribution(Random random, int minnInc, int maxEx): base(random)
         {
             minInc = minnInc;
             this.maxEx = maxEx;
         }
-        public override double GetNext(Random random)
+        public override double GetNext()
         {
             //TODO - B - test
-            return random.Next(minInc, maxEx);
+            return Random.Next(minInc, maxEx);
         }
     }
 }

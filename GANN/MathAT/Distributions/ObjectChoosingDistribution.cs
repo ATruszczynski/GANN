@@ -8,20 +8,20 @@ namespace GANN.MathAT.Distributions
     {
         public DiscreteDistribution DiscDist;
         public T[] elements;
-        public ObjectChoosingDistribution(T[] options, params double[] poss)
+        public ObjectChoosingDistribution(Random random, T[] options, params double[] poss)
         {
             //TODO - B - test
             //TODO - B - validation
             if (poss.Length == 0)
-                DiscDist = new UniformDiscreteDistribution(0, options.Length);
+                DiscDist = new UniformDiscreteDistribution(random, 0, options.Length);
             else
-                DiscDist = new CustomDiscreteDistribution(poss);
+                DiscDist = new CustomDiscreteDistribution(random, poss);
             elements = options;
         }
 
         public T GetNext(Random random)
         {
-            return elements[(int)DiscDist.GetNext(random)];
+            return elements[(int)DiscDist.GetNext()];
         }
     }
 }

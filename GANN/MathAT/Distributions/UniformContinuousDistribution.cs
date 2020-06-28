@@ -9,16 +9,16 @@ namespace GANN.MathAT.Distributions
         double min = 0;
         double max = 1;
         //TODO - D - parameter names suck
-        public UniformContinuousDistribution(double minn, double maxx)
+        public UniformContinuousDistribution(Random random, double minn, double maxx): base(random)
         {
             min = minn;
             max = maxx;
         }
 
-        public override double GetNext(Random random)
+        public override double GetNext()
         {
             //TODO - B - test
-            double num = random.NextDouble();
+            double num = Random.NextDouble();
 
             num *= max - min;
             num -= min;
