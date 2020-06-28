@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GANN.MathAT.Distributions
 {
-    public abstract class DiscreteDistribution: Distribution
+    public abstract class ContinuousDistributon: Distribution
     {
     }
 }

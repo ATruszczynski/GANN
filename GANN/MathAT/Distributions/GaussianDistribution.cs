@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GANN.MathAT.Distributions
 {
-    public class GaussianDistribution: Distribution
+    public class GaussianDistribution: ContinuousDistributon
     {
         public double Mean = 0;
         public double Std = 1;

@@ -11,11 +11,10 @@ namespace GANN.NN.Parameters
     {
         public double meanW;
         public double stdW;
-        public double[] neuronCounts;
+        public int[] neuronCounts;
         public ActivationFunction[] ActivationFunctions;
         public LossFunction LossFunction;
         public GradientStepStrategy GradientStepStrategy;
-
 
         public int LayerCount { get => neuronCounts.Length; }
     }
