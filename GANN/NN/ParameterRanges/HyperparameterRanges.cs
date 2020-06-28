@@ -12,7 +12,6 @@ namespace GANN.NN.ParameterRanges
     public class HyperparameterRanges
     {
         //TODO - B - implement changing probability of cs and mutation in GA
-        //TODO - A - implement
 
         public ContinuousDistributon WeightDistribution;
         public ContinuousDistributon StdDistribution;
@@ -28,24 +27,34 @@ namespace GANN.NN.ParameterRanges
         {
             //TODO - B - test
             //TODO - C - can there be layer count == 0?
-            Hyperparameters result = new Hyperparameters();
 
-            result.meanW = WeightDistribution.GetNext(random);
-            result.stdW = StdDistribution.GetNext(random);
-            result.neuronCounts = new int[(int)LayerCountDistribution.GetNext(random) + 2];
-            result.neuronCounts[0] = inputSize;
-            result.neuronCounts[result.neuronCounts.Length - 1] = outputSize;
-            for (int i = 1; i < result.neuronCounts.Length - 1; i++)
+            var meanW = WeightDistribution.GetNext(random);
+            var stdW = StdDistribution.GetNext(random);
+            var neuronCounts = new int[(int)LayerCountDistribution.GetNext(random) + 2];
+            neuronCounts[0] = inputSize;
+            neuronCounts[neuronCounts.Length - 1] = outputSize;
+            for (int i = 1; i < neuronCounts.Length - 1; i++)
             {
-                result.neuronCounts[i] = (int)NeuronCountDistribution.GetNext(random);
+                neuronCounts[i] = (int)NeuronCountDistribution.GetNext(random);
             }
-            result.ActivationFunctions = new ActivationFunction[result.neuronCounts.Length - 1];
-            for (int i = 0; i < result.ActivationFunctions.Length; i++)
+            var ActivationFunctions = new ActivationFunction[neuronCounts.Length - 1];
+            for (int i = 0; i < ActivationFunctions.Length; i++)
             {
-                result.ActivationFunctions[i] = ActFuncDist.GetNext(random);
+                ActivationFunctions[i] = ActFuncDist.GetNext(random);
             }
-            result.LossFunction = LossFuncDist.GetNext(random);
-            result.GradientStepStrategy = GradStratDist.GetNext(random);
+            var LossFunction = LossFuncDist.GetNext(random);
+            var GradientStepStrategy = GradStratDist.GetNext(random);
+
+
+            Hyperparameters result = new Hyperparameters
+                (
+                    neuronCounts,
+                    meanW,
+                    stdW,
+                    ActivationFunctions,
+                    LossFunction,
+                    GradientStepStrategy
+                );
 
             return result;
         }

@@ -9,6 +9,11 @@ namespace GANN.NN.LossFunctions
     public class QuadDiff : LossFunction
     {
         //TODO - B - use vector class
+        public double d;
+        public QuadDiff(double dd = 1)
+        {
+            d = dd;
+        }
         public override double Compute(MatrixAT1 m1, MatrixAT1 m2)
         {
             //TODO - B - test
@@ -19,13 +24,13 @@ namespace GANN.NN.LossFunctions
                 sum += Pow(m1[i,0] - m2[i,0], 2);
             }
 
-            return sum;
+            return d*sum;
         }
 
         public override double ComputeDerivative(double output, double expected)
         {
             //TODO - B - test
-            return 2 * (output - expected);
+            return 2 * d * (output - expected);
         }
     }
 }

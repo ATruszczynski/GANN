@@ -1,5 +1,9 @@
 ﻿using GANN.MathAT;
 using GANN.MathAT.Distributions;
+using GANN.NN.ActivationFunctions;
+using GANN.NN.GradientStepStrategies;
+using GANN.NN.LossFunctions;
+using GANN.NN.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,46 +17,42 @@ namespace GANN.NN
         //TODO - A - last layer function change?
         public MatrixAT1[] weights;
         public MatrixAT1[] biases;
-        public Func<double,double>[] activationFuncs;
-        public Func<double,double>[] derActivationFuncs;
-        public Func<double, double, double> lossFunction;
+        public ActivationFunction[] activationFuncs;
+        public LossFunction lossFunction;
         //TODO - B - loss function should take output and expected verctor as arguemtns
-        public Func<double, double, double> derLossFunction;
         public MatrixAT1[] zs;
         public MatrixAT1[] ases;
         public int[] neuronCounts;
         public int LayerCount { get => neuronCounts.Length; }
-        public double gradientVelocity = 1;
+        public GradientStepStrategy GradientStepStrategy;
         //TODO - B - alternative to Relu?
         //TODO - B - Add argument validation
         //TODO - B - custom edges
         //TODO - A - use hyperparameter class
         //TODO - A - is this suitable for GA
         //TODO - B - extract all suitable parameters to a separate class
-        public ANN(int[] neurons, Func<double, double>[] actFunc, Func<double, double>[] derActFunc, Func<double, double, double> lossF, Func<double, double, double> derLossF)
+        public ANN(Hyperparameters hyperparameters, Random random = null)
         {
             //TODO - B - paramterize seeds
-            Random random = new Random(1001);
-            GaussianDistribution gd = new GaussianDistribution(0, 0.5);
+            var neurons = hyperparameters.neuronCounts;
             neuronCounts = new int[neurons.Length];
             for (int i = 0; i < neurons.Length; i++)
             {
                 neuronCounts[i] = neurons[i];
             }
 
+            var actFunc = hyperparameters.ActivationFunctions;
             if(actFunc.Length != LayerCount - 1)
             {
                 throw new ArgumentException($"There is a wrong amount of activation function {actFunc.Length}, instead of {LayerCount - 1}");
             }
 
-            if (derActFunc.Length != LayerCount - 1)
-            {
-                throw new ArgumentException($"There is a wrong amount of derivations of activation functions {derActFunc.Length}, instead of {LayerCount - 1}");
-            }
-
             activationFuncs = actFunc;
-            derActivationFuncs = derActFunc;
 
+            if (random == null)
+                random = new Random();
+
+            GaussianDistribution gd = new GaussianDistribution(hyperparameters.meanW, hyperparameters.stdW);
             weights = new MatrixAT1[LayerCount - 1];
             for (int w = 0; w < weights.Length; w++)
             {
@@ -74,8 +74,7 @@ namespace GANN.NN
                 zs[b] = new MatrixAT1(neuronCounts[b + 1], 1);
             }
 
-            lossFunction = lossF;
-            derLossFunction = derLossF;
+            lossFunction = hyperparameters.LossFunction;
 
             ases = new MatrixAT1[LayerCount];
 
@@ -83,6 +82,8 @@ namespace GANN.NN
             {
                 ases[a] = new MatrixAT1(neuronCounts[a], 1);
             }
+
+            GradientStepStrategy = hyperparameters.GradientStepStrategy;
         }
 
         public override double[] Run(double[] input)
@@ -104,7 +105,7 @@ namespace GANN.NN
 
                 for (int j = 0; j < neuronCounts[layer]; j++)
                 {
-                    ases[layer][j, 0] = activationFuncs[layer - 1](zs[layer - 1][j, 0]); 
+                    ases[layer][j, 0] = activationFuncs[layer - 1].Compute(zs[layer - 1][j, 0]); 
                 }
             }
 
@@ -173,6 +174,7 @@ namespace GANN.NN
 
                     for (int w = 0; w < weights.Length; w++)
                     {
+                        double gradientVelocity = GradientStepStrategy.GetStepSize();
                         weights[w] = weights[w] - gradientVelocity * weightGradChange[w];
                         biases[w] = biases[w] - gradientVelocity * biasesGradChange[w];
                     }
@@ -213,7 +215,7 @@ namespace GANN.NN
 
             for (int i = 0; i < ag_L.Rows; i++)
             {
-                ag_L[i, 0] = derLossFunction(current[i, 0], expected[i, 0]);
+                ag_L[i, 0] = lossFunction.ComputeDerivative(current[i, 0], expected[i, 0]);
             }
 
             return ag_L;
@@ -244,11 +246,11 @@ namespace GANN.NN
 
             MatrixAT1 z_L = zs[layer - 1];
 
-            var derAct = derActivationFuncs[layer - 1];
+            var actF = activationFuncs[layer - 1];
 
             for (int j = 0; j < bg_L.Rows; j++)
             {
-                bg_L[j, 0] = derAct(z_L[j, 0]) * ag_L[j, 0];
+                bg_L[j, 0] = actF.ComputeDerivative(z_L[j, 0]) * ag_L[j, 0];
             }
 
             return bg_L;

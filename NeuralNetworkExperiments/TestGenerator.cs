@@ -1,5 +1,6 @@
 ﻿using GANN.MathAT;
 using GANN.NN;
+using GANN.NN.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,21 +76,21 @@ namespace NeuralNetworkExperiments
         {
 
             int num = 2000;
-            (var i, var o) = TestGenerator.TTT(num); 
-            
-            ANN nn = new ANN
-                 (
-                  new int[] { 9, 4, 4, 4 },
-                  //new Func<double, double>[] { Relu, Sigma },
-                  //new Func<double, double>[] { DerRelu, DerSigma },
-                  //new int[] { 9, 20, 20, 4 },
-                  new Func<double, double>[] { Relu, Relu, Sigma },
-                  new Func<double, double>[] { DerRelu, Relu, DerSigma },
-                  //new Func<double, double>[] { Sigma, Sigma, Sigma },
-                  //new Func<double, double>[] { DerSigma, DerSigma, DerSigma },
-                  null,
-                  DerLoss
-                 );
+            (var i, var o) = TestGenerator.TTT(num);
+
+            ANN nn = new ANN(new Hyperparameters(new int[] { 9, 4, 4, 4 }), new Random(1001));
+                 //(
+                 // new int[] { 9, 4, 4, 4 },
+                 // //new Func<double, double>[] { Relu, Sigma },
+                 // //new Func<double, double>[] { DerRelu, DerSigma },
+                 // //new int[] { 9, 20, 20, 4 },
+                 // new Func<double, double>[] { Relu, Relu, Sigma },
+                 // new Func<double, double>[] { DerRelu, Relu, DerSigma },
+                 // //new Func<double, double>[] { Sigma, Sigma, Sigma },
+                 // //new Func<double, double>[] { DerSigma, DerSigma, DerSigma },
+                 // null,
+                 // DerLoss
+                 //);
 
             nn.Train(i, o, 20, 100);
 
@@ -99,14 +100,7 @@ namespace NeuralNetworkExperiments
 
         public static void TestScenario2()
         {
-            ANN nn = new ANN
-                (
-                 new int[] { 2, 2, 2 },
-                 new Func<double, double>[] { Relu, Relu },
-                 new Func<double, double>[] { DerRelu, DerRelu },
-                 null,
-                 DerLoss
-                );
+            ANN nn = new ANN(new Hyperparameters(new int[] { 9, 4, 4, 4 }), new Random(1001));
 
             nn.weights[0] = new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 } });
             nn.weights[1] = new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 } });

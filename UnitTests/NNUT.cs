@@ -6,6 +6,10 @@ using GANN.NN;
 using static GANN.MathAT.ActFuns;
 using GANN.MathAT;
 using static System.Math;
+using GANN.NN.Parameters;
+using GANN.NN.ActivationFunctions;
+using GANN.NN.GradientStepStrategies;
+using GANN.NN.LossFunctions;
 
 namespace UnitTests
 {
@@ -15,14 +19,11 @@ namespace UnitTests
         [TestMethod]
         public void NNRun()
         {
-            ANN nn = new ANN
+            ANN nn = new ANN(new Hyperparameters
                 (
-                 new int[] { 2, 2, 2 },
-                 new Func<double, double>[] { Relu, Relu },
-                 new Func<double, double>[] { DerRelu, DerRelu },
-                 null,
-                 null
-                );
+                    new int[] { 2, 2, 2 },
+                    actFuns: new ActivationFunction[] { new Relu(), new Relu() }
+                ));
 
             nn.weights[0] = new MatrixAT1(new double[,] { { 1, 2 }, { 2, -1 } });
             nn.weights[1] = new MatrixAT1(new double[,] { { 3, 0 }, { 1, 2 } });
@@ -39,15 +40,12 @@ namespace UnitTests
         [ExpectedException(typeof(ArgumentException))]
         public void NN_MismatchedInput()
         {
-            ANN nn = new ANN
-               (
-                new int[] { 2, 2, 2 },
-                new Func<double, double>[] { Relu, Relu },
-                new Func<double, double>[] { DerRelu, DerRelu },
-                null,
-                DerLoss
-               );
-            
+            ANN nn = new ANN(new Hyperparameters
+                (
+                    new int[] { 2, 2, 2 },
+                    actFuns: new ActivationFunction[] { new Relu(), new Relu() }
+                ));
+
             nn.Train
                  (
                  new double[][] { new double[] { 2, 1, 3 } },
@@ -61,14 +59,11 @@ namespace UnitTests
         [ExpectedException(typeof(ArgumentException))]
         public void NN_MismatchedOutput()
         {
-            ANN nn = new ANN
-               (
-                new int[] { 2, 2, 2 },
-                new Func<double, double>[] { Relu, Relu },
-                new Func<double, double>[] { DerRelu, DerRelu },
-                null,
-                DerLoss
-               );
+            ANN nn = new ANN(new Hyperparameters
+                (
+                    new int[] { 2, 2, 2 },
+                    actFuns: new ActivationFunction[] { new Relu(), new Relu() }
+                ));
 
             nn.Train
                  (
@@ -82,15 +77,11 @@ namespace UnitTests
         [TestMethod]
         public void NNTrain_SingleInput()
         {
-            //TODO - A - not good enough test; should have different weights
-            ANN nn = new ANN
+            ANN nn = new ANN(new Hyperparameters
                 (
-                 new int[] { 2, 2, 2 },
-                 new Func<double, double>[] { Relu, Relu },
-                 new Func<double, double>[] { DerRelu, DerRelu },
-                 null,
-                 DerLoss
-                );
+                    new int[] { 2, 2, 2 },
+                    actFuns: new ActivationFunction[] { new Relu(), new Relu() }
+                ));
 
             nn.weights[0] = new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 } });
             nn.weights[1] = new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 } });
@@ -124,15 +115,11 @@ namespace UnitTests
         [TestMethod]
         public void NNTrain_SingleInput2()
         {
-            //TODO - A - not good enough test; should have different weights
-            ANN nn = new ANN
+            ANN nn = new ANN(new Hyperparameters
                 (
-                 new int[] { 2, 1, 2 },
-                 new Func<double, double>[] { Relu, Relu },
-                 new Func<double, double>[] { DerRelu, DerRelu },
-                 null,
-                 DerLoss
-                );
+                    new int[] { 2, 1, 2 },
+                    actFuns: new ActivationFunction[] { new Relu(), new Relu() }
+                ));
 
             nn.weights[0] = new MatrixAT1(new double[,] { { 1, 2 } });
             nn.weights[1] = new MatrixAT1(new double[,] { { -1 }, { 3 } });
@@ -167,14 +154,11 @@ namespace UnitTests
         [TestMethod]
         public void NNTrain_MultipleInputs()
         {
-            ANN nn = new ANN
+            ANN nn = new ANN(new Hyperparameters
                 (
-                 new int[] { 2, 3, 2 },
-                 new Func<double, double>[] { Relu, Relu },
-                 new Func<double, double>[] { DerRelu, DerRelu },
-                 null,
-                 DerLoss
-                );
+                    new int[] { 2, 3, 2 },
+                    actFuns: new ActivationFunction[] { new Relu(), new Relu() }
+                ));
 
             //nn.normaliseOutput = false;
             nn.weights[0] = new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 }, { 1, 1 } });
@@ -199,16 +183,14 @@ namespace UnitTests
         //https://mattmazur.com/2015/03/17/a-step-by-step-backpropagation-example/
         public void SigmaComparison()
         {
-            ANN nn = new ANN
+            ANN nn = new ANN(new Hyperparameters
                 (
-                 new int[] { 2, 2, 2 },
-                 new Func<double, double>[] { Sigma, Sigma },
-                 new Func<double, double>[] { DerSigma, DerSigma },
-                 null,
-                 DerLoss2
-                );
+                    new int[] { 2, 2, 2 },
+                    actFuns: new ActivationFunction[] { new Sigma(), new Sigma() },
+                    lossFunc: new QuadDiff(0.5)
+                ));
 
-            nn.gradientVelocity = 0.5;
+            nn.GradientStepStrategy = new ConstantGradientStep(0.5);
 
             nn.weights[0] = new MatrixAT1(new double[,] { { 0.15, 0.20 }, { 0.25, 0.3 } });
             nn.weights[1] = new MatrixAT1(new double[,] { { 0.40, 0.45 }, { 0.50, 0.55 } });
