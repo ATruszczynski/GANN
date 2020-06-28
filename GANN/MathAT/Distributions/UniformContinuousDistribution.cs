@@ -21,7 +21,7 @@ namespace GANN.MathAT.Distributions
             double num = Random.NextDouble();
 
             num *= max - min;
-            num -= min;
+            num += min;
 
             return num;
         }

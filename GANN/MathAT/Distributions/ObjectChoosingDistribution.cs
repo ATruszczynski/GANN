@@ -15,7 +15,14 @@ namespace GANN.MathAT.Distributions
             if (poss.Length == 0)
                 DiscDist = new UniformDiscreteDistribution(random, 0, options.Length);
             else
-                DiscDist = new CustomDiscreteDistribution(random, poss);
+            {
+                double[] indices = new double[poss.Length];
+                for (int i = 0; i < indices.Length; i++)
+                {
+                    indices[i] = i;
+                }
+                DiscDist = new CustomDiscreteDistribution(random, indices, poss);
+            }
             elements = options;
         }
 

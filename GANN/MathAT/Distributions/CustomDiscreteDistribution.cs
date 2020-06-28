@@ -9,9 +9,10 @@ namespace GANN.MathAT.Distributions
         public double[] probs;
         public double[] values;
 
-        public CustomDiscreteDistribution(Random random, double[] poss) : base(random)
+        public CustomDiscreteDistribution(Random random, double[] valuess, double[] poss) : base(random)
         {
             probs = Utility.NormalisedCumulativeSum(poss);
+            values = valuess;
         }
 
         public override double GetNext()
