@@ -7,7 +7,6 @@ namespace GANN.MathAT
 {
     public class ActFuns
     {
-        //TODO - B - Activation function class?
         public static double Relu(double arg)
         {
             return Max(0, arg);

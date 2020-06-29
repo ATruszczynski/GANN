@@ -13,7 +13,7 @@ namespace GANN.NN.GradientStepStrategies
             stepSize = ss;
         }
 
-        public override double GetStepSize()
+        public override double GetStepSize(double avDiff)
         {
             //TODO - B - test
             return stepSize;

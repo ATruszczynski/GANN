@@ -28,7 +28,6 @@ namespace GANN.MathAT
 
             for (int i = 1; i < result.Length; i++)
             {
-                //TODO - B - correct adding offset
                 result[i] = result[i - 1] + values[i] + offset;
             }
 

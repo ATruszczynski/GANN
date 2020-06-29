@@ -114,8 +114,7 @@ namespace GANN.MathAT
 
         public static MatrixAT1 operator*(MatrixAT1 m1, MatrixAT1 m2)
         {
-            //TODO - A - Recognise identity matrix as argument
-            //TODO - A - Make faster
+            //TODO - B - Make faster
             CheckDimensions(m1, m2, true);
 
             MatrixAT1 result = new MatrixAT1(m1.Rows, m2.Columns);
@@ -231,7 +230,22 @@ namespace GANN.MathAT
             return false;
         }
 
-        //TODO - B - copying
+        public MatrixAT1 DeepCopy()
+        {
+            //TODO - B - test
+            MatrixAT1 result = new MatrixAT1(Rows, Columns);
+
+            for (int r = 0; r < Rows; r++)
+            {
+                for (int c = 0; c < Columns; c++)
+                {
+                    result[r, c] = cells[r, c];
+                }
+            }
+
+            return result;
+        }
+
         public void Squish() //TODO - C - should this do something else?
         {
             //TODO - B - test

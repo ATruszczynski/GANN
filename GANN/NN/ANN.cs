@@ -18,7 +18,6 @@ namespace GANN.NN
         public MatrixAT1[] biases;
         public ActivationFunction[] activationFuncs;
         public LossFunction lossFunction;
-        //TODO - B - loss function should take output and expected verctor as arguemtns
         public MatrixAT1[] zs;
         public MatrixAT1[] ases;
         public int[] neuronCounts;
@@ -27,8 +26,6 @@ namespace GANN.NN
         //TODO - B - alternative to Relu?
         //TODO - B - Add argument validation
         //TODO - B - custom edges
-        //TODO - A - use hyperparameter class
-        //TODO - B - extract all suitable parameters to a separate class
         public ANN(Hyperparameters hyperparameters, Random random = null)
         {
             //TODO - B - paramterize seeds
@@ -131,7 +128,7 @@ namespace GANN.NN
                         break;
 
                     (MatrixAT1[] weightGradChange, MatrixAT1[] biasesGradChange, _) = InitialiseComponents();
-
+                    double averageDiff = 0;
 
                     for (int inputInd = startIndInc; inputInd < endIndExc; inputInd++)
                     {
@@ -143,6 +140,8 @@ namespace GANN.NN
                                 MatrixAT1 currOutput = new MatrixAT1(Run(inputs[inputInd]));
 
                                 MatrixAT1 goodOutput = new MatrixAT1(outputs[inputInd]);
+
+                                averageDiff += lossFunction.Compute(currOutput, goodOutput);
 
                                 activationsGrad[layer] = CalculateLastLayerLossGradient(currOutput, goodOutput);
                                 ;
@@ -161,9 +160,9 @@ namespace GANN.NN
                             weightGradChange[i] += weightGrad[i];
                             biasesGradChange[i] += biasesGrad[i];
                         }
-
+                        
                     }
-
+                    averageDiff /= n;
                     for (int i = 0; i < weightGradChange.Length; i++)
                     {
                         weightGradChange[i] = 1d / n * weightGradChange[i];
@@ -172,7 +171,7 @@ namespace GANN.NN
 
                     for (int w = 0; w < weights.Length; w++)
                     {
-                        double gradientVelocity = GradientStepStrategy.GetStepSize();
+                        double gradientVelocity = GradientStepStrategy.GetStepSize(averageDiff);
                         weights[w] = weights[w] - gradientVelocity * weightGradChange[w];
                         biases[w] = biases[w] - gradientVelocity * biasesGradChange[w];
                     }

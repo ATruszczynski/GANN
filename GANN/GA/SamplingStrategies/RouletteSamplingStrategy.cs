@@ -14,6 +14,7 @@ namespace GANN.GA.SamplingStrategies
         {
             a = aa;
         }
+
         //TODO - C - could do something with calculating fitness multiple times?
         public override Chromosome Sample(Chromosome[] population, FitnessFunction fitnessFunction, Random random)
         {
@@ -24,7 +25,6 @@ namespace GANN.GA.SamplingStrategies
 
             for (int i = 1; i < fitnesses.Length; i++)
             {
-                //TODO - B - correct adding a?
                 fitnesses[i] = fitnesses[i - 1] + fitnessFunction.ComputeFitness(population[i]) + a;
             }
 
