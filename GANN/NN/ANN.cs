@@ -21,14 +21,21 @@ namespace GANN.NN
         public MatrixAT1[] zs;
         public MatrixAT1[] ases;
         public int[] neuronCounts;
+        //TODO - B - random as property
         public int LayerCount { get => neuronCounts.Length; }
         public GradientStepStrategy GradientStepStrategy;
         //TODO - B - alternative to Relu?
         //TODO - B - Add argument validation
         //TODO - B - custom edges
+        //TODO - A - hyperparameters as only property
         public ANN(Hyperparameters hyperparameters, Random random = null)
         {
             //TODO - B - paramterize seeds
+            Hyperparameters = hyperparameters;
+            if (random == null)
+                Random = new Random();
+            else
+                Random = random;
             var neurons = hyperparameters.neuronCounts;
             neuronCounts = new int[neurons.Length];
             for (int i = 0; i < neurons.Length; i++)
@@ -267,6 +274,11 @@ namespace GANN.NN
             }
 
             return wg_L;
+        }
+
+        public override double[] Test(double[][] inputs, double[][] outputs)
+        {
+            throw new NotImplementedException();
         }
     }
 }

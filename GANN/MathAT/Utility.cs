@@ -38,5 +38,17 @@ namespace GANN.MathAT
 
             return result;
         }
+
+        public static int[] ArrayZeroToValue(int valueEx)
+        {
+            int[] result = new int[valueEx];
+
+            for (int i = 0; i < result.Length; i++)
+            {
+                result[i] = i;
+            }
+
+            return result;
+        }
     }
 }

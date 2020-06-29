@@ -15,7 +15,7 @@ namespace GANN.NN.ParameterRanges
 
         public ContinuousDistributon WeightDistribution;
         public ContinuousDistributon StdDistribution;
-        public DiscreteDistribution LayerCountDistribution;
+        public DiscreteDistribution InternalLayerCountDistribution;
         public DiscreteDistribution NeuronCountDistribution;
         public ObjectChoosingDistribution<ActivationFunction> ActFuncDist;
         public ObjectChoosingDistribution<LossFunction> LossFuncDist;
@@ -30,7 +30,7 @@ namespace GANN.NN.ParameterRanges
 
             var meanW = WeightDistribution.GetNext();
             var stdW = StdDistribution.GetNext();
-            var neuronCounts = new int[(int)LayerCountDistribution.GetNext() + 2];
+            var neuronCounts = new int[(int)InternalLayerCountDistribution.GetNext() + 2];
             neuronCounts[0] = inputSize;
             neuronCounts[neuronCounts.Length - 1] = outputSize;
             for (int i = 1; i < neuronCounts.Length - 1; i++)
