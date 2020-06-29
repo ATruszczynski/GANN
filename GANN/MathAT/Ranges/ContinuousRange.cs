@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GANN.MathAT.Distributions;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,13 +8,12 @@ namespace GANN.MathAT.Ranges
     public class ContinuousRange: Range
     {
         //TODO - B - test
-        public double Min;
-        public double Max;
-
-        public ContinuousRange(double min, double max)
+        public double Min { get => RangeGenerator.Min; }
+        public double Max { get => RangeGenerator.Max; }
+        public ContinuousRangeDistribution RangeGenerator;
+        public ContinuousRange(ContinuousRangeDistribution rangeGenerator)
         {
-            Min = min;
-            Max = max;
+            RangeGenerator = rangeGenerator;
         }
 
         public override bool IsInRange(object value)

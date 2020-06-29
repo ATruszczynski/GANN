@@ -4,15 +4,12 @@ using System.Text;
 
 namespace GANN.MathAT.Distributions
 {
-    public class UniformContinuousDistribution : ContinuousDistributon
+    public class UniformContinuousDistribution : ContinuousRangeDistribution
     {
-        double min = 0;
-        double max = 1;
         //TODO - D - parameter names suck
-        public UniformContinuousDistribution(Random random, double minn, double maxx): base(random)
+        public UniformContinuousDistribution(Random random, double minn, double maxx): base(random, minn, maxx)
         {
-            min = minn;
-            max = maxx;
+
         }
 
         public override double GetNext()
@@ -20,8 +17,8 @@ namespace GANN.MathAT.Distributions
             //TODO - B - test
             double num = Random.NextDouble();
 
-            num *= max - min;
-            num += min;
+            num *= Max - Min;
+            num += Min;
 
             return num;
         }

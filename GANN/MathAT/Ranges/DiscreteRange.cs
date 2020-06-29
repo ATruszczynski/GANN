@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GANN.MathAT.Distributions;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,12 +7,12 @@ namespace GANN.MathAT.Ranges
 {
     public class DiscreteRange: Range
     {
-        public int Min;
-        public int Max;
-        public DiscreteRange(int min, int max)
+        public int Min { get => RangeGenerator.Min; }
+        public int Max { get => RangeGenerator.Max; }
+        public DiscreteRangeDistribution RangeGenerator;
+        public DiscreteRange(DiscreteRangeDistribution rangeGenerator)
         {
-            Min = min;
-            Max = max;
+            RangeGenerator = rangeGenerator;
         }
 
         public override bool IsInRange(object value)
