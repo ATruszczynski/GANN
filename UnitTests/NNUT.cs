@@ -25,10 +25,10 @@ namespace UnitTests
                     actFuns: new ActivationFunction[] { new Relu(), new Relu() }
                 ));
 
-            nn.weights[0] = new MatrixAT1(new double[,] { { 1, 2 }, { 2, -1 } });
-            nn.weights[1] = new MatrixAT1(new double[,] { { 3, 0 }, { 1, 2 } });
-            nn.biases[0] = new MatrixAT1(new double[,] { { 1 }, { 0 } });
-            nn.biases[1] = new MatrixAT1(new double[,] { { 2 }, { -2 } });
+            nn.Layers[1].weights = new MatrixAT1(new double[,] { { 1, 2 }, { 2, -1 } });
+            nn.Layers[2].weights = new MatrixAT1(new double[,] { { 3, 0 }, { 1, 2 } });
+            nn.Layers[1].biases = new MatrixAT1(new double[,] { { 1 }, { 0 } });
+            nn.Layers[2].biases = new MatrixAT1(new double[,] { { 2 }, { -2 } });
 
             var resutl = nn.Run(new double[] { 2, 1 });
 
@@ -83,10 +83,10 @@ namespace UnitTests
                     actFuns: new ActivationFunction[] { new Relu(), new Relu() }
                 ));
 
-            nn.weights[0] = new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 } });
-            nn.weights[1] = new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 } });
-            nn.biases[0] = new MatrixAT1(new double[,] { { 1 }, { 1 } });
-            nn.biases[1] = new MatrixAT1(new double[,] { { 1 }, { 1 } });
+            nn.Layers[1].weights = new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 } });
+            nn.Layers[2].weights = new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 } });
+            nn.Layers[1].biases = new MatrixAT1(new double[,] { { 1 }, { 1 } });
+            nn.Layers[2].biases = new MatrixAT1(new double[,] { { 1 }, { 1 } });
 
             var resutl = nn.Run(new double[] { 2, 1 });
 
@@ -103,10 +103,10 @@ namespace UnitTests
 
             resutl = nn.Run(new double[] { 2, 1 });
 
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.weights[0], new MatrixAT1(new double[,] { { -67, -33 }, { -67, -33 } })));
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.weights[1], new MatrixAT1(new double[,] { { -63, -63 }, { -71, -71 } })));
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.biases[0], new MatrixAT1(new double[,] { { -33 }, { -33 } })));
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.biases[1], new MatrixAT1(new double[,] { { -15 }, { -17 } })));
+            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.Layers[1].weights, new MatrixAT1(new double[,] { { -67, -33 }, { -67, -33 } })));
+            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.Layers[2].weights, new MatrixAT1(new double[,] { { -63, -63 }, { -71, -71 } })));
+            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.Layers[1].biases, new MatrixAT1(new double[,] { { -33 }, { -33 } })));
+            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.Layers[2].biases, new MatrixAT1(new double[,] { { -15 }, { -17 } })));
 
             Assert.AreEqual(0, resutl[0]);
             Assert.AreEqual(0, resutl[1]);
@@ -121,10 +121,10 @@ namespace UnitTests
                     actFuns: new ActivationFunction[] { new Relu(), new Relu() }
                 ));
 
-            nn.weights[0] = new MatrixAT1(new double[,] { { 1, 2 } });
-            nn.weights[1] = new MatrixAT1(new double[,] { { -1 }, { 3 } });
-            nn.biases[0] = new MatrixAT1(new double[,] { { -1 } });
-            nn.biases[1] = new MatrixAT1(new double[,] { { 2 }, { 1 } });
+            nn.Layers[1].weights = new MatrixAT1(new double[,] { { 1, 2 } });
+            nn.Layers[2].weights = new MatrixAT1(new double[,] { { -1 }, { 3 } });
+            nn.Layers[1].biases = new MatrixAT1(new double[,] { { -1 } });
+            nn.Layers[2].biases = new MatrixAT1(new double[,] { { 2 }, { 1 } });
 
             var resutl = nn.Run(new double[] { 2, 1 });
 
@@ -140,10 +140,10 @@ namespace UnitTests
                 );
 
             //TODO - C - calculate manually scores (they are from debugging)
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.weights[0], new MatrixAT1(new double[,] { { -119, -58 } })));
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.weights[1], new MatrixAT1(new double[,] { { -1 }, { -57 } })));
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.biases[0], new MatrixAT1(new double[,] { { -61 } })));
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.biases[1], new MatrixAT1(new double[,] { { 2 }, { -19 } })));
+            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.Layers[1].weights, new MatrixAT1(new double[,] { { -119, -58 } })));
+            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.Layers[2].weights, new MatrixAT1(new double[,] { { -1 }, { -57 } })));
+            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.Layers[1].biases, new MatrixAT1(new double[,] { { -61 } })));
+            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.Layers[2].biases, new MatrixAT1(new double[,] { { 2 }, { -19 } })));
 
             resutl = nn.Run(new double[] { 2, 1 });
 
@@ -161,10 +161,10 @@ namespace UnitTests
                 ));
 
             //nn.normaliseOutput = false;
-            nn.weights[0] = new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 }, { 1, 1 } });
-            nn.weights[1] = new MatrixAT1(new double[,] { { 1, 1, 1 }, { 1, 1, 1 } });
-            nn.biases[0] = new MatrixAT1(new double[,] { { 1 }, { 1 }, { 1 } });
-            nn.biases[1] = new MatrixAT1(new double[,] { { 1 }, { 1 } });
+            nn.Layers[1].weights = new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 }, { 1, 1 } });
+            nn.Layers[2].weights = new MatrixAT1(new double[,] { { 1, 1, 1 }, { 1, 1, 1 } });
+            nn.Layers[1].biases = new MatrixAT1(new double[,] { { 1 }, { 1 }, { 1 } });
+            nn.Layers[2].biases = new MatrixAT1(new double[,] { { 1 }, { 1 } });
 
             nn.Train
                 (
@@ -192,11 +192,11 @@ namespace UnitTests
 
             nn.GradientStepStrategy = new ConstantGradientStep(0.5);
 
-            nn.weights[0] = new MatrixAT1(new double[,] { { 0.15, 0.20 }, { 0.25, 0.3 } });
-            nn.weights[1] = new MatrixAT1(new double[,] { { 0.40, 0.45 }, { 0.50, 0.55 } });
+            nn.Layers[1].weights = new MatrixAT1(new double[,] { { 0.15, 0.20 }, { 0.25, 0.3 } });
+            nn.Layers[2].weights = new MatrixAT1(new double[,] { { 0.40, 0.45 }, { 0.50, 0.55 } });
 
-            nn.biases[0] = new MatrixAT1(new double[,] { { 0.35 }, { 0.35 } });
-            nn.biases[1] = new MatrixAT1(new double[,] { { 0.6 }, { 0.6 } });
+            nn.Layers[1].biases = new MatrixAT1(new double[,] { { 0.35 }, { 0.35 } });
+            nn.Layers[2].biases = new MatrixAT1(new double[,] { { 0.6 }, { 0.6 } });
 
             var input = new double[] { 0.05, 0.1 };
 
@@ -204,18 +204,18 @@ namespace UnitTests
 
             double eps = 0.00001;
 
-            Assert.AreEqual(input[0], nn.ases[0][0, 0]);
-            //Assert.AreEqual(input[1], nn.zs[0][1, 0]);
-            //Assert.AreEqual(input[0], nn.zs[0][0, 0]);
-            Assert.AreEqual(input[1], nn.ases[0][1, 0]);
+            Assert.AreEqual(input[0], nn.Layers[0].ases[0, 0]);
+            //Assert.AreEqual(input[1], nn.Layers[1].zs[1, 0]);
+            //Assert.AreEqual(input[0], nn.Layers[1].zs[0, 0]);
+            Assert.AreEqual(input[1], nn.Layers[0].ases[1, 0]);
 
-            Assert.AreEqual(0.3775, nn.zs[0][0,0]);
-            Assert.IsTrue(CloseCompare(0.593269992, nn.ases[1][0, 0], eps));
-            Assert.IsTrue(CloseCompare(0.596884378, nn.ases[1][1, 0], eps));
+            Assert.AreEqual(0.3775, nn.Layers[1].zs[0,0]);
+            Assert.IsTrue(CloseCompare(0.593269992, nn.Layers[1].ases[0, 0], eps));
+            Assert.IsTrue(CloseCompare(0.596884378, nn.Layers[1].ases[1, 0], eps));
 
-            Assert.IsTrue(CloseCompare(1.105905967, nn.zs[1][0,0], eps));
-            Assert.IsTrue(CloseCompare(0.75136507, nn.ases[2][0, 0], eps));
-            Assert.IsTrue(CloseCompare(0.772928465, nn.ases[2][1, 0], eps));
+            Assert.IsTrue(CloseCompare(1.105905967, nn.Layers[2].zs[0,0], eps));
+            Assert.IsTrue(CloseCompare(0.75136507, nn.Layers[2].ases[0, 0], eps));
+            Assert.IsTrue(CloseCompare(0.772928465, nn.Layers[2].ases[1, 0], eps));
 
             Assert.IsTrue(CloseCompare(0.75136507, result[0], eps));
             Assert.IsTrue(CloseCompare(0.772928456, result[1], eps));
@@ -228,15 +228,15 @@ namespace UnitTests
                 1
                 );
 
-            Assert.IsTrue(CloseCompare(0.35891648, nn.weights[1][0, 0], eps));
-            Assert.IsTrue(CloseCompare(0.408666186, nn.weights[1][0, 1], eps));
-            Assert.IsTrue(CloseCompare(0.511301270, nn.weights[1][1, 0], eps));
-            Assert.IsTrue(CloseCompare(0.561370121, nn.weights[1][1, 1], eps));
+            Assert.IsTrue(CloseCompare(0.35891648, nn.Layers[2].weights[0, 0], eps));
+            Assert.IsTrue(CloseCompare(0.408666186, nn.Layers[2].weights[0, 1], eps));
+            Assert.IsTrue(CloseCompare(0.511301270, nn.Layers[2].weights[1, 0], eps));
+            Assert.IsTrue(CloseCompare(0.561370121, nn.Layers[2].weights[1, 1], eps));
 
-            Assert.IsTrue(CloseCompare(0.149780716, nn.weights[0][0,0], eps));
-            Assert.IsTrue(CloseCompare(0.19956143, nn.weights[0][0,1], eps));
-            Assert.IsTrue(CloseCompare(0.24975114, nn.weights[0][1,0], eps));
-            Assert.IsTrue(CloseCompare(0.29950229, nn.weights[0][1,1], eps));
+            Assert.IsTrue(CloseCompare(0.149780716, nn.Layers[1].weights[0,0], eps));
+            Assert.IsTrue(CloseCompare(0.19956143, nn.Layers[1].weights[0,1], eps));
+            Assert.IsTrue(CloseCompare(0.24975114, nn.Layers[1].weights[1,0], eps));
+            Assert.IsTrue(CloseCompare(0.29950229, nn.Layers[1].weights[1,1], eps));
 
         }
 

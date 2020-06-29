@@ -102,10 +102,10 @@ namespace NeuralNetworkExperiments
         {
             ANN nn = new ANN(new Hyperparameters(new int[] { 9, 4, 4, 4 }), new Random(1001));
 
-            nn.weights[0] = new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 } });
-            nn.weights[1] = new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 } });
-            nn.biases[0] = new MatrixAT1(new double[,] { { 1 }, { 1 } });
-            nn.biases[1] = new MatrixAT1(new double[,] { { 1 }, { 1 } });
+            nn.Layers[1].weights = new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 } });
+            nn.Layers[2].weights = new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 } });
+            nn.Layers[1].biases = new MatrixAT1(new double[,] { { 1 }, { 1 } });
+            nn.Layers[2].biases = new MatrixAT1(new double[,] { { 1 }, { 1 } });
 
             var resutl = nn.Run(new double[] { 2, 1 });
 
