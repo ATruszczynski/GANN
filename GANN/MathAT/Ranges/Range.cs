@@ -7,10 +7,6 @@ namespace GANN.MathAT.Ranges
 {
     public abstract class Range
     {
-        public Distribution GeneratingDistribution;
-        public Range(Distribution dist)
-        {
-            GeneratingDistribution = dist;
-        }
+        public abstract bool IsInRange(object value);
     }
 }

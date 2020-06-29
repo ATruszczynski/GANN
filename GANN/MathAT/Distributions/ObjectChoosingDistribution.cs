@@ -8,21 +8,11 @@ namespace GANN.MathAT.Distributions
     {
         public DiscreteDistribution DiscDist;
         public T[] elements;
-        public ObjectChoosingDistribution(Random random, T[] options, params double[] poss)
+        public ObjectChoosingDistribution(Random random, T[] options)
         {
             //TODO - B - test
             //TODO - B - validation
-            if (poss.Length == 0)
-                DiscDist = new UniformDiscreteDistribution(random, 0, options.Length);
-            else
-            {
-                double[] indices = new double[poss.Length];
-                for (int i = 0; i < indices.Length; i++)
-                {
-                    indices[i] = i;
-                }
-                DiscDist = new CustomDiscreteDistribution(random, indices, poss);
-            }
+            DiscDist = new UniformDiscreteDistribution(random, 0, options.Length);
             elements = options;
         }
 

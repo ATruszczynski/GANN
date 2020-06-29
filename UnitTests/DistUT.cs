@@ -7,7 +7,7 @@ using GANN.MathAT.Distributions;
 namespace UnitTests
 {
     [TestClass]
-    public class DistUY
+    public class DistUT
     {
         //TODO - B test close enough function
         [TestMethod]
