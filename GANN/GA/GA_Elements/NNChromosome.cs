@@ -7,20 +7,20 @@ namespace GANN.GA.GA_Elements
 {
     public class NNChromosome : Chromosome
     {
-        public NeuralNetwork NeuralNetwork;
+        public ANN NeuralNetwork;
         public NNChromosome()
         {
 
         }
 
-        public NNChromosome(NeuralNetwork nn)
+        public NNChromosome(ANN nn)
         {
             NeuralNetwork = nn;
         }
         public override Chromosome DeepCopy()
         {
-            //TODO - A - implement
-            throw new NotImplementedException();
+            //TODO - B - deep copies are not having deep copy of random
+            return new NNChromosome(new ANN(NeuralNetwork.Hyperparameters, NeuralNetwork.Random));
         }
     }
 }

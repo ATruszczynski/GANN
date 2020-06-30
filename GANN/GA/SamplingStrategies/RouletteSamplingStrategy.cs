@@ -4,33 +4,34 @@ using GANN.MathAT;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace GANN.GA.SamplingStrategies
 {
     public class RouletteSamplingStrategy : SamplingStrategy
     {
         double a;
+        int maxDeg = -1;
         public RouletteSamplingStrategy(double aa = 0.01)
         {
             a = aa;
         }
 
         //TODO - C - could do something with calculating fitness multiple times?
-        public override Chromosome Sample(Chromosome[] population, FitnessFunction fitnessFunction, Random random)
+        public override Chromosome Sample(Chromosome[] population, double[] fitnesses, Random random)
         {
+            //TODO - C - validaiton
             Chromosome chosen = null;
-
-            double[] fitnesses = new double[population.Length];
-            fitnesses[0] = fitnessFunction.ComputeFitness(population[0]) + a;
-
+            double[] fit = new double[fitnesses.Length];
+            fit[0] = fitnesses[0] + a;
             for (int i = 1; i < fitnesses.Length; i++)
             {
-                fitnesses[i] = fitnesses[i - 1] + fitnessFunction.ComputeFitness(population[i]) + a;
+                fit[i] += fit[i-1] + fitnesses[i] + a;
             }
 
-            for (int i = 0; i < fitnesses.Length; i++)
+            for (int i = 0; i < fit.Length; i++)
             {
-                fitnesses[i] /= fitnesses[fitnesses.Length - 1];
+                fit[i] /= fit[fit.Length - 1];
             }
 
             //double p = random.NextDouble();
@@ -55,8 +56,8 @@ namespace GANN.GA.SamplingStrategies
             //        break;
             //}
 
-            int ind = Utility.Roulette(fitnesses, random);
-
+            int ind = Utility.Roulette(fit, random);
+            //TODO - B - test
             return population[ind];
         }
     }

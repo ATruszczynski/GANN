@@ -8,11 +8,7 @@ namespace GANN.GA.SamplingStrategies
 {
     public abstract class SamplingStrategy
     {
-        /// <summary>
-        /// Returns a deep copy of elemnent in population
-        /// </summary>
-        /// <param name="population"></param>
-        /// <returns></returns>
-        public abstract Chromosome Sample(Chromosome[] population, FitnessFunction fitnessFunction, Random random);
+        //TODO - B - move random inside?
+        public abstract Chromosome Sample(Chromosome[] population, double[] fitnesses, Random random);
     }
 }

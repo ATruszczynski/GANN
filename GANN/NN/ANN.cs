@@ -294,10 +294,36 @@ namespace GANN.NN
 
             return wg_L;
         }
-
+        //TODO - B - works only for output in 0-1 range
         public override double[] Test(double[][] inputs, double[][] outputs)
         {
-            throw new NotImplementedException();
+            //TODO - B - validation
+            //TODO - B - test
+            double done = 0;
+            double correct = 0;
+            for (int i = 0; i < inputs.Length; i++)
+            {
+                double[] result = Run(inputs[i]);
+                int maxInd = 0;
+                int correctInd = -1;
+                for (int j = 0; j < result.Length; j++)
+                {
+                    if(result[j] > result[maxInd])
+                    {
+                        maxInd = j;
+                    }
+
+                    if(outputs[i][j] == 1)
+                    {
+                        correctInd = j;
+                    }
+                }
+                if (correctInd == maxInd)
+                    correct++;
+                done++;
+            }
+            Console.WriteLine("Test finished");
+            return new double[] { correct/done };
         }
     }
 }

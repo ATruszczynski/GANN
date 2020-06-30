@@ -105,8 +105,14 @@ namespace UnitTests
         {
             SamplingStrategy ss = new RouletteSamplingStrategy();
             BinaryChromosome[] pop1 = new BinaryChromosome[] { new BinaryChromosome(new bool[] { true, false }), new BinaryChromosome(new bool[] { true, true }), new BinaryChromosome(new bool[] { false, false }) };
-            FitnessFunction ff = new InterchangableBinaryFF();
+            FitnessFunction ffs = new InterchangableBinaryFF();
             PseudoRandom pr = new PseudoRandom(0.2,0.6, 0.8);
+
+            double[] ff = new double[pop1.Length];
+            for (int i = 0; i < pop1.Length; i++)
+            {
+                ff[i] = ffs.ComputeFitness(pop1[i]);
+            }
 
             var s1 = (BinaryChromosome)ss.Sample(pop1, ff, pr);
             var s2 = (BinaryChromosome)ss.Sample(pop1, ff, pr);
@@ -121,12 +127,24 @@ namespace UnitTests
 
             BinaryChromosome[] pop = new BinaryChromosome[] { new BinaryChromosome(new bool[] { true, true}) };
 
+            ff = new double[pop.Length];
+            for (int i = 0; i < ff.Length; i++)
+            {
+                ff[i] = ffs.ComputeFitness(pop[i]);
+            }
+
             var s4 = (BinaryChromosome)ss.Sample(pop, ff, pr);
             Assert.AreEqual(true, s4.Array[0]);
             Assert.AreEqual(true, s4.Array[1]);
 
             BinaryChromosome[] pop3 = new BinaryChromosome[] { new BinaryChromosome(new bool[] { true, true }), new BinaryChromosome(new bool[] { false, true }) };
             pr = new PseudoRandom(0.9999);
+
+            ff = new double[pop3.Length];
+            for (int i = 0; i < pop3.Length; i++)
+            {
+                ff[i] = ffs.ComputeFitness(pop3[i]);
+            }
 
             var s5 = (BinaryChromosome)ss.Sample(pop3, ff, pr);
             Assert.AreEqual(false, s5.Array[0]);
@@ -163,10 +181,10 @@ namespace UnitTests
             ga.crossoverProbability = 0.9;
             ga.mutationProbability = 0.05;
 
-            ga.Iterations = 50;
+            ga.Iterations = 70;
 
             string expected = "1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0";
-            var Chromosome = ga.Run(1001);
+            var Chromosome = ga.Run(random);
 
             Assert.AreEqual(expected, Chromosome.ToString());
         }

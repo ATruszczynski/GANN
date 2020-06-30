@@ -20,7 +20,7 @@ namespace NeuralNetworkExperiments
 {
     class Program
     {
-        //TODO - A - hyperparametes, range and distribution classes SUCKKKKKKK
+        //TODO - A - hyperparametes, range and distribution classes SUCKKKKKKK. Hyperparameters should have input output sizes too
         //TODO - A - make GANN class
         //TODO - A - make testing class
         static void Main(string[] args)
@@ -62,8 +62,8 @@ namespace NeuralNetworkExperiments
             //    Console.WriteLine(c.ToString());
             //}
 
-            (var trainInput, var trainOutput) = TestGenerator.TTT(1000);
-            (var testInput, var testOutput) = TestGenerator.TTT(100);
+            (var trainInput, var trainOutput) = TestGenerator.TTT(100);
+            (var testInput, var testOutput) = TestGenerator.TTT(20);
 
             Random random = new Random(1001);
 
@@ -78,6 +78,9 @@ namespace NeuralNetworkExperiments
             hp.ActFuncDist = new SetRange<ActivationFunction>(new ActivationFunction[] { new Relu() }, new UniformDiscreteDistribution(random, 0, 1));
             hp.LossFuncDist = new SetRange<LossFunction>(new LossFunction[] { new QuadDiff() }, new UniformDiscreteDistribution(random, 0, 1));
             hp.GradStratDist = new SetRange<GradientStepStrategy>(new GradientStepStrategy[] { new ConstantGradientStep(0.5), new ConstantGradientStep(1) }, new UniformDiscreteDistribution(random, 0, 2));
+            hp.inputSize = trainInput[0].Length;
+            hp.outputSize = trainOutput[0].Length;
+            hp.outputAct = new Sigma();
 
             ga.MutationOperator = new NNBasicMutationOperator(hp);
             ga.SamplingStrategy = new RouletteSamplingStrategy();
@@ -86,8 +89,8 @@ namespace NeuralNetworkExperiments
             NNFitnessFunc nnff = new NNFitnessFunc();
             nnff.trainInputs = trainInput;
             nnff.trainOutputs = trainOutput;
-            nnff.testInputs = trainInput;
-            nnff.testOutputs = trainOutput;
+            nnff.testInputs = testInput;
+            nnff.testOutputs = testOutput;
             ga.FitnessFunction = new NNFitnessFunc();
 
             ga.FitnessFunction = nnff;
@@ -97,7 +100,7 @@ namespace NeuralNetworkExperiments
             ga.population = new NNChromosome[pop];
             for (int i = 0; i < pop; i++)
             {
-                Hyperparameters param = hp.GetRandomHyperparameters(); 
+                Hyperparameters param = (Hyperparameters)hp.GetNext();
 
                 ga.population[i] = new NNChromosome(new ANN(param, random));
             }
@@ -107,7 +110,12 @@ namespace NeuralNetworkExperiments
 
             ga.Iterations = 5;
 
-            Console.WriteLine(ga.FitnessFunction.ComputeFitness(ga.Run(random)));
+            NNChromosome c = (NNChromosome)ga.Run(random);
+
+            Console.WriteLine(ga.FitnessFunction.ComputeFitness(c));
+
+            var res = c.NeuralNetwork.Run(new double[] { 0, 0, 0, 1, 1, 1, 2, 2, 2 }); 
+            Console.WriteLine($"{res[0]},{res[1]},{res[2]},{res[3]}");
         }
     }
 }
