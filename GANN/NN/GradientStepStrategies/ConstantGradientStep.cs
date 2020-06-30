@@ -15,6 +15,7 @@ namespace GANN.NN.GradientStepStrategies
 
         public override GradientStepStrategy DeepCopy()
         {
+            //TODO - B - test
             return new ConstantGradientStep(stepSize);
         }
 

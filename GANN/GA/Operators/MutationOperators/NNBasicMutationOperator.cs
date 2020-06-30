@@ -7,6 +7,7 @@ using GANN.NN;
 using GANN.NN.Parameters;
 using static GANN.MathAT.Utility;
 using GANN.MathAT;
+using GANN.NN.ActivationFunctions;
 
 namespace GANN.GA.Operators.MutationOperators
 {
@@ -34,7 +35,28 @@ namespace GANN.GA.Operators.MutationOperators
 
             Hyperparameters hp = nn.Hyperparameters;
 
+            var inp = hp.neuronCounts[0];
+            var outt = hp.neuronCounts[hp.neuronCounts.Length - 1];
+            var f = hp.ActivationFunctions[hp.ActivationFunctions.Length - 1];
+
             hp = Ranges.GetRandomHyperparameters();
+
+            var rr = hp.neuronCounts;
+
+            List<int> dd = new List<int>();
+            List<ActivationFunction> ss = new List<ActivationFunction>();
+            dd.Add(inp);
+            for (int i = 0; i < rr.Length; i++)
+            {
+                dd.Add(rr[i]);
+                ss.Add(hp.ActivationFunctions[i]);
+            }
+            dd.Add(outt);
+            ss.Add(f);
+
+            hp.neuronCounts = dd.ToArray();
+            hp.ActivationFunctions = ss.ToArray();
+
 
             nnc = new NNChromosome();
 

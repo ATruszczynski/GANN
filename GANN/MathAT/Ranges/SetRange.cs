@@ -20,6 +20,7 @@ namespace GANN.MathAT.Ranges
 
         public override object GetNext()
         {
+            return Values[(int)Distribution.GetNext()];
             throw new NotImplementedException();
         }
 

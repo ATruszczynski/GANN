@@ -25,7 +25,7 @@ namespace GANN.MathAT.Ranges
 
         public override object GetNext()
         {
-            return RangeGenerator.GetNext();
+            return (int)RangeGenerator.GetNext();
         }
     }
 }

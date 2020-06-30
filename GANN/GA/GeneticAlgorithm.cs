@@ -28,9 +28,9 @@ namespace GANN.GA
 
         public Random random;
 
-        public Chromosome Run(int seed)
+        public Chromosome Run(Random rrandom)
         {
-            random = new Random(seed);
+            random = rrandom;
 
             Chromosome[] newPopulation = new Chromosome[PopulationCount];
             for (int iter = 0; iter < Iterations; iter++)

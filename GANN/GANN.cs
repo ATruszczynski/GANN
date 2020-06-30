@@ -9,12 +9,14 @@ namespace GANN
     class GANN
     {
         public GeneticAlgorithm GeneticAlgorithm;
-        public NeuralNetwork NeuralNetwork;
+        public double[][] trainInput;
+        public double[][] trainOutput;
+        public double[][] testInput;
+        public double[][] testOutput;
 
-        public GANN(GeneticAlgorithm ga, NeuralNetwork nn)
+        public GANN(GeneticAlgorithm ga)
         {
             GeneticAlgorithm = ga;
-            NeuralNetwork = nn;
         }
     }
 }

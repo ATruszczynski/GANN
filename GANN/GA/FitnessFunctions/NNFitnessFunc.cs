@@ -14,6 +14,7 @@ namespace GANN.GA.FitnessFunctions
         public int epochs = 5;
         public int batches = 100;
 
+
         //TODO - B - removve params, necessary parametrs in objects?
         public override double ComputeFitness(Chromosome c, params object[] args)
         {
