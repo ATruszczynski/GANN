@@ -32,5 +32,10 @@ namespace GANN.NN.LossFunctions
             //TODO - B - test
             return 2 * d * (output - expected);
         }
+
+        public override LossFunction DeepCopy()
+        {
+            return new QuadDiff(d);
+        }
     }
 }

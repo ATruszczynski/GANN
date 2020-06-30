@@ -8,5 +8,6 @@ namespace GANN.NN.GradientStepStrategies
     {
         //TODO - A - what parameters should that take?
         public abstract double GetStepSize(double avDiff);
+        public abstract GradientStepStrategy DeepCopy();
     }
 }

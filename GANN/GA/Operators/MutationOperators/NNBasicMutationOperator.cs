@@ -10,17 +10,20 @@ using GANN.MathAT;
 
 namespace GANN.GA.Operators.MutationOperators
 {
-    public class NNMutationOperator : MutationOperator
+    public class NNBasicMutationOperator : MutationOperator
     {
-        //TODO - A - are layers a good idea?
+        //TODO - A - are layers a good idea? Should layers be in Hyperparameters instead?
         //TODO - 0 - figure out how it will work
         //TODO - ? - repairs in GA
         //TODO - A - layers aren't helping that much :/
+        //TODO - B - test
         public HyperparameterRanges Ranges;
         public double possOfHPChange = 0.5;
-        public NNMutationOperator(HyperparameterRanges ranges)
+        public int MaxMutNumber = 2;
+        public NNBasicMutationOperator(HyperparameterRanges ranges, int maxMutNumber = 2)
         {
             Ranges = ranges;
+            MaxMutNumber = maxMutNumber;
         }
         //TODO - B - random as property
         public override Chromosome Mutate(Chromosome m, Random radoms)
@@ -31,8 +34,11 @@ namespace GANN.GA.Operators.MutationOperators
 
             Hyperparameters hp = nn.Hyperparameters;
 
-            SampleWithoutReplacement<int> sw = new SampleWithoutReplacement<int>(Define(nn), radoms);
-            
+            hp = Ranges.GetRandomHyperparameters();
+
+            nnc = new NNChromosome();
+
+            nnc.NeuralNetwork = new ANN(hp, nn.Random);
 
             return nnc;
         }

@@ -12,6 +12,7 @@ namespace GANN.NN.Parameters
         public double meanW;
         public double stdW;
         public int[] neuronCounts;
+        public int LayerCount { get => neuronCounts.Length; }
         public ActivationFunction[] ActivationFunctions;
         public LossFunction LossFunction;
         public GradientStepStrategy GradientStepStrategy;
@@ -49,6 +50,27 @@ namespace GANN.NN.Parameters
                 GradientStepStrategy = new ConstantGradientStep(1);
         }
 
-        public int LayerCount { get => neuronCounts.Length; }
+
+        //TODO - B - implement
+        public Hyperparameters DeepCopy()
+        {
+            int[] nc = new int[neuronCounts.Length];
+            for (int i = 0; i < nc.Length; i++)
+            {
+                nc[i] = neuronCounts[i];
+            }
+
+            ActivationFunction[] acts = new ActivationFunction[neuronCounts.Length];
+            for (int i = 0; i < acts.Length; i++)
+            {
+                acts[i] = ActivationFunctions[i].DeepCopy();
+            }
+
+            Hyperparameters hp = new Hyperparameters(nc, meanW, stdW, acts, LossFunction.DeepCopy(), GradientStepStrategy.DeepCopy());
+
+
+
+            return hp;
+        }
     }
 }

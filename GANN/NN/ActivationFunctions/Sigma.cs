@@ -18,5 +18,10 @@ namespace GANN.NN.ActivationFunctions
             //TODO - B - test
             return Compute(arg) * (1 - Compute(arg));
         }
+
+        public override ActivationFunction DeepCopy()
+        {
+            return new Sigma();
+        }
     }
 }

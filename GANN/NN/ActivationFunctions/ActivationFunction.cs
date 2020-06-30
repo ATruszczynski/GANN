@@ -8,5 +8,6 @@ namespace GANN.NN.ActivationFunctions
     {
         public abstract double Compute(double arg);
         public abstract double ComputeDerivative(double arg);
+        public abstract ActivationFunction DeepCopy();
     }
 }

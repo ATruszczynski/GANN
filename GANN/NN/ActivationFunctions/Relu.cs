@@ -22,5 +22,10 @@ namespace GANN.NN.ActivationFunctions
 
             return result;
         }
+
+        public override ActivationFunction DeepCopy()
+        {
+            return new Relu();
+        }
     }
 }
