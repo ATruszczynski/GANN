@@ -7,6 +7,7 @@ namespace GANN.MathAT.Ranges
 {
     public class DiscreteRange: Range
     {
+        //TODO - C - those ranges are horrendous
         public int Min { get => RangeGenerator.Min; }
         public int Max { get => RangeGenerator.Max; }
         public DiscreteRangeDistribution RangeGenerator;
@@ -20,6 +21,11 @@ namespace GANN.MathAT.Ranges
             //TODO - B - test
             int val = (int)value;
             return Min <= val && val < Max;
+        }
+
+        public override object GetNext()
+        {
+            return RangeGenerator.GetNext();
         }
     }
 }

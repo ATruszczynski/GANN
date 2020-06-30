@@ -4,20 +4,29 @@ using System.Text;
 
 namespace GANN.MathAT
 {
-    public class SampleWithoutReplacement
+    public class SampleWithoutReplacement<T>
     {
         //TODO - B - test
-        public List<double> Samples;
+        public List<T> Samples;
         public Random Random;
-        public SampleWithoutReplacement(List<double> samples, Random random)
+        public SampleWithoutReplacement(T[] samples, Random random)
+        {
+            Samples = new List<T>();
+            foreach (var sample in samples)
+            {
+                Samples.Add(sample);
+            }
+            Random = random;
+        }
+        public SampleWithoutReplacement(List<T> samples, Random random)
         {
             Samples = samples;
             Random = random;
         }
 
-        public bool GetNext(out double result)
+        public bool GetNext(out T result)
         {
-            result = double.MinValue;
+            result = default;
 
             if (Samples.Count == 0)
                 return false;

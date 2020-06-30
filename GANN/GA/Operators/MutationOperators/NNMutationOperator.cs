@@ -6,14 +6,16 @@ using GANN.NN.ParameterRanges;
 using GANN.NN;
 using GANN.NN.Parameters;
 using static GANN.MathAT.Utility;
+using GANN.MathAT;
 
 namespace GANN.GA.Operators.MutationOperators
 {
     public class NNMutationOperator : MutationOperator
     {
+        //TODO - A - are layers a good idea?
         //TODO - 0 - figure out how it will work
-        //TODO - 0 - range and repairs in GA
-        //TODO - 0 - layer structure?
+        //TODO - ? - repairs in GA
+        //TODO - A - layers aren't helping that much :/
         public HyperparameterRanges Ranges;
         public double possOfHPChange = 0.5;
         public NNMutationOperator(HyperparameterRanges ranges)
@@ -25,41 +27,44 @@ namespace GANN.GA.Operators.MutationOperators
         {
             NNChromosome nnc = (NNChromosome)m;
 
-            NeuralNetwork nn = nnc.NeuralNetwork;
+            ANN nn = (ANN)nnc.NeuralNetwork;
 
             Hyperparameters hp = nn.Hyperparameters;
-            //TODO - B - range class could help with that
-            double p = radoms.NextDouble();
 
-            if(p <= possOfHPChange)
-            {
-                hp.meanW = Ranges.WeightDistribution.GetNext();
-            }
-
-            p = radoms.NextDouble();
-
-            if (p <= possOfHPChange)
-            {
-                hp.stdW = Ranges.StdDistribution.GetNext();
-            }
-
-            //for (int i = 0; i < hp.ActivationFunctions.Length; i++)
-            //{ 
-            //    p = radoms.NextDouble();
-            //    if(p <= possOfHPChange)
-
-            //}
-
-            p = radoms.NextDouble();
-
-            if(p <= possOfHPChange)
-            {
-                int newnc = (int)Ranges.InternalLayerCountDistribution.GetNext();
-            }
-
-            nnc.NeuralNetwork = new ANN(hp, nn.Random);
+            SampleWithoutReplacement<int> sw = new SampleWithoutReplacement<int>(Define(nn), radoms);
+            
 
             return nnc;
+        }
+
+        int[] Define(ANN nn)
+        {
+            List<int> result = new List<int>();
+
+            if (Ranges.WeightDistribution.Min != Ranges.WeightDistribution.Max)
+                result.Add(0); //weights can be mutated
+
+            if (Ranges.StdDistribution.Min != Ranges.StdDistribution.Max)
+                result.Add(1); //std can be mutated
+
+            if (nn.LayerCount - 2 < Ranges.InternalLayerCountDistribution.Max)
+                result.Add(2); //layer can be added
+
+            if (nn.LayerCount > 2)
+            {
+                result.Add(3); //layer can be removed
+                result.Add(4); //layer neruron count can be changed
+                if(Ranges.ActFuncDist.Values.Length > 1)
+                    result.Add(5); //layer act func can be changed
+            }
+
+            if (Ranges.LossFuncDist.Values.Length > 1)
+                result.Add(6); //loss function can be changed
+
+            if (Ranges.GradStratDist.Values.Length > 1)
+                result.Add(7);
+
+            return result.ToArray();
         }
     }
 }

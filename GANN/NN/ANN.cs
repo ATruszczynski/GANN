@@ -201,8 +201,6 @@ namespace GANN.NN
                         l.weights = l.weights - gradientVelocity * weightGradChange[w - 1];
                         l.biases = l.biases - gradientVelocity * biasesGradChange[w - 1];
                     }
-
-                    ;
                 }
             }
         }

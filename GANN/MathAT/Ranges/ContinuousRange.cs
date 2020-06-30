@@ -22,5 +22,10 @@ namespace GANN.MathAT.Ranges
 
             return Min <= val && val < Max;
         }
+
+        public override object GetNext()
+        {
+            return RangeGenerator.GetNext();
+        }
     }
 }
