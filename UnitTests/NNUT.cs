@@ -103,10 +103,10 @@ namespace UnitTests
 
             resutl = nn.Run(new double[] { 2, 1 });
 
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.Layers[1].weights, new MatrixAT1(new double[,] { { -67, -33 }, { -67, -33 } })));
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.Layers[2].weights, new MatrixAT1(new double[,] { { -63, -63 }, { -71, -71 } })));
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.Layers[1].biases, new MatrixAT1(new double[,] { { -33 }, { -33 } })));
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.Layers[2].biases, new MatrixAT1(new double[,] { { -15 }, { -17 } })));
+            Assert.IsTrue(MatrixAT1.Compare(nn.Layers[1].weights, new MatrixAT1(new double[,] { { -67, -33 }, { -67, -33 } })));
+            Assert.IsTrue(MatrixAT1.Compare(nn.Layers[2].weights, new MatrixAT1(new double[,] { { -63, -63 }, { -71, -71 } })));
+            Assert.IsTrue(MatrixAT1.Compare(nn.Layers[1].biases, new MatrixAT1(new double[,] { { -33 }, { -33 } })));
+            Assert.IsTrue(MatrixAT1.Compare(nn.Layers[2].biases, new MatrixAT1(new double[,] { { -15 }, { -17 } })));
 
             Assert.AreEqual(0, resutl[0]);
             Assert.AreEqual(0, resutl[1]);
@@ -140,10 +140,10 @@ namespace UnitTests
                 );
 
             //TODO - C - calculate manually scores (they are from debugging)
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.Layers[1].weights, new MatrixAT1(new double[,] { { -119, -58 } })));
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.Layers[2].weights, new MatrixAT1(new double[,] { { -1 }, { -57 } })));
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.Layers[1].biases, new MatrixAT1(new double[,] { { -61 } })));
-            Assert.IsTrue(MatrixUT.CompareMatrixes(nn.Layers[2].biases, new MatrixAT1(new double[,] { { 2 }, { -19 } })));
+            Assert.IsTrue(MatrixAT1.Compare(nn.Layers[1].weights, new MatrixAT1(new double[,] { { -119, -58 } })));
+            Assert.IsTrue(MatrixAT1.Compare(nn.Layers[2].weights, new MatrixAT1(new double[,] { { -1 }, { -57 } })));
+            Assert.IsTrue(MatrixAT1.Compare(nn.Layers[1].biases, new MatrixAT1(new double[,] { { -61 } })));
+            Assert.IsTrue(MatrixAT1.Compare(nn.Layers[2].biases, new MatrixAT1(new double[,] { { 2 }, { -19 } })));
 
             resutl = nn.Run(new double[] { 2, 1 });
 

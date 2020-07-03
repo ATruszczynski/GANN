@@ -32,6 +32,7 @@ namespace GANN.NN.Parameters
             }
             else
             {
+                ActivationFunctions = new ActivationFunction[neuronCounts.Length];
                 for (int i = 0; i < neuronCounts.Length - 2; i++)
                 {
                     ActivationFunctions[i] = new Relu();

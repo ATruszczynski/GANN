@@ -17,7 +17,6 @@ namespace GANN.MathAT.Distributions
 
         public override double GetNext()
         {
-            //TODO - B - test
             return values[Utility.Roulette(probs, Random)];
         }
     }

@@ -16,7 +16,7 @@ namespace GANN.MathAT.Distributions
 
         public override double GetNext()
         {
-            //TODO - B - test
+            //TODO - B - test dkh
             //TODO - B - why does this work?
             //Random rand = new Random(); //reuse this if you are generating many
             double u1 = 1.0 - Random.NextDouble(); //uniform(0,1] random doubles

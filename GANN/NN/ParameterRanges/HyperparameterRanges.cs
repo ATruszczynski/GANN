@@ -7,7 +7,7 @@ using GANN.NN.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Text;
-
+//TODO - C - async random is not deterministic
 namespace GANN.NN.ParameterRanges
 {
     public class HyperparameterRanges: Range

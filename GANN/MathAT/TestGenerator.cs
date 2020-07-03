@@ -8,12 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using static GANN.MathAT.ActFuns;
 
-namespace NeuralNetworkExperiments
+namespace GANN.MathAT
 {
     public class TestGenerator
     {
-        public static (double[][], double[][]) TTT(int number)
+        public static (double[][], double[][]) TTT1(int number, Random r)
         {
+            //TODO - B - test
             double[][] inputs = new double[number][];
             double[][] outputs = new double[number][];
 
@@ -23,26 +24,29 @@ namespace NeuralNetworkExperiments
                 outputs[i] = new double[4]; //0 - remis, 1 - krzyżyk, 2 - kółko
             }
 
-            Random r = new Random(1001);
-
             for (int i = 0; i < inputs.Length; i++)
             {
                 for (int j = 0; j < 9; j++)
                 {
-                    inputs[i][j] = r.Next(3)/2;
+                    inputs[i][j] = r.Next(3);
                 }
 
                 bool cross = CheckForWinning(inputs[i], 1);
                 bool circle = CheckForWinning(inputs[i], 2);
 
-                if (cross)
-                    outputs[i][1] = 1;
+                if (cross && circle)
+                    outputs[i][3] = 1;
                 else if (circle)
                     outputs[i][2] = 1;
-                else if (cross && circle)
-                    outputs[i][3] = 1;
+                else if (cross)
+                    outputs[i][1] = 1;
                 else
                     outputs[i][0] = 1;
+
+                for (int j = 0; j < inputs[i].Length; j++)
+                {
+                    inputs[i][j] /= 2;
+                }
             }
 
             return (inputs, outputs);
@@ -75,8 +79,8 @@ namespace NeuralNetworkExperiments
         public static void TestScenario1()
         {
 
-            int num = 2000;
-            (var i, var o) = TestGenerator.TTT(num);
+            //int num = 2000;
+            //(var i, var o) = TestGenerator.TTT(num);
 
             ANN nn = new ANN(new Hyperparameters(new int[] { 9, 4, 4, 4 }), new Random(1001));
                  //(
@@ -92,10 +96,10 @@ namespace NeuralNetworkExperiments
                  // DerLoss
                  //);
 
-            nn.Train(i, o, 20, 100);
+            //nn.Train(i, o, 20, 100);
 
-            var res = nn.Run(new double[] { 0, 0, 0, 1, 2, 1, 2, 2, 2 });
-            Console.WriteLine($"{res[0]},{res[1]},{res[2]},{res[3]}");
+            //var res = nn.Run(new double[] { 0, 0, 0, 1, 2, 1, 2, 2, 2 });
+            //Console.WriteLine($"{res[0]},{res[1]},{res[2]},{res[3]}");
         }
 
         public static void TestScenario2()

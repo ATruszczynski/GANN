@@ -2,12 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using GANN.MathAT;
 
 namespace GANN.MathAT.Ranges
 {
     public class ContinuousRange: Range
     {
-        //TODO - B - test
         public double Min { get => RangeGenerator.Min; }
         public double Max { get => RangeGenerator.Max; }
         public ContinuousRangeDistribution RangeGenerator;
@@ -18,7 +18,7 @@ namespace GANN.MathAT.Ranges
 
         public override bool IsInRange(object value)
         {
-            double val = (double)value;
+            double val = Utility.TryCastToDouble(value);
 
             return Min <= val && val < Max;
         }

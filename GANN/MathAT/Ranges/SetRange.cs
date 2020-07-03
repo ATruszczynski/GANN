@@ -26,6 +26,7 @@ namespace GANN.MathAT.Ranges
 
         public override bool IsInRange(object value)
         {
+            //TODO - A - implement
             throw new NotImplementedException();
         }
     }

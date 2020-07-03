@@ -294,36 +294,51 @@ namespace GANN.NN
 
             return wg_L;
         }
-        //TODO - B - works only for output in 0-1 range
+        //TODO - B - works only for output in 0/1 range
         public override double[] Test(double[][] inputs, double[][] outputs)
         {
             //TODO - B - validation
             //TODO - B - test
-            double done = 0;
-            double correct = 0;
+            //TODO - B - add precision and recall
+            int len = outputs[0].Length;
+            double[,] confusionMatrix = new double[len, len];
+
             for (int i = 0; i < inputs.Length; i++)
             {
                 double[] result = Run(inputs[i]);
-                int maxInd = 0;
-                int correctInd = -1;
+                int predClass = 0;
+                int actualClass = -1;
                 for (int j = 0; j < result.Length; j++)
                 {
-                    if(result[j] > result[maxInd])
+                    if(result[j] > result[predClass])
                     {
-                        maxInd = j;
+                        predClass = j;
                     }
 
                     if(outputs[i][j] == 1)
                     {
-                        correctInd = j;
+                        actualClass = j;
                     }
                 }
-                if (correctInd == maxInd)
-                    correct++;
-                done++;
+                confusionMatrix[actualClass, predClass]++;
             }
             Console.WriteLine("Test finished");
-            return new double[] { correct/done };
+
+            double accuracy = 0;
+            double sumMat = 0;
+            for (int r = 0; r < len; r++)
+            {
+                for (int c = 0; c < len; c++)
+                {
+                    if (r == c)
+                        accuracy += confusionMatrix[r, c];
+                    sumMat += confusionMatrix[r, c];
+                }
+            }
+
+            accuracy /= sumMat;
+
+            return new double[] { accuracy };
         }
     }
 }

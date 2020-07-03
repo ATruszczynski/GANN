@@ -18,7 +18,6 @@ namespace GANN.GA.FitnessFunctions
         //TODO - B - removve params, necessary parametrs in objects?
         public override double ComputeFitness(Chromosome c, params object[] args)
         {
-            //TODO - A - test
             NNChromosome nnc = (NNChromosome)c;
 
             var nn = nnc.NeuralNetwork;

@@ -18,8 +18,12 @@ namespace GANN.MathAT.Ranges
 
         public override bool IsInRange(object value)
         {
+            //TODO - A - this should fail for doubles not natural
             //TODO - B - test
-            int val = (int)value;
+            double vald = Utility.TryCastToDouble(value);
+            if (Math.Ceiling(vald) != vald && Math.Floor(vald) != vald)
+                return false;
+            int val = Utility.TryCastToInt(value);
             return Min <= val && val < Max;
         }
 

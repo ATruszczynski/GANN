@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace UnitTests
+namespace UnitTests.UtilityClasses
 {
     class PseudoRandom: Random
     {

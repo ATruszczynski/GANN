@@ -6,24 +6,20 @@ namespace GANN.MathAT
 {
     public class MatrixAT1
     {
-        //TODO - B - Vector subclass?
-        //TODO - B - Diagonal subclass?
+        //TODO - C - Vector subclass?
+        //TODO - C - Diagonal subclass?
         double[,] cells;
 
-        //TODO - B - Test
         public int Rows { get => cells.GetLength(0); }
-        //TODO - B - Test
         public int Columns { get => cells.GetLength(1); }
 
         public MatrixAT1(int r, int c)
         {
-            //TODO - B - Test
             cells = new double[r, c];
         }
 
         public MatrixAT1(double[,] array)
         {
-            //TODO - B - Test
             cells = array;
         }
 
@@ -51,7 +47,6 @@ namespace GANN.MathAT
 
         static void CheckDimensions(MatrixAT1 m1, MatrixAT1 m2, bool trans = false)
         {
-            //TODO - B - Test
             if (!trans)
             {
                 if(m1.Rows != m2.Rows)
@@ -75,14 +70,12 @@ namespace GANN.MathAT
 
         public double this[int a, int b]
         {
-            //TODO - B - Test
             get { return cells[a, b]; }
             set { cells[a, b] = value; }
         }
 
         public static MatrixAT1 operator+(MatrixAT1 m1, MatrixAT1 m2)
         {
-            //TODO - B - Test
             CheckDimensions(m1, m2);
             MatrixAT1 result = new MatrixAT1(m1.Rows, m1.Columns);
             for (int i = 0; i < m1.Rows; i++)
@@ -98,7 +91,6 @@ namespace GANN.MathAT
         //TODO - B - ToString
         public static MatrixAT1 operator-(MatrixAT1 m1, MatrixAT1 m2)
         {
-            //TODO - B - Test
             CheckDimensions(m1, m2);
             MatrixAT1 result = new MatrixAT1(m1.Rows, m1.Columns);
             for (int i = 0; i < m1.Rows; i++)
@@ -137,7 +129,6 @@ namespace GANN.MathAT
 
         public void Transpose()
         {
-            //TODO - B - Test
             double[,] results = new double[Columns, Rows];
 
             for (int or = 0; or < Rows; or++)
@@ -153,7 +144,6 @@ namespace GANN.MathAT
 
         public static MatrixAT1 operator*(double d, MatrixAT1 m)
         {
-            //TODO - B - Test
             MatrixAT1 result = new MatrixAT1(m.Rows, m.Columns);
 
             for (int r = 0; r < result.Rows; r++)
@@ -169,7 +159,6 @@ namespace GANN.MathAT
 
         public double ElementSum()
         {
-            //TODO - B - Test
             double sum = 0;
 
             for (int r = 0; r < Rows; r++)
@@ -208,13 +197,11 @@ namespace GANN.MathAT
 
         public static bool CheckSameDimensions(MatrixAT1 m, MatrixAT1 m2)
         {
-            //TODO - B - test
             return m.Rows == m2.Rows && m.Columns == m2.Columns;
         }
 
         public static bool Compare(MatrixAT1 m, MatrixAT1 m2)
         {
-            //TODO - B - test
             if (!CheckSameDimensions(m, m2))
                 return false;
 
@@ -227,12 +214,11 @@ namespace GANN.MathAT
                 }
             }
 
-            return false;
+            return true;
         }
 
         public MatrixAT1 DeepCopy()
         {
-            //TODO - B - test
             MatrixAT1 result = new MatrixAT1(Rows, Columns);
 
             for (int r = 0; r < Rows; r++)
@@ -244,31 +230,6 @@ namespace GANN.MathAT
             }
 
             return result;
-        }
-
-        public void Squish() //TODO - C - should this do something else?
-        {
-            //TODO - B - test
-            //TODO - B - what if max == 0
-            double max = double.MinValue;
-            for (int r = 0; r < Rows; r++)
-            {
-                for (int c = 0; c < Columns; c++)
-                {
-                    double elem = cells[r, c];
-                    if (elem > max)
-                        max = elem;
-
-                }
-            }
-
-            for (int r = 0; r < Rows; r++)
-            {
-                for (int c = 0; c < Columns; c++)
-                {
-                    cells[r, c] /= max;
-                }
-            }
         }
     }
 }

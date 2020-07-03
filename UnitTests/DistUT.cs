@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using GANN.MathAT.Distributions;
+using UnitTests.UtilityClasses;
 
 namespace UnitTests
 {
@@ -15,12 +16,12 @@ namespace UnitTests
         {
             PseudoRandom pr = new PseudoRandom(0.5, 0);
 
-            UniformContinuousDistribution ucd = new UniformContinuousDistribution(pr, -5, -2);
+            UniformContinuousRangeDistribution ucd = new UniformContinuousRangeDistribution(pr, -5, -2);
 
             Assert.AreEqual(-3.5, ucd.GetNext());
             Assert.AreEqual(-5, ucd.GetNext());
 
-            ucd = new UniformContinuousDistribution(pr, -2, 4);
+            ucd = new UniformContinuousRangeDistribution(pr, -2, 4);
 
             Assert.AreEqual(1, ucd.GetNext());
             Assert.AreEqual(-2, ucd.GetNext());
@@ -31,13 +32,13 @@ namespace UnitTests
         {
             PseudoRandom pr = new PseudoRandom(-4, -3);
 
-            var ucd = new UniformDiscreteDistribution(pr, -5, -2);
+            var ucd = new UniformDiscreteRangeDistribution(pr, -5, -2);
 
             Assert.AreEqual(-4, ucd.GetNext());
             Assert.AreEqual(-3, ucd.GetNext());
 
             pr = new PseudoRandom(-2, 2);
-            ucd = new UniformDiscreteDistribution(pr, -2, 4);
+            ucd = new UniformDiscreteRangeDistribution(pr, -2, 4);
 
             Assert.AreEqual(-2, ucd.GetNext());
             Assert.AreEqual(2, ucd.GetNext());

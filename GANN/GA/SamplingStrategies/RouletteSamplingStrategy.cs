@@ -34,30 +34,8 @@ namespace GANN.GA.SamplingStrategies
                 fit[i] /= fit[fit.Length - 1];
             }
 
-            //double p = random.NextDouble();
-
-            ////while(cind + 1 < fitnesses.Length && fitnesses[cind + 1] <= p)
-            ////{
-            ////    cind++;
-            ////}
-
-            ////for(cind = population.Length - 1; cind >= 0; cind--)
-            ////{
-            ////    if (p <= fitnesses[cind])
-            ////        break;
-            ////}
-            ////TODO - B - works with only 0 in fitnesses?
-
-            ////TODO - B - test for last one having 0 prob
-            //int ind = 0;
-            //for(ind = 0; ind < population.Length; ind++)
-            //{
-            //    if (p < fitnesses[ind])
-            //        break;
-            //}
-
             int ind = Utility.Roulette(fit, random);
-            //TODO - B - test
+
             return population[ind];
         }
     }
