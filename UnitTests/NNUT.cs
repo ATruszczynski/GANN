@@ -16,6 +16,7 @@ namespace UnitTests
     [TestClass]
     public class NNUT
     {
+        //TODO - B - iterate over UTs
         [TestMethod]
         public void NNRun()
         {

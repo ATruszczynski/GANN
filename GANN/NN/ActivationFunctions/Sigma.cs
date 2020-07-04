@@ -24,5 +24,19 @@ namespace GANN.NN.ActivationFunctions
             //TODO - B - test
             return new Sigma();
         }
+        public override int CompareTo(object obj)
+        {
+            //TODO - B - test
+            Sigma tmp;
+            try
+            {
+                tmp = (Sigma)obj;
+            }
+            catch
+            {
+                return int.MinValue;
+            }
+            return 0;
+        }
     }
 }

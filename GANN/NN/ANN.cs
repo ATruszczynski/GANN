@@ -14,6 +14,7 @@ namespace GANN.NN
 {
     public class ANN : NeuralNetwork
     {
+        //TODO - 0 - make faster
         //TODO - D - remove needless pubilc
         public Layer[] Layers;
         //public MatrixAT1[] weights;
@@ -201,6 +202,7 @@ namespace GANN.NN
                         l.weights = l.weights - gradientVelocity * weightGradChange[w - 1];
                         l.biases = l.biases - gradientVelocity * biasesGradChange[w - 1];
                     }
+                    Console.WriteLine($"Batch {b + 1} completed");
                 }
             }
         }

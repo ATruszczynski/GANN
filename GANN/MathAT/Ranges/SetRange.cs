@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GANN.MathAT.Ranges
 {
-    public class SetRange<T> : Range
+    public class SetRange<T>: Range where T : IComparable
     {
         public DiscreteDistribution Distribution;
         public T[] Values;
@@ -16,18 +16,19 @@ namespace GANN.MathAT.Ranges
             Values = values;
         }
 
-        //TODO - B - test
-
         public override object GetNext()
         {
             return Values[(int)Distribution.GetNext()];
-            throw new NotImplementedException();
         }
 
         public override bool IsInRange(object value)
         {
-            //TODO - A - implement
-            throw new NotImplementedException();
+            for (int i = 0; i < Values.Length; i++)
+            {
+                if (Values[i].CompareTo(value) == 0)
+                    return true;
+            }
+            return false;
         }
     }
 }

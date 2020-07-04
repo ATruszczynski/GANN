@@ -6,7 +6,6 @@ namespace GANN.MathAT
 {
     public class SampleWithoutReplacement<T>
     {
-        //TODO - B - test
         public List<T> Samples;
         public Random Random;
         public SampleWithoutReplacement(T[] samples, Random random)

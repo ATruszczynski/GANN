@@ -14,7 +14,6 @@ namespace GANN.MathAT
     {
         public static (double[][], double[][]) TTT1(int number, Random r)
         {
-            //TODO - B - test
             double[][] inputs = new double[number][];
             double[][] outputs = new double[number][];
 

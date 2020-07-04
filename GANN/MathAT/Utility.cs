@@ -4,6 +4,7 @@ using System.Text;
 
 namespace GANN.MathAT
 {
+    //TODO - A - logger
     public class Utility
     {
         //TODO - B - test
@@ -129,6 +130,7 @@ namespace GANN.MathAT
                 }
                 catch
                 {
+                    //TODO - A - add gradient to mutation
                     throw new ArgumentException($"Can't convert {value} to integer");
                 }
             }

@@ -24,5 +24,19 @@ namespace GANN.NN.GradientStepStrategies
             //TODO - B - test
             return stepSize;
         }
+        public override int CompareTo(object obj)
+        {
+            //TODO - B - test
+            ConstantGradientStep tmp;
+            try
+            {
+                tmp = (ConstantGradientStep)obj;
+            }
+            catch
+            {
+                return int.MinValue;
+            }
+            return tmp.stepSize.CompareTo(stepSize);
+        }
     }
 }

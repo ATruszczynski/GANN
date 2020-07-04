@@ -6,6 +6,7 @@ namespace GANN.NN.ActivationFunctions
 {
     public class Relu : ActivationFunction
     {
+
         public override double Compute(double arg)
         {
             //TODO - B - test
@@ -26,6 +27,20 @@ namespace GANN.NN.ActivationFunctions
         public override ActivationFunction DeepCopy()
         {
             return new Relu();
+        }
+        public override int CompareTo(object obj)
+        {
+            //TODO - B - test
+            Relu tmp;
+            try
+            {
+                tmp = (Relu)obj;
+            }
+            catch
+            {
+                return int.MinValue;
+            }
+            return 0;
         }
     }
 }

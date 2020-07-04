@@ -5,9 +5,11 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuralNetworkExperiments", "NeuralNetworkExperiments\NeuralNetworkExperiments.csproj", "{F50285D2-9FEC-449C-BEB2-734A824009D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GANN", "GANN\GANN.csproj", "{244C66D2-3B9F-49BE-846D-0EF29ACEF554}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GANN", "GANN\GANN.csproj", "{244C66D2-3B9F-49BE-846D-0EF29ACEF554}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{403C65DF-A176-4EBC-9248-F83AED9BB75B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{403C65DF-A176-4EBC-9248-F83AED9BB75B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TSExp", "TSExp\TSExp.csproj", "{A9CDA095-058D-40E3-864D-0D1409B12363}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{403C65DF-A176-4EBC-9248-F83AED9BB75B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{403C65DF-A176-4EBC-9248-F83AED9BB75B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{403C65DF-A176-4EBC-9248-F83AED9BB75B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9CDA095-058D-40E3-864D-0D1409B12363}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9CDA095-058D-40E3-864D-0D1409B12363}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9CDA095-058D-40E3-864D-0D1409B12363}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9CDA095-058D-40E3-864D-0D1409B12363}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

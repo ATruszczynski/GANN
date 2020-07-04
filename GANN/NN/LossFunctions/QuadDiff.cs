@@ -38,5 +38,20 @@ namespace GANN.NN.LossFunctions
             //TODO - B - test
             return new QuadDiff(d);
         }
+
+        public override int CompareTo(object obj)
+        {
+            //TODO - B - test
+            QuadDiff tmp;
+            try
+            {
+                tmp = (QuadDiff)obj;
+            }
+            catch
+            {
+                return int.MinValue;
+            }
+            return tmp.d.CompareTo(d);
+        }
     }
 }
