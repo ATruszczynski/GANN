@@ -7,9 +7,9 @@ namespace GANN.MathAT
     //TODO - A - logger
     public class Utility
     {
-        //TODO - B - test
         public static int Roulette(double[] values, Random random)
         {
+            //TODO - B - validation
             double p = random.NextDouble();
 
             int ind = 0;
@@ -40,21 +40,21 @@ namespace GANN.MathAT
             return result;
         }
 
-        public static int[] ArrayZeroToValue(int valueEx)
-        {
-            int[] result = new int[valueEx];
+        //public static int[] ArrayZeroToValue(int valueEx)
+        //{
+        //    int[] result = new int[valueEx];
 
-            for (int i = 0; i < result.Length; i++)
-            {
-                result[i] = i;
-            }
+        //    for (int i = 0; i < result.Length; i++)
+        //    {
+        //        result[i] = i;
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
         public static int HighestValueIndInArray(double[] array)
         {
-            //TODO - B - test
+            //TODO - B - validation
             int result = 0;
             for (int i = 0; i < array.Length; i++)
             {
@@ -66,7 +66,7 @@ namespace GANN.MathAT
 
         public static int[] ClassCounts(double[][] outputs)
         {
-            //TODO - B - test
+            //TODO - B - validation
             int[] result = new int[outputs[0].Length];
 
             for (int i = 0; i < outputs.Length; i++)
@@ -94,46 +94,34 @@ namespace GANN.MathAT
             //TODO - B - test
             double result = 0;
 
-            try
-            {
+            if (value is int)
+                result = (int)value;
+            else if (value is float)
+                result = (float)value;
+            else if (value is decimal)
+                result = (double)(decimal)value;
+            else if (value is double)
                 result = (double)value;
-            }
-            catch
-            {
-                try
-                {
-                    result = (double)((int)value);
-                }
-                catch
-                {
-                    throw new ArgumentException($"Can't convert {value} to double");
-                }
-            }
+            else
+                throw new ArgumentException($"Can't convert {value} to double");
 
             return result;
         }
 
         public static int TryCastToInt(object value)
         {
-            //TODO - B - test
-            int result;
+            int result = 0;
 
-            try
-            {
+            if (value is double)
+                result = (int)(double)value;
+            else if (value is float)
+                result = (int)(float)value;
+            else if (value is decimal)
+                result = (int)(decimal)value;
+            else if (value is int)
                 result = (int)value;
-            }
-            catch
-            {
-                try
-                {
-                    result = (int)((double)value);
-                }
-                catch
-                {
-                    //TODO - A - add gradient to mutation
-                    throw new ArgumentException($"Can't convert {value} to integer");
-                }
-            }
+            else
+                throw new ArgumentException($"Can't convert {value} to int");
 
             return result;
         }

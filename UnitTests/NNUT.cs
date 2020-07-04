@@ -241,8 +241,9 @@ namespace UnitTests
 
         }
 
-        bool CloseCompare(double v1, double v2, double eps)
+        public static bool CloseCompare(double v1, double v2, double eps)
         {
+            //TODO - B - move to testing utility and test
             return Abs(v1 - v2) <= eps;
         }
     }
