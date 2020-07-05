@@ -13,7 +13,7 @@ namespace GANN.NN.Parameters
         ActivationFunction defaultAggregate = new Sigma();
         LossFunction defaultLoss = new QuadDiff();
         GradientStepStrategy defaultGradientStep = new ConstantGradientStep(1);
-
+        //TODO - C - internal neurons to hidden
         public int inputSize = -1;
         public int outputSize = -1;
         public int[] internalNeuronCounts;

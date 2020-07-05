@@ -16,6 +16,7 @@ using GANN.NN.ActivationFunctions;
 using GANN.NN.GradientStepStrategies;
 using GANN.NN.Parameters;
 using GANN.MathAT;
+using Accord.DataSets;
 
 namespace NeuralNetworkExperiments
 {
@@ -26,6 +27,8 @@ namespace NeuralNetworkExperiments
         //TODO - A - make testing class
         static void Main(string[] args)
         {
+            //MNIST m = new MNIST();
+
             //TestGenerator.TestScenario1();
 
             //GeneticAlgorithm ga = new GeneticAlgorithm();
@@ -63,7 +66,7 @@ namespace NeuralNetworkExperiments
             //    Console.WriteLine(c.ToString());
             //}
 
-            TestGenerator.ReverseTest();
+            TestGenerator.TestCount();
         }
     }
 }

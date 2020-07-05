@@ -267,20 +267,146 @@ namespace UnitTests
         [TestMethod]
         public void NNFromHPNoInternalLayers()
         {
-            //TODO - B incomplete
             PseudoRandom pr = new PseudoRandom(0);
-            Hyperparameters hp = new Hyperparameters(2,2);
+            Hyperparameters hp = new Hyperparameters(2,2, mw: 1);
             ANN nn = new ANN(hp, pr);
 
-            Assert.AreEqual(2, nn.LayerCount);
+            Assert.AreEqual(2, nn.neuronCounts.Length);
+            Assert.AreEqual(2, nn.neuronCounts[0]);
+            Assert.AreEqual(2, nn.neuronCounts[1]);
+
+            Assert.AreEqual(2, nn.activationFuncs.Length);
+            Assert.IsNull(nn.activationFuncs[0]);
+            Assert.AreEqual(0, nn.activationFuncs[1].CompareTo(new Sigma()));
+
+            Assert.AreEqual(2, nn.weights.Length);
+            Assert.IsNull(nn.weights[0]);
+            Assert.AreEqual(2, nn.weights[1].Rows);
+            Assert.AreEqual(2, nn.weights[1].Columns);
+            Assert.AreEqual(1, nn.weights[1][0,0]);
+            Assert.AreEqual(1, nn.weights[1][0,1]);
+            Assert.AreEqual(1, nn.weights[1][1,0]);
+            Assert.AreEqual(1, nn.weights[1][1,1]);
+
+            Assert.AreEqual(2, nn.biases.Length);
+            Assert.IsNull(nn.biases[0]);
+            Assert.AreEqual(2, nn.biases[1].Rows);
+            Assert.AreEqual(1, nn.biases[1].Columns);
+            Assert.AreEqual(0, nn.biases[1][0, 0]);
+            Assert.AreEqual(0, nn.biases[1][1, 0]);
+
+            Assert.AreEqual(2, nn.zs.Length);
+            Assert.IsNull(nn.zs[0]);
+            Assert.AreEqual(2, nn.zs[1].Rows);
+            Assert.AreEqual(1, nn.zs[1].Columns);
+            Assert.AreEqual(0, nn.zs[1][0, 0]);
+            Assert.AreEqual(0, nn.zs[1][1, 0]);
+
+            Assert.AreEqual(2, nn.ases.Length);
+            Assert.IsNull(nn.ases[0]);
+            Assert.AreEqual(2, nn.ases[1].Rows);
+            Assert.AreEqual(1, nn.ases[1].Columns);
+            Assert.AreEqual(0, nn.ases[1][0, 0]);
+            Assert.AreEqual(0, nn.ases[1][1, 0]);
+
             Assert.AreEqual(0, nn.LossFunction.CompareTo(new QuadDiff()));
             Assert.AreEqual(0, nn.GradientStepStrategy.CompareTo(new ConstantGradientStep()));
-            Assert.IsNull(nn.weights[0]);
-            Assert.IsNull(nn.biases[0]);
-            Assert.IsNull(nn.activationFuncs[0]);
-            Assert.IsNull(nn.zs[0]);
-            Assert.IsNull(nn.ases[0]);
+        }
+
+        [TestMethod]
+        public void NNFromHP1InternalLayer()
+        {
+            PseudoRandom pr = new PseudoRandom(0);
+            Hyperparameters hp = new Hyperparameters(2, 2, new int[] { 1 },1, 1, new ActivationFunction[] { new Sigma() }, new Relu(), new QuadDiff(22), new ConstantGradientStep(0.5));
+            ANN nn = new ANN(hp, pr);
+
+            Assert.AreEqual(3, nn.neuronCounts.Length);
             Assert.AreEqual(2, nn.neuronCounts[0]);
+            Assert.AreEqual(1, nn.neuronCounts[1]);
+            Assert.AreEqual(2, nn.neuronCounts[2]);
+
+            Assert.AreEqual(3, nn.activationFuncs.Length);
+            Assert.IsNull(nn.activationFuncs[0]);
+            Assert.AreEqual(0, nn.activationFuncs[1].CompareTo(new Sigma()));
+            Assert.AreEqual(0, nn.activationFuncs[2].CompareTo(new Relu()));
+
+            Assert.AreEqual(3, nn.weights.Length);
+            Assert.IsNull(nn.weights[0]);
+            Assert.AreEqual(1, nn.weights[1].Rows);
+            Assert.AreEqual(2, nn.weights[1].Columns);
+            Assert.AreEqual(2, nn.weights[2].Rows);
+            Assert.AreEqual(1, nn.weights[2].Columns);
+            Assert.AreEqual(1, nn.weights[1][0, 0]);
+            Assert.AreEqual(1, nn.weights[1][0, 1]);
+            Assert.AreEqual(1, nn.weights[2][0, 0]);
+            Assert.AreEqual(1, nn.weights[2][1, 0]);
+
+            Assert.AreEqual(3, nn.biases.Length);
+            Assert.IsNull(nn.biases[0]);
+            Assert.AreEqual(1, nn.biases[1].Rows);
+            Assert.AreEqual(1, nn.biases[1].Columns);
+            Assert.AreEqual(2, nn.biases[2].Rows);
+            Assert.AreEqual(1, nn.biases[2].Columns);
+            Assert.AreEqual(0, nn.biases[1][0, 0]);
+            Assert.AreEqual(0, nn.biases[2][0, 0]);
+            Assert.AreEqual(0, nn.biases[2][1, 0]);
+
+            Assert.AreEqual(3, nn.zs.Length);
+            Assert.IsNull(nn.zs[0]);
+            Assert.AreEqual(1, nn.zs[1].Rows);
+            Assert.AreEqual(1, nn.zs[1].Columns);
+            Assert.AreEqual(2, nn.zs[2].Rows);
+            Assert.AreEqual(1, nn.zs[2].Columns);
+            Assert.AreEqual(0, nn.zs[1][0, 0]);
+            Assert.AreEqual(0, nn.zs[2][0, 0]);
+            Assert.AreEqual(0, nn.zs[2][1, 0]);
+
+            Assert.AreEqual(3, nn.ases.Length);
+            Assert.IsNull(nn.ases[0]);
+            Assert.AreEqual(1, nn.ases[1].Rows);
+            Assert.AreEqual(1, nn.ases[1].Columns);
+            Assert.AreEqual(2, nn.ases[2].Rows);
+            Assert.AreEqual(1, nn.ases[2].Columns);
+            Assert.AreEqual(0, nn.ases[1][0, 0]);
+            Assert.AreEqual(0, nn.ases[2][0, 0]);
+            Assert.AreEqual(0, nn.ases[2][1, 0]);
+
+            Assert.AreEqual(0, nn.LossFunction.CompareTo(new QuadDiff(22)));
+            Assert.AreEqual(0, nn.GradientStepStrategy.CompareTo(new ConstantGradientStep(0.5)));
+        }
+
+        [TestMethod]
+        public void TestFuncTest()
+        {
+            MockANN mann = new MockANN();
+            var outputs = new double[][]
+            {
+                new double[] { 1, 0, 0},
+                new double[] { 1, 0, 0},
+                new double[] { 1, 0, 0},
+                new double[] { 0, 1, 0},
+                new double[] { 0, 1, 0},
+                new double[] { 0, 1, 0},
+                new double[] { 0, 0, 1},
+                new double[] { 0, 0, 1},
+                new double[] { 0, 0, 1},
+            };
+
+            mann.runResults = new double[][]
+            {
+                new double[] { 0, 0.9, 0.2},
+                new double[] { 0.1, 0.45, 1},
+                new double[] { 0.4, 0, 1},
+                new double[] { 0.2, 1, 0},
+                new double[] { 0.9999, 1, 0},
+                new double[] { 0, 0, 1},
+                new double[] { 1, 0, 0.23},
+                new double[] { 0, 0.5, 1},
+                new double[] { 0, 0, 1},
+            };
+
+            mann.Test2(mann.runResults, outputs);
+
         }
     }
 }

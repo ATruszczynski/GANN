@@ -79,14 +79,7 @@ namespace GANN.MathAT
 
         public static void WriteArary<T>(T[] array, char sep = ',')
         {
-            string result = "";
-            for (int i = 0; i < array.Length; i++)
-            {
-                result += array[i].ToString();
-                if (i != array.Length - 1)
-                    result += sep;
-            }
-            Console.WriteLine(result);
+            Console.WriteLine(ArrayToString(array, sep));
         }
 
         public static double TryCastToDouble(object value)
@@ -145,6 +138,28 @@ namespace GANN.MathAT
             }
 
             return d.ToArray();
+        }
+
+        public static double ArrayAverage(double[] array)
+        {
+            double sum = 0;
+            for (int i = 0; i < array.Length; i++)
+            {
+                sum += array[i];
+            }
+            return sum / array.Length;
+        }
+
+        public static string ArrayToString<T>(T[] array, char sep = ',')
+        {
+            string result = "";
+            for (int i = 0; i < array.Length; i++)
+            {
+                result += array[i].ToString();
+                if (i != array.Length - 1)
+                    result += sep;
+            }
+            return result;
         }
     }
 }

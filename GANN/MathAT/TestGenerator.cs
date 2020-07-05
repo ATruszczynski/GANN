@@ -210,6 +210,8 @@ namespace GANN.MathAT
 
             NNChromosome c = (NNChromosome)ga.Run(random);
 
+            c.NeuralNetwork.Test(testInput, testOutput, "confMat.txt");
+
             Console.WriteLine(ga.FitnessFunction.ComputeFitness(c));
 
             var res = c.NeuralNetwork.Run(new double[] { 0, 2, 2, 1, 1, 1, 0, 0, 2 });
@@ -227,6 +229,44 @@ namespace GANN.MathAT
             nn.Train(trainInput, trainOutput, 5, 100);
             Console.WriteLine("Accuracy: " + nn.Test(testInput, testOutput, "desu.txt").Average());
 
+        }
+
+        public static (double[][], double[][]) CountIO(int number, Random random)
+        {
+            var inputs = new double[number][];
+            var outputs = new double[number][];
+
+            for (int i = 0; i < number; i++)
+            {
+                int num = random.Next(11);
+                var swr = new SampleWithoutReplacement<int>(new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, random);
+                var input = new double[10];
+                for (int j = 0; j < num; j++)
+                {
+                    swr.GetNext(out int ind);
+                    input[ind] = 1;
+                }
+                var output = new double[11];
+                output[num] = 1;
+
+                inputs[i] = input;
+                outputs[i] = output;
+            }
+
+            return (inputs, outputs);
+        }
+        //TODO - 0 - add size to fitness function
+        public static void TestCount()
+        {
+            Random random = new Random(1111);
+            (var trainInput, var trainOutput) = CountIO(1000, random);
+            (var testInput, var testOutput) = CountIO(100, random);
+
+            ANN nn = new ANN(new Hyperparameters(10, 11, new int[] { 100, 100 }, mw: 0.1, sw: 0.5 , gradStep: new DecayingGradientStep(1, 0.01)));
+            nn.ModelToFile("model0.txt");
+            nn.Train(trainInput, trainOutput, 10, 100);
+            nn.ModelToFile("model.txt");
+            Console.WriteLine("Accuracy: " + nn.Test(testInput, testOutput, "countconfusionmatrix.txt", "log.txt").Average());
         }
     }
 }
