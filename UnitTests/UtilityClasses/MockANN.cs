@@ -9,7 +9,7 @@ namespace UnitTests.UtilityClasses
     class MockANN : ANN
     {
         double[] testResult = new double[] { 0.75, 0.25, 0.5, 1, 0 };
-        public MockANN() : base(new Hyperparameters(new int[] { 2, 3}), new Random(1001))
+        public MockANN() : base(new Hyperparameters(2,3), new Random(1001))
         {
 
         }

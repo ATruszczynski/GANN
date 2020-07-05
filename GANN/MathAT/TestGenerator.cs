@@ -114,7 +114,7 @@ namespace GANN.MathAT
             //int num = 2000;
             //(var i, var o) = TestGenerator.TTT(num);
 
-            ANN nn = new ANN(new Hyperparameters(new int[] { 9, 4, 4, 4 }), new Random(1001));
+            //ANN nn = new ANN(new Hyperparameters(new int[] { 9, 4, 4, 4 }), new Random(1001));
                  //(
                  // new int[] { 9, 4, 4, 4 },
                  // //new Func<double, double>[] { Relu, Sigma },
@@ -134,25 +134,25 @@ namespace GANN.MathAT
             //Console.WriteLine($"{res[0]},{res[1]},{res[2]},{res[3]}");
         }
 
-        public static void TestScenario2()
-        {
-            ANN nn = new ANN(new Hyperparameters(new int[] { 9, 4, 4, 4 }), new Random(1001));
+        //public static void TestScenario2()
+        //{
+        //    ANN nn = new ANN(new Hyperparameters(9, 4, new int[] { 4, 4 }), new Random(1001));
 
-            nn.Layers[1].weights = new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 } });
-            nn.Layers[2].weights = new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 } });
-            nn.Layers[1].biases = new MatrixAT1(new double[,] { { 1 }, { 1 } });
-            nn.Layers[2].biases = new MatrixAT1(new double[,] { { 1 }, { 1 } });
+        //    nn.Layers[1].weights = new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 } });
+        //    nn.Layers[2].weights = new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 } });
+        //    nn.Layers[1].biases = new MatrixAT1(new double[,] { { 1 }, { 1 } });
+        //    nn.Layers[2].biases = new MatrixAT1(new double[,] { { 1 }, { 1 } });
 
-            var resutl = nn.Run(new double[] { 2, 1 });
+        //    var resutl = nn.Run(new double[] { 2, 1 });
 
-            nn.Train
-                (
-                new double[][] { new double[] { 2, 1 } },
-                new double[][] { new double[] { 1, 0 } },
-                2,
-                1
-                );
-        }
+        //    nn.Train
+        //        (
+        //        new double[][] { new double[] { 2, 1 } },
+        //        new double[][] { new double[] { 1, 0 } },
+        //        2,
+        //        1
+        //        );
+        //}
 
         public static void TTTTest()
         {
@@ -222,7 +222,7 @@ namespace GANN.MathAT
             (var trainInput, var trainOutput) = GenerateReverseIO(10000, random);
             (var testInput, var testOutput) = GenerateReverseIO(1000, random);
 
-            ANN nn = new ANN(new Hyperparameters(new int[] { 2, 2 }));
+            ANN nn = new ANN(new Hyperparameters(2,2));
 
             nn.Train(trainInput, trainOutput, 5, 100);
             Console.WriteLine("Accuracy: " + nn.Test(testInput, testOutput, "desu.txt").Average());

@@ -60,13 +60,13 @@ namespace GANN.GA.Operators.CrossoverOperators
 
             if (p <= 0.5)
             {
-                var nc = hp1.neuronCounts;
-                hp1.neuronCounts = hp2.neuronCounts;
-                hp2.neuronCounts = nc;
+                var nc = hp1.internalNeuronCounts;
+                hp1.internalNeuronCounts = hp2.internalNeuronCounts;
+                hp2.internalNeuronCounts = nc;
 
-                var acts = hp1.ActivationFunctions;
-                hp1.ActivationFunctions = hp2.ActivationFunctions;
-                hp2.ActivationFunctions = acts;
+                var acts = hp1.InternalActivationFunctions;
+                hp1.InternalActivationFunctions = hp2.InternalActivationFunctions;
+                hp2.InternalActivationFunctions = acts;
             }
 
             cnn1.NeuralNetwork = new ANN(hp1, nn1.Random);

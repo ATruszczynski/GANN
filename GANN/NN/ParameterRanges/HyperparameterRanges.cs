@@ -10,7 +10,7 @@ using System.Text;
 //TODO - C - async random is not deterministic
 namespace GANN.NN.ParameterRanges
 {
-    public class HyperparameterRanges: Range
+    public class HyperparameterRanges : Range
     {
         //TODO - B - implement changing probability of cs and mutation in GA
 
@@ -40,29 +40,31 @@ namespace GANN.NN.ParameterRanges
             //TODO - C - can there be layer count == 0?
             double meanW = (double)WeightDistribution.GetNext();
             double stdW = (double)StdDistribution.GetNext();
-            var neuronCounts = new int[(int)InternalLayerCountDistribution.GetNext() + 2];
-            neuronCounts[0] = inputSize;
-            neuronCounts[neuronCounts.Length - 1] = outputSize;
-            for (int i = 1; i < neuronCounts.Length - 1; i++)
+            var internalNeuronCounts = new int[(int)InternalLayerCountDistribution.GetNext()];
+            for (int i = 0; i < internalNeuronCounts.Length; i++)
             {
-                neuronCounts[i] = (int)NeuronCountDistribution.GetNext();
+                internalNeuronCounts[i] = (int)NeuronCountDistribution.GetNext();
             }
-            var ActivationFunctions = new ActivationFunction[neuronCounts.Length - 1];
-            for (int i = 0; i < ActivationFunctions.Length - 1; i++)
+            var ActivationFunctions = new ActivationFunction[internalNeuronCounts.Length];
+            for (int i = 0; i < ActivationFunctions.Length; i++)
             {
                 ActivationFunctions[i] = (ActivationFunction)ActFuncDist.GetNext();
             }
-            ActivationFunctions[ActivationFunctions.Length - 1] = outputAct;
+            //TODO - B - last func is output or agg
+            var aggAct = outputAct.DeepCopy();
             var LossFunction = (LossFunction)LossFuncDist.GetNext();
             var GradientStepStrategy = (GradientStepStrategy)GradStratDist.GetNext();
 
 
             Hyperparameters result = new Hyperparameters
                 (
-                    neuronCounts,
+                    inputSize,
+                    outputSize,
+                    internalNeuronCounts,
                     meanW,
                     stdW,
                     ActivationFunctions,
+                    aggAct,
                     LossFunction,
                     GradientStepStrategy
                 );

@@ -7,7 +7,7 @@ namespace GANN.NN
 {
     public abstract class NeuralNetwork
     {
-        //TODO - A - hyperparams to abstract class
+        //TODO - B - should this hold hyperparameters?
         public Hyperparameters Hyperparameters;
         public Random Random;
         //TODO - A - more general input/output
