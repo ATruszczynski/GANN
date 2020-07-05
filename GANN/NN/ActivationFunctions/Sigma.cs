@@ -9,24 +9,20 @@ namespace GANN.NN.ActivationFunctions
     {
         public override double Compute(double arg)
         {
-            //TODO - B - test
             return 1d / (1 + Exp(-arg));
         }
 
         public override double ComputeDerivative(double arg)
         {
-            //TODO - B - test
             return Compute(arg) * (1 - Compute(arg));
         }
 
         public override ActivationFunction DeepCopy()
         {
-            //TODO - B - test
             return new Sigma();
         }
         public override int CompareTo(object obj)
         {
-            //TODO - B - test
             Sigma tmp;
             try
             {

@@ -16,7 +16,6 @@ namespace GANN.NN.LossFunctions
         }
         public override double Compute(MatrixAT1 m1, MatrixAT1 m2)
         {
-            //TODO - B - test
             double sum = 0;
 
             for (int i = 0; i < m1.Rows; i++)
@@ -29,19 +28,16 @@ namespace GANN.NN.LossFunctions
 
         public override double ComputeDerivative(double output, double expected)
         {
-            //TODO - B - test
             return 2 * d * (output - expected);
         }
 
         public override LossFunction DeepCopy()
         {
-            //TODO - B - test
             return new QuadDiff(d);
         }
 
         public override int CompareTo(object obj)
         {
-            //TODO - B - test
             QuadDiff tmp;
             try
             {

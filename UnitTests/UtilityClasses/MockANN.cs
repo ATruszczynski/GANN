@@ -18,7 +18,7 @@ namespace UnitTests.UtilityClasses
             throw new NotImplementedException();
         }
 
-        public override double[] Test(double[][] inputs, double[][] outputs)
+        public override double[] Test(double[][] inputs, double[][] outputs, string path = null)
         {
             return testResult;
         }

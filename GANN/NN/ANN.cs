@@ -7,7 +7,9 @@ using GANN.NN.Other;
 using GANN.NN.Parameters;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using static System.Math;
 
 namespace GANN.NN
@@ -27,6 +29,8 @@ namespace GANN.NN
         //TODO - B - random as property
         public int LayerCount { get => Layers.Length; }
         public GradientStepStrategy GradientStepStrategy;
+        object[] syncLocks = new object[] { new object(), new object(), new object() };
+        int masDeg = -1;
         //TODO - B - alternative to Relu?
         //TODO - B - Add argument validation
         //TODO - B - custom edges
@@ -48,7 +52,7 @@ namespace GANN.NN
             for (int i = 1; i < Layers.Length; i++)
             {
                 //TODO - B - do test for order of act funs
-                Layers[i] = new Layer(neuronCounts[i], neuronCounts[i - 1], hyperparameters.ActivationFunctions[i - 1], gd);
+                Layers[i] = new Layer(neuronCounts[i], neuronCounts[i - 1], hyperparameters.ActivationFunctions[i], gd);
             }
 
             LossFunction = hyperparameters.LossFunction;
@@ -156,8 +160,11 @@ namespace GANN.NN
                     (MatrixAT1[] weightGradChange, MatrixAT1[] biasesGradChange, _) = InitialiseComponents();
                     double averageDiff = 0;
 
-                    for (int inputInd = startIndInc; inputInd < endIndExc; inputInd++)
-                    {
+                    //for (int inputInd = startIndInc; inputInd < endIndExc; inputInd++)
+                    //{
+                    var listOfTasks = Utility.SeparateForTasks(startIndInc, endIndExc, 10);
+                    Parallel.For(startIndInc, endIndExc, new ParallelOptions { MaxDegreeOfParallelism = masDeg }, inputInd => 
+                    { 
                         (MatrixAT1[] weightGrad, MatrixAT1[] biasesGrad, MatrixAT1[] activationsGrad) = InitialiseComponents();
                         for (int layer = LayerCount - 1; layer >= 1; layer--)
                         {
@@ -165,9 +172,10 @@ namespace GANN.NN
                             {
                                 MatrixAT1 currOutput = new MatrixAT1(Run(inputs[inputInd]));
 
-                                MatrixAT1 goodOutput = new MatrixAT1(outputs[inputInd]);
+                                    MatrixAT1 goodOutput = new MatrixAT1(outputs[inputInd]);
 
-                                averageDiff += LossFunction.Compute(currOutput, goodOutput);
+                                lock(syncLocks[0])
+                                    averageDiff += LossFunction.Compute(currOutput, goodOutput);
 
                                 activationsGrad[layer] = CalculateLastLayerLossGradient(currOutput, goodOutput);
                                 ;
@@ -181,13 +189,27 @@ namespace GANN.NN
                             weightGrad[layer - 1] = CalculateWeightGradientForLayer(layer, biasesGrad[layer - 1]);
                         }
 
-                        for (int i = 0; i < weightGrad.Length; i++)
-                        {
-                            weightGradChange[i] += weightGrad[i];
-                            biasesGradChange[i] += biasesGrad[i];
-                        }
-                        
-                    }
+                        //for (int i = 0; i < weightGrad.Length; i++)
+                        //{
+                        //    weightGradChange[i] += weightGrad[i];
+                        //    biasesGradChange[i] += biasesGrad[i];
+                        //}
+
+                        //lock (syncLocks[1])
+                            for (int i = 0; i < weightGrad.Length; i++)
+                            {
+                                lock(weightGradChange[i])
+                                    weightGradChange[i] += weightGrad[i];
+                            }
+
+                        //lock (syncLocks[2])
+                            for (int i = 0; i < weightGrad.Length; i++)
+                            {
+                                lock (biasesGradChange[i])
+                                    biasesGradChange[i] += biasesGrad[i];
+                            }
+
+                    });
                     averageDiff /= n;
                     for (int i = 0; i < weightGradChange.Length; i++)
                     {
@@ -297,13 +319,13 @@ namespace GANN.NN
             return wg_L;
         }
         //TODO - B - works only for output in 0/1 range
-        public override double[] Test(double[][] inputs, double[][] outputs)
+        public override double[] Test(double[][] inputs, double[][] outputs, string path = null)
         {
             //TODO - B - validation
-            //TODO - B - test
+            //TODO - B - test tc
             //TODO - B - add precision and recall
             int len = outputs[0].Length;
-            double[,] confusionMatrix = new double[len, len];
+            MatrixAT1 confusionMatrix = new MatrixAT1(len, len);
 
             for (int i = 0; i < inputs.Length; i++)
             {
@@ -326,6 +348,14 @@ namespace GANN.NN
             }
             Console.WriteLine("Test finished");
 
+            if(path != null)
+            {
+                StreamWriter sw = new StreamWriter(path);
+                sw.WriteLine(confusionMatrix.ToString());
+                sw.Flush();
+                sw.Close();
+            }
+
             double accuracy = 0;
             double sumMat = 0;
             for (int r = 0; r < len; r++)
@@ -341,6 +371,23 @@ namespace GANN.NN
             accuracy /= sumMat;
 
             return new double[] { accuracy };
+        }
+
+        public override void ModelToFile(string path)
+        {
+            //TODO - B - test
+            StreamWriter sw = new StreamWriter(path);
+
+            for (int i = 1; i < Layers.Length; i++)
+            {
+                sw.WriteLine("weights " + i);
+                sw.WriteLine(Layers[i].weights.ToString());
+                sw.WriteLine("biases " + i);
+                sw.WriteLine(Layers[i].biases.ToString());
+                sw.Flush();
+            }
+            sw.Flush();
+            sw.Close();
         }
     }
 }

@@ -23,15 +23,17 @@ namespace TSExp
             foreach(var dir in directories)
             {
                 int num = int.Parse(Path.GetFileName(dir));
-                foreach(var file in Directory.GetFiles(dir))
+                Parallel.ForEach(Directory.GetFiles(dir), file => 
                 {
+                //foreach(var file in Directory.GetFiles(dir))
+                //{
                     if (random.Next(1) == 0)
                     {
                         Bitmap img = new Bitmap(file);
                         int wid = img.Width;
                         int hei = img.Height;
                         if (wid * hei != 10000)
-                            continue;
+                            return;
                         double[] inp = new double[wid * hei];
                         for (int w = 0; w < wid; w++)
                         {
@@ -53,8 +55,8 @@ namespace TSExp
                             trainOutputs.Add(outt);
                         }
                     }
-                }
-            }
+                });
+        }
 
             return (trainInputs.ToArray(), trainOutputs.ToArray(), testInputs.ToArray(), testOutputs.ToArray());
         }

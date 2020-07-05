@@ -120,6 +120,28 @@ namespace UnitTests.Math
             Assert.AreEqual(0, TryCastToInt(decimalAlmostZero));
             Assert.ThrowsException<ArgumentException>(() => TryCastToDouble("d"));
         }
+
+        [TestMethod]
+        public void SeparateForTasksTest()
+        {
+            var res = SeparateForTasks(0, 5, 2);
+            Assert.AreEqual(0, res[0][0]);
+            Assert.AreEqual(2, res[0][1]);
+            Assert.AreEqual(4, res[0][2]);
+            Assert.AreEqual(1, res[1][0]);
+            Assert.AreEqual(3, res[1][1]);
+
+
+            res = SeparateForTasks(1, 4, 2);
+            Assert.AreEqual(2, res[0][0]);
+            Assert.AreEqual(1, res[1][0]);
+            Assert.AreEqual(3, res[1][1]); 
+
+            res = SeparateForTasks(1, 4, 5);
+            Assert.AreEqual(1, res[0][0]);
+            Assert.AreEqual(2, res[1][0]);
+            Assert.AreEqual(3, res[2][0]);
+        }
     }
 
 }

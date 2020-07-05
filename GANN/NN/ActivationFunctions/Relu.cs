@@ -9,13 +9,11 @@ namespace GANN.NN.ActivationFunctions
 
         public override double Compute(double arg)
         {
-            //TODO - B - test
             return Math.Max(0, arg);
         }
 
         public override double ComputeDerivative(double arg)
         {
-            //TODO - B - test
             double result = 0;
 
             if (arg > 0)
@@ -30,7 +28,6 @@ namespace GANN.NN.ActivationFunctions
         }
         public override int CompareTo(object obj)
         {
-            //TODO - B - test
             Relu tmp;
             try
             {

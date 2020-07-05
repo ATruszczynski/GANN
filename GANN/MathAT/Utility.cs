@@ -91,7 +91,6 @@ namespace GANN.MathAT
 
         public static double TryCastToDouble(object value)
         {
-            //TODO - B - test
             double result = 0;
 
             if (value is int)
@@ -124,6 +123,28 @@ namespace GANN.MathAT
                 throw new ArgumentException($"Can't convert {value} to int");
 
             return result;
+        }
+
+        public static List<int>[] SeparateForTasks(int startInd, int endInd, int parts)
+        {
+            var tmp = new List<int>[parts];
+            for (int i = startInd; i < endInd; i++)
+            {
+                if (tmp[i % parts] == null)
+                    tmp[i % parts] = new List<int>();
+                tmp[i % parts].Add(i);
+            }
+
+            List<List<int>> d = new List<List<int>>();
+            for (int i = 0; i < tmp.Length; i++)
+            {
+                if (tmp[i] != null)
+                {
+                    d.Add(tmp[i]);
+                }
+            }
+
+            return d.ToArray();
         }
     }
 }

@@ -20,5 +20,33 @@ namespace UnitTests
             Assert.IsTrue(CompareArrays(inputs[0], 0, 0, 0, 0.5, 0.5, 0.5, 1, 1, 1));
             Assert.IsTrue(CompareArrays(outputs[0], 0, 0, 0, 1));
         }
+
+        [TestMethod]
+        public void ReverseTest()
+        {
+            PseudoRandom pr = new PseudoRandom(0, 1, 1, 1, 0);
+            (var inputs, var outputs) = TestGenerator.GenerateReverseIO(5, pr);
+
+            Assert.AreEqual(1, inputs[0][0]);
+            Assert.AreEqual(0, inputs[0][1]);
+            Assert.AreEqual(0, inputs[1][0]);
+            Assert.AreEqual(1, inputs[1][1]);
+            Assert.AreEqual(0, inputs[2][0]);
+            Assert.AreEqual(1, inputs[2][1]);
+            Assert.AreEqual(0, inputs[3][0]);
+            Assert.AreEqual(1, inputs[3][1]);
+            Assert.AreEqual(1, inputs[4][0]);
+            Assert.AreEqual(0, inputs[4][1]);
+            Assert.AreEqual(0, outputs[0][0]);
+            Assert.AreEqual(1, outputs[0][1]);
+            Assert.AreEqual(1, outputs[1][0]);
+            Assert.AreEqual(0, outputs[1][1]);
+            Assert.AreEqual(1, outputs[2][0]);
+            Assert.AreEqual(0, outputs[2][1]);
+            Assert.AreEqual(1, outputs[3][0]);
+            Assert.AreEqual(0, outputs[3][1]);
+            Assert.AreEqual(0, outputs[4][0]);
+            Assert.AreEqual(1, outputs[4][1]);
+        }
     }
 }

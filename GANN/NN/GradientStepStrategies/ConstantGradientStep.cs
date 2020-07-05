@@ -8,25 +8,22 @@ namespace GANN.NN.GradientStepStrategies
     {
         public double stepSize = 1;
 
-        public ConstantGradientStep(double ss)
+        public ConstantGradientStep(double ss = 1)
         {
             stepSize = ss;
         }
 
         public override GradientStepStrategy DeepCopy()
         {
-            //TODO - B - test
             return new ConstantGradientStep(stepSize);
         }
 
         public override double GetStepSize(double avDiff)
         {
-            //TODO - B - test
             return stepSize;
         }
         public override int CompareTo(object obj)
         {
-            //TODO - B - test
             ConstantGradientStep tmp;
             try
             {

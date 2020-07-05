@@ -62,64 +62,8 @@ namespace NeuralNetworkExperiments
             //{
             //    Console.WriteLine(c.ToString());
             //}
-            Random random = new Random(1001);
 
-            (var trainInput, var trainOutput) = TestGenerator.TTT1(1000, random);
-            (var testInput, var testOutput) = TestGenerator.TTT1(200, random);
-
-            Utility.WriteArary(Utility.ClassCounts(trainOutput));
-            Utility.WriteArary(Utility.ClassCounts(testOutput));
-
-
-            GeneticAlgorithm ga = new GeneticAlgorithm();
-            ga.CrossoverOperator = new NNBasicCrossoverOperator();
-
-            var hp = new HyperparameterRanges();
-            hp.WeightDistribution = new ContinuousRange(new UniformContinuousRangeDistribution(random, -1, 1));
-            hp.StdDistribution = new ContinuousRange(new UniformContinuousRangeDistribution(random, -1, 1));
-            hp.InternalLayerCountDistribution = new DiscreteRange(new UniformDiscreteRangeDistribution(random, 1, 5));
-            hp.NeuronCountDistribution = new DiscreteRange(new UniformDiscreteRangeDistribution(random, 1, 20));
-            hp.ActFuncDist = new SetRange<ActivationFunction>(new ActivationFunction[] { new Relu() }, new UniformDiscreteRangeDistribution(random, 0, 1));
-            hp.LossFuncDist = new SetRange<LossFunction>(new LossFunction[] { new QuadDiff() }, new UniformDiscreteRangeDistribution(random, 0, 1));
-            hp.GradStratDist = new SetRange<GradientStepStrategy>(new GradientStepStrategy[] { new ConstantGradientStep(0.5), new ConstantGradientStep(1) }, new UniformDiscreteRangeDistribution(random, 0, 2));
-            hp.inputSize = trainInput[0].Length;
-            hp.outputSize = trainOutput[0].Length;
-            hp.outputAct = new Sigma();
-
-            ga.MutationOperator = new NNBasicMutationOperator(hp);
-            ga.SamplingStrategy = new RouletteSamplingStrategy();
-            ga.ReplacementStrategy = new GenerationalReplacementStrategy();
-
-            NNFitnessFunc nnff = new NNFitnessFunc();
-            nnff.trainInputs = trainInput;
-            nnff.trainOutputs = trainOutput;
-            nnff.testInputs = testInput;
-            nnff.testOutputs = testOutput;
-            ga.FitnessFunction = new NNFitnessFunc();
-
-            ga.FitnessFunction = nnff;
-
-            int pop = 10;
-            int len = 20;
-            ga.population = new NNChromosome[pop];
-            for (int i = 0; i < pop; i++)
-            {
-                Hyperparameters param = (Hyperparameters)hp.GetNext();
-
-                ga.population[i] = new NNChromosome(new ANN(param, random));
-            }
-
-            ga.crossoverProbability = 0.25;
-            ga.mutationProbability = 1;
-
-            ga.Iterations = 25;
-
-            NNChromosome c = (NNChromosome)ga.Run(random);
-
-            Console.WriteLine(ga.FitnessFunction.ComputeFitness(c));
-
-            var res = c.NeuralNetwork.Run(new double[] { 0, 2, 2, 1, 1, 1, 0, 0, 2 });
-            Console.WriteLine($"{res[0]},{res[1]},{res[2]},{res[3]}");
+            TestGenerator.ReverseTest();
         }
     }
 }

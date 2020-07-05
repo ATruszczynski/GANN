@@ -36,7 +36,7 @@ namespace GANN.NN.ParameterRanges
         public override object GetNext()
         {
             //TODO - B - change names of props
-            //TODO - B - test
+            //TODO - B - test tc
             //TODO - C - can there be layer count == 0?
             double meanW = (double)WeightDistribution.GetNext();
             double stdW = (double)StdDistribution.GetNext();

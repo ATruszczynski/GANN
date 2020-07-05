@@ -19,6 +19,7 @@ namespace GANN.NN.Parameters
 
         public Hyperparameters(int[] neuronCountss, double mw = 0, double sw = 1, ActivationFunction[] actFuns = null, LossFunction lossFunc = null, GradientStepStrategy gradStep = null)
         {
+            //TODO - A - validation
             //TODO - B - variable names in many classes
             //TODO - C - should I deep copy arrays?
             //TODO - B - test
@@ -33,7 +34,7 @@ namespace GANN.NN.Parameters
             else
             {
                 ActivationFunctions = new ActivationFunction[neuronCounts.Length];
-                for (int i = 0; i < neuronCounts.Length - 2; i++)
+                for (int i = 0; i < neuronCounts.Length - 1; i++)
                 {
                     ActivationFunctions[i] = new Relu();
                 }
@@ -55,6 +56,7 @@ namespace GANN.NN.Parameters
         //TODO - B - implement
         public Hyperparameters DeepCopy()
         {
+            //TODO - B - test
             int[] nc = new int[neuronCounts.Length];
             for (int i = 0; i < nc.Length; i++)
             {
