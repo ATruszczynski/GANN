@@ -35,7 +35,7 @@ namespace UnitTests
             nn.biases[1] = new MatrixAT1(new double[,] { { 1 }, { 0 } });
             nn.biases[2] = new MatrixAT1(new double[,] { { 2 }, { -2 } });
 
-            var resutl = nn.Run(new double[] { 2, 1 });
+            var resutl = nn.Run(new double[] { 2, 1 }, out _, out _);
 
             Assert.AreEqual(17, resutl[0]);
             Assert.AreEqual(9, resutl[1]);
@@ -97,7 +97,7 @@ namespace UnitTests
             nn.biases[1] = new MatrixAT1(new double[,] { { 1 }, { 1 } });
             nn.biases[2] = new MatrixAT1(new double[,] { { 1 }, { 1 } });
 
-            var resutl = nn.Run(new double[] { 2, 1 });
+            var resutl = nn.Run(new double[] { 2, 1 }, out _, out _);
 
             Assert.AreEqual(9, resutl[0]);
             Assert.AreEqual(9, resutl[1]);
@@ -110,7 +110,7 @@ namespace UnitTests
                 1
                 );
 
-            resutl = nn.Run(new double[] { 2, 1 });
+            resutl = nn.Run(new double[] { 2, 1 }, out _, out _);
 
             Assert.IsTrue(MatrixAT1.Compare(nn.weights[1], new MatrixAT1(new double[,] { { -67, -33 }, { -67, -33 } })));
             Assert.IsTrue(MatrixAT1.Compare(nn.weights[2], new MatrixAT1(new double[,] { { -63, -63 }, { -71, -71 } })));
@@ -138,7 +138,7 @@ namespace UnitTests
             nn.biases[1] = new MatrixAT1(new double[,] { { -1 } });
             nn.biases[2] = new MatrixAT1(new double[,] { { 2 }, { 1 } });
 
-            var resutl = nn.Run(new double[] { 2, 1 });
+            var resutl = nn.Run(new double[] { 2, 1 }, out _, out _);
 
             Assert.AreEqual(0, resutl[0]);
             Assert.AreEqual(10, resutl[1]);
@@ -157,7 +157,7 @@ namespace UnitTests
             Assert.IsTrue(MatrixAT1.Compare(nn.biases[1], new MatrixAT1(new double[,] { { -61 } })));
             Assert.IsTrue(MatrixAT1.Compare(nn.biases[2], new MatrixAT1(new double[,] { { 2 }, { -19 } })));
 
-            resutl = nn.Run(new double[] { 2, 1 });
+            resutl = nn.Run(new double[] { 2, 1 }, out _, out _);
 
             Assert.AreEqual(2, resutl[0]);
             Assert.AreEqual(0, resutl[1]);
@@ -180,7 +180,7 @@ namespace UnitTests
             nn.biases[1] = new MatrixAT1(new double[,] { { 1 }, { 1 } });
             nn.biases[2] = new MatrixAT1(new double[,] { { 1 }, { 1 } });
 
-            var resutl = nn.Run(new double[] { 2, 1 });
+            var resutl = nn.Run(new double[] { 2, 1 }, out _, out _);
             var s = new Sigma();
             Assert.AreEqual(s.Compute(0, new MatrixAT1(new double[,] { { 9 } })), resutl[0]);
             Assert.AreEqual(s.Compute(0, new MatrixAT1(new double[,] { { 9 } })), resutl[1]);
@@ -189,6 +189,7 @@ namespace UnitTests
         [TestMethod]
         public void NNTrain_MultipleInputs()
         {
+            //TODO - B - develop
             ANN nn = new ANN(new Hyperparameters
                 (
                     2,
@@ -212,7 +213,7 @@ namespace UnitTests
                 2
                 );
 
-            var res = nn.Run(new double[] { 1, 1 });
+            var res = nn.Run(new double[] { 1, 1 }, out _, out _);
             ;
         }
 
@@ -241,22 +242,22 @@ namespace UnitTests
 
             var input = new double[] { 0.05, 0.1 };
 
-            var result = nn.Run(input);
+            var result = nn.Run(input, out MatrixAT1[] ases, out MatrixAT1[] zs);
 
             double eps = 0.00001;
 
-            Assert.AreEqual(input[0], nn.ases[0][0, 0]);
-            //Assert.AreEqual(input[1], nn.zs[1][1, 0]);
-            //Assert.AreEqual(input[0], nn.zs[1][0, 0]);
-            Assert.AreEqual(input[1], nn.ases[0][1, 0]);
+            Assert.AreEqual(input[0], ases[0][0, 0]);
+            //Assert.AreEqual(input[1], zs[1][1, 0]);
+            //Assert.AreEqual(input[0], zs[1][0, 0]);
+            Assert.AreEqual(input[1], ases[0][1, 0]);
 
-            Assert.AreEqual(0.3775, nn.zs[1][0,0]);
-            Assert.IsTrue(CloseCompare(0.593269992, nn.ases[1][0, 0], eps));
-            Assert.IsTrue(CloseCompare(0.596884378, nn.ases[1][1, 0], eps));
+            Assert.AreEqual(0.3775, zs[1][0,0]);
+            Assert.IsTrue(CloseCompare(0.593269992, ases[1][0, 0], eps));
+            Assert.IsTrue(CloseCompare(0.596884378, ases[1][1, 0], eps));
 
-            Assert.IsTrue(CloseCompare(1.105905967, nn.zs[2][0,0], eps));
-            Assert.IsTrue(CloseCompare(0.75136507, nn.ases[2][0, 0], eps));
-            Assert.IsTrue(CloseCompare(0.772928465, nn.ases[2][1, 0], eps));
+            Assert.IsTrue(CloseCompare(1.105905967, zs[2][0,0], eps));
+            Assert.IsTrue(CloseCompare(0.75136507, ases[2][0, 0], eps));
+            Assert.IsTrue(CloseCompare(0.772928465, ases[2][1, 0], eps));
 
             Assert.IsTrue(CloseCompare(0.75136507, result[0], eps));
             Assert.IsTrue(CloseCompare(0.772928456, result[1], eps));
@@ -318,20 +319,6 @@ namespace UnitTests
             Assert.AreEqual(0, nn.biases[1][0, 0]);
             Assert.AreEqual(0, nn.biases[1][1, 0]);
 
-            Assert.AreEqual(2, nn.zs.Length);
-            Assert.IsNull(nn.zs[0]);
-            Assert.AreEqual(2, nn.zs[1].Rows);
-            Assert.AreEqual(1, nn.zs[1].Columns);
-            Assert.AreEqual(0, nn.zs[1][0, 0]);
-            Assert.AreEqual(0, nn.zs[1][1, 0]);
-
-            Assert.AreEqual(2, nn.ases.Length);
-            Assert.IsNull(nn.ases[0]);
-            Assert.AreEqual(2, nn.ases[1].Rows);
-            Assert.AreEqual(1, nn.ases[1].Columns);
-            Assert.AreEqual(0, nn.ases[1][0, 0]);
-            Assert.AreEqual(0, nn.ases[1][1, 0]);
-
             Assert.AreEqual(0, nn.LossFunction.CompareTo(new QuadDiff()));
             Assert.AreEqual(0, nn.GradientStepStrategy.CompareTo(new ConstantGradientStep()));
         }
@@ -373,26 +360,6 @@ namespace UnitTests
             Assert.AreEqual(0, nn.biases[1][0, 0]);
             Assert.AreEqual(0, nn.biases[2][0, 0]);
             Assert.AreEqual(0, nn.biases[2][1, 0]);
-
-            Assert.AreEqual(3, nn.zs.Length);
-            Assert.IsNull(nn.zs[0]);
-            Assert.AreEqual(1, nn.zs[1].Rows);
-            Assert.AreEqual(1, nn.zs[1].Columns);
-            Assert.AreEqual(2, nn.zs[2].Rows);
-            Assert.AreEqual(1, nn.zs[2].Columns);
-            Assert.AreEqual(0, nn.zs[1][0, 0]);
-            Assert.AreEqual(0, nn.zs[2][0, 0]);
-            Assert.AreEqual(0, nn.zs[2][1, 0]);
-
-            Assert.AreEqual(3, nn.ases.Length);
-            Assert.IsNull(nn.ases[0]);
-            Assert.AreEqual(1, nn.ases[1].Rows);
-            Assert.AreEqual(1, nn.ases[1].Columns);
-            Assert.AreEqual(2, nn.ases[2].Rows);
-            Assert.AreEqual(1, nn.ases[2].Columns);
-            Assert.AreEqual(0, nn.ases[1][0, 0]);
-            Assert.AreEqual(0, nn.ases[2][0, 0]);
-            Assert.AreEqual(0, nn.ases[2][1, 0]);
 
             Assert.AreEqual(0, nn.LossFunction.CompareTo(new QuadDiff(22)));
             Assert.AreEqual(0, nn.GradientStepStrategy.CompareTo(new ConstantGradientStep(0.5)));

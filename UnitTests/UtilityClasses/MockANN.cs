@@ -3,6 +3,7 @@ using GANN.NN.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using GANN.MathAT;
 
 namespace UnitTests.UtilityClasses
 {
@@ -15,8 +16,10 @@ namespace UnitTests.UtilityClasses
         {
 
         }
-        public override double[] Run(double[] input)
+        public override double[] Run(double[] input, out MatrixAT1[] a, out MatrixAT1[] z)
         {
+            a = null;
+            z = null;
             return runResults[resultInd++];
         }
 

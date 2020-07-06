@@ -214,7 +214,7 @@ namespace GANN.MathAT
 
             Console.WriteLine(ga.FitnessFunction.ComputeFitness(c));
 
-            var res = c.NeuralNetwork.Run(new double[] { 0, 2, 2, 1, 1, 1, 0, 0, 2 });
+            var res = c.NeuralNetwork.Run(new double[] { 0, 2, 2, 1, 1, 1, 0, 0, 2 }, out _, out _);
             Console.WriteLine($"{res[0]},{res[1]},{res[2]},{res[3]}");
         }
 
@@ -259,15 +259,15 @@ namespace GANN.MathAT
         public static void TestCount()
         {
             Random random = new Random(1001);
-            (var trainInput, var trainOutput) = CountIO(1000, random);
-            (var testInput, var testOutput) = CountIO(100, random);
+            (var trainInput, var trainOutput) = CountIO(10000, random);
+            (var testInput, var testOutput) = CountIO(200, random);
 
-            ANN nn = new ANN(new Hyperparameters(10, 11, new int[] { 100 } , mw: 0, sw: 0.5, lossFunc:  new CrossEntropy(), gradStep: new ConstantGradientStep(0.01)));
+            ANN nn = new ANN(new Hyperparameters(10, 11, new int[] { 100 } , mw: 0, lossFunc: new CrossEntropy(), gradStep: new DecayingGradientStep(3, 0.05)));
             //nn.masDeg = 1;
             nn.ModelToFile("model0.txt");
-            nn.Train(trainInput, trainOutput, 10, 100);
+            nn.Train(trainInput, trainOutput, 5, 50);
             nn.ModelToFile("model.txt");
-            Console.WriteLine("Accuracy: " + nn.Test(testInput, testOutput, "countconfusionmatrix.txt", "log.txt").Average());
+            Console.WriteLine("Accuracy: " + nn.Test(testInput, testOutput, "countconfusionmatrix.txt", "log2.txt").Average());
         }
     }
 }
