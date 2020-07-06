@@ -258,11 +258,12 @@ namespace GANN.MathAT
         //TODO - 0 - add size to fitness function
         public static void TestCount()
         {
-            Random random = new Random(1111);
+            Random random = new Random(1001);
             (var trainInput, var trainOutput) = CountIO(1000, random);
             (var testInput, var testOutput) = CountIO(100, random);
 
-            ANN nn = new ANN(new Hyperparameters(10, 11, new int[] { 100, 100 }, mw: 0.1, sw: 0.5 , gradStep: new DecayingGradientStep(1, 0.01)));
+            ANN nn = new ANN(new Hyperparameters(10, 11, new int[] { 100 } , mw: 0, sw: 0.5, lossFunc:  new CrossEntropy(), gradStep: new ConstantGradientStep(0.01)));
+            //nn.masDeg = 1;
             nn.ModelToFile("model0.txt");
             nn.Train(trainInput, trainOutput, 10, 100);
             nn.ModelToFile("model.txt");

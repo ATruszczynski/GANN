@@ -1,5 +1,6 @@
 ﻿using GANN.MathAT;
 using GANN.NN;
+using GANN.NN.LossFunctions;
 using GANN.NN.Parameters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

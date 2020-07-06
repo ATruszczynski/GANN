@@ -8,7 +8,7 @@ using System.Text;
 namespace UnitTests.NNElems
 {
     [TestClass]
-    public class DiffFUT
+    public class LossFUT
     {
         [TestMethod]
         public void QuadDiffTest()
@@ -22,6 +22,18 @@ namespace UnitTests.NNElems
             Assert.AreEqual(4, qd.ComputeDerivative(2, 1));
             Assert.AreEqual(0, qd.CompareTo(qd.DeepCopy()));
             Assert.AreEqual(0, qd.CompareTo(new QuadDiff(2)));
+        }
+
+        [TestMethod]
+        public void CrossEntropyTest()
+        {
+            CrossEntropy ce = new CrossEntropy();
+            var expected = new MatrixAT1(new double[,] { { 0 }, { 1 }, { 0 } });
+            var output = new MatrixAT1(new double[,] { { 0.15 }, { 0.6 }, { 0.25 } });
+            var cee = ce.Compute(output, expected);
+            var ceed = ce.ComputeDerivative(output[1,0], expected[1,0]);
+            Assert.IsTrue(NNUT.CloseCompare(cee, 0.510826, 1e-4));
+            Assert.IsTrue(NNUT.CloseCompare(ceed, -1.66666, 1e-4));
         }
     }
 }

@@ -184,5 +184,27 @@ namespace UnitTests
 
             Assert.AreEqual(12, m1.ElementSum());
         }
+
+        [TestMethod]
+        public void MatrixFromRow()
+        {
+            double[] array = new double[] { 0.00005, 1, 124452 };
+            MatrixAT1 a = new MatrixAT1(array, false);
+
+            Assert.AreEqual(0.00005, a[0, 0]);
+            Assert.AreEqual(1, a[0, 1]);
+            Assert.AreEqual(124452, a[0, 2]);
+        }
+
+        [TestMethod]
+        public void MatrixFromColumn()
+        {
+            double[] array = new double[] { 0.00005, 1, 124452 };
+            MatrixAT1 a = new MatrixAT1(array);
+
+            Assert.AreEqual(0.00005, a[0, 0]);
+            Assert.AreEqual(1, a[1, 0]);
+            Assert.AreEqual(124452, a[2, 0]);
+        }
     }
 }

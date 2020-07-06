@@ -25,6 +25,7 @@ namespace GANN.MathAT
 
         public MatrixAT1(double[] array, bool column = true)
         {
+            //TODO - 0 - test
             //TODO - C - Simplify
             if (!column)
             {
@@ -82,7 +83,10 @@ namespace GANN.MathAT
             {
                 for (int j = 0; j < m2.Columns; j++)
                 {
-                    result[i, j] = m1[i, j] + m2[i, j];
+                    double res = m1[i, j] + m2[i, j];
+                    if (double.IsNaN(res))
+                        throw new ArgumentException("Nan value");
+                    result[i, j] = res;
                 }
             }
 
@@ -97,7 +101,10 @@ namespace GANN.MathAT
             {
                 for (int j = 0; j < m2.Columns; j++)
                 {
-                    result[i, j] = m1[i, j] - m2[i, j];
+                    double res = m1[i, j] - m2[i, j];
+                    if (double.IsNaN(res))
+                        throw new ArgumentException("Nan value");
+                    result[i, j] = res;
                 }
             }
 
@@ -118,7 +125,10 @@ namespace GANN.MathAT
                     double sum = 0;
                     for (int a = 0; a < m1.Columns; a++)
                     {
-                        sum += m1[r, a] * m2[a, c];
+                        double res = m1[r, a] * m2[a, c];
+                        if (double.IsNaN(res))
+                            throw new ArgumentException("Nan value");
+                        sum += res;
                     }
                     result[r, c] = sum;
                 }
@@ -150,7 +160,10 @@ namespace GANN.MathAT
             {
                 for (int c = 0; c < result.Columns; c++)
                 {
-                    result[r, c] = m[r,c] * d;
+                    double res = m[r, c] * d;
+                    if (double.IsNaN(res))
+                        throw new ArgumentException("Nan value");
+                    result[r, c] = res;
                 }
             }
 

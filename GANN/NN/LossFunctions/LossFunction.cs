@@ -8,7 +8,7 @@ namespace GANN.NN.LossFunctions
     public abstract class LossFunction : IComparable
     {
         public abstract int CompareTo(object obj);
-        public abstract double Compute(MatrixAT1 m1, MatrixAT1 m2);
+        public abstract double Compute(MatrixAT1 output, MatrixAT1 expected);
         public abstract double ComputeDerivative(double output, double expected);
         public abstract LossFunction DeepCopy();
     }

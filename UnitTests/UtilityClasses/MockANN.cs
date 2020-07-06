@@ -20,7 +20,7 @@ namespace UnitTests.UtilityClasses
             return runResults[resultInd++];
         }
 
-        public override double[] Test(double[][] inputs, double[][] outputs, string path = null)
+        public override double[] Test(double[][] inputs, double[][] outputs, string path = null, string model = null)
         {
             return testResult;
         }

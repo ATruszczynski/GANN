@@ -5,18 +5,14 @@ using System.Text;
 
 namespace GANN.NN.ActivationFunctions
 {
-    public class Relu : ActivationFunction
+    public class Softmax : ActivationFunction
     {
-        public override ActivationFunction DeepCopy()
-        {
-            return new Relu();
-        }
         public override int CompareTo(object obj)
         {
-            Relu tmp;
+            //TODO - B - test
             try
             {
-                tmp = (Relu)obj;
+                var sm = (Softmax)obj;
             }
             catch
             {
@@ -27,17 +23,18 @@ namespace GANN.NN.ActivationFunctions
 
         public override double Compute(int ind, MatrixAT1 zs)
         {
-            return Math.Max(0, zs[ind,0]);
+            throw new NotImplementedException();
         }
 
         public override double ComputeDerivative(int ind, MatrixAT1 zs)
         {
-            double result = 0;
+            throw new NotImplementedException();
+        }
 
-            if (zs[ind, 0] > 0)
-                result = 1;
-
-            return result;
+        public override ActivationFunction DeepCopy()
+        {
+            //TODO - B - test
+            return new Softmax();
         }
     }
 }

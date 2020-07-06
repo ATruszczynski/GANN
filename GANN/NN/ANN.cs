@@ -42,6 +42,7 @@ namespace GANN.NN
         //TODO - A - hyperparameters as only property
         public ANN(Hyperparameters hyperparameters, Random random = null)
         {
+            //TODO - 0 - parallel is incorrectly implemented
             Hyperparameters = hyperparameters;
 
             if (random == null)
@@ -97,6 +98,7 @@ namespace GANN.NN
 
         public override double[] Run(double[] input)
         {
+            //TODO - 0 - test
             if (input.Length != neuronCounts[0])
                 throw new ArgumentException($"Wrong numbers of arguments in input - {input.Length} (expected {neuronCounts[0]})");
 
@@ -112,7 +114,7 @@ namespace GANN.NN
 
                 for (int j = 0; j < neuronCounts[layer]; j++)
                 {
-                    ases[layer][j, 0] = activationFuncs[layer].Compute(zs[layer][j, 0]); 
+                    ases[layer][j, 0] = activationFuncs[layer].Compute(j, zs[layer]); 
                 }
             }
 
@@ -257,6 +259,7 @@ namespace GANN.NN
 
             for (int i = 0; i < ag_L.Rows; i++)
             {
+                //TODO - B - bardzo niskie current?
                 ag_L[i, 0] = LossFunction.ComputeDerivative(current[i, 0], expected[i, 0]);
             }
 
@@ -290,7 +293,7 @@ namespace GANN.NN
 
             for (int j = 0; j < bg_L.Rows; j++)
             {
-                bg_L[j, 0] = actF.ComputeDerivative(zs[layer][j, 0]) * ag_L[j, 0];
+                bg_L[j, 0] = actF.ComputeDerivative(j, zs[layer]) * ag_L[j, 0];
             }
 
             return bg_L;
@@ -305,6 +308,7 @@ namespace GANN.NN
             {
                 for (int k = 0; k < wg_L.Columns; k++)
                 {
+                    //TODO - 0 - is math ok here?
                     wg_L[j, k] = a_Lminus1[k, 0] * bg_L[j, 0];
                 }
             }

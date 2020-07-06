@@ -14,13 +14,13 @@ namespace GANN.NN.LossFunctions
         {
             d = dd;
         }
-        public override double Compute(MatrixAT1 m1, MatrixAT1 m2)
+        public override double Compute(MatrixAT1 output, MatrixAT1 expected)
         {
             double sum = 0;
 
-            for (int i = 0; i < m1.Rows; i++)
+            for (int i = 0; i < output.Rows; i++)
             {
-                sum += Pow(m1[i,0] - m2[i,0], 2);
+                sum += Pow(output[i,0] - expected[i,0], 2);
             }
 
             return d*sum;

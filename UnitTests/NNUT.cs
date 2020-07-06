@@ -164,6 +164,29 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void NNRun2()
+        {
+            ANN nn = new ANN(new Hyperparameters
+                (
+                    2,
+                    2,
+                    new int[] { 2 },
+                    intActFuns: new ActivationFunction[] { new Relu() },
+                    aggregateActFunc: new Sigma()
+                ));
+
+            nn.weights[1] = new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 } });
+            nn.weights[2] = new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 } });
+            nn.biases[1] = new MatrixAT1(new double[,] { { 1 }, { 1 } });
+            nn.biases[2] = new MatrixAT1(new double[,] { { 1 }, { 1 } });
+
+            var resutl = nn.Run(new double[] { 2, 1 });
+            var s = new Sigma();
+            Assert.AreEqual(s.Compute(0, new MatrixAT1(new double[,] { { 9 } })), resutl[0]);
+            Assert.AreEqual(s.Compute(0, new MatrixAT1(new double[,] { { 9 } })), resutl[1]);
+        }
+
+        [TestMethod]
         public void NNTrain_MultipleInputs()
         {
             ANN nn = new ANN(new Hyperparameters
