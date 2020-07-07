@@ -41,5 +41,10 @@ namespace GANN.NN.ActivationFunctions
             double arg = zs[ind, 0];
             return InternalCompute(arg) * (1 - InternalCompute(arg));
         }
+
+        public override string ToString()
+        {
+            return "SI";
+        }
     }
 }

@@ -60,7 +60,7 @@ namespace UnitTests
                     0,
                     10, 7, 8, 1, 2, 5, 2, 1, 0, 1, 0, 0
                 );
-            (var inputs, var outputs) = TestGenerator.CountIO(5, pr);
+            (var inputs, var outputs) = TestGenerator.CountIO(5, 10, pr);
 
             List<List<int>> tin = new List<List<int>>(); 
             List<List<int>> tout = new List<List<int>>(); 

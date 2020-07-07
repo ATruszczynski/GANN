@@ -36,5 +36,10 @@ namespace GANN.NN.ActivationFunctions
             //TODO - B - test
             return new Softmax();
         }
+
+        public override string ToString()
+        {
+            return "SM";
+        }
     }
 }

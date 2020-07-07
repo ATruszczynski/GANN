@@ -99,5 +99,27 @@ namespace GANN.NN.Parameters
 
             return hp;
         }
+
+        public override string ToString()
+        {
+            string result = "";
+
+            double m = Math.Round(meanW, 2);
+            result += m + "|";
+            double s = Math.Round(stdW, 2);
+            result += s + "|";
+
+            result += inputSize + "|-|";
+
+            for (int i = 0; i < internalNeuronCounts.Length; i++)
+            {
+                result += internalNeuronCounts[i] + "|" + InternalActivationFunctions[i].ToString() + "|";
+            }
+
+            result += outputSize + "|" + AggFunc.ToString() + "|" + LossFunction.ToString() + "|" + GradientStepStrategy.ToString();
+
+
+            return result;
+        }
     }
 }

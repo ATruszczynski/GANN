@@ -17,6 +17,7 @@ using GANN.NN.GradientStepStrategies;
 using GANN.NN.Parameters;
 using GANN.MathAT;
 using Accord.DataSets;
+using GANN;
 
 namespace NeuralNetworkExperiments
 {
@@ -67,6 +68,7 @@ namespace NeuralNetworkExperiments
             //}
 
             TestGenerator.TTTTest();
+            Logger.FlushClose();
 
         }
     }

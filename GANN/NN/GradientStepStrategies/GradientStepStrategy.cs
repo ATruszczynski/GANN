@@ -10,5 +10,6 @@ namespace GANN.NN.GradientStepStrategies
         public abstract double GetStepSize(double avDiff);
         public abstract GradientStepStrategy DeepCopy();
         public abstract int CompareTo(object obj);
+        public abstract override string ToString();
     }
 }

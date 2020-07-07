@@ -36,10 +36,6 @@ namespace GANN.GA.Operators.MutationOperators
 
             Hyperparameters hp = nn.Hyperparameters;
 
-            var inp = hp.internalNeuronCounts[0];
-            var outt = hp.internalNeuronCounts[hp.internalNeuronCounts.Length - 1];
-            var f = hp.InternalActivationFunctions[hp.InternalActivationFunctions.Length - 1];
-
             hp = (Hyperparameters)Ranges.GetNext();
 
             nnc = new NNChromosome();

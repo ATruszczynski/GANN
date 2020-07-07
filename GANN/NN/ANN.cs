@@ -34,6 +34,9 @@ namespace GANN.NN
         public int maxTasks = 16;
         object loggerLock = new object();
 
+        object[] wLocks;
+        object[] bLocks;
+
         //TODO - B - random as property
         //TODO - B - alternative to Relu?
         //TODO - B - Add argument validation
@@ -89,6 +92,14 @@ namespace GANN.NN
 
             LossFunction = hyperparameters.LossFunction;
             GradientStepStrategy = hyperparameters.GradientStepStrategy;
+
+            wLocks = new object[neuronCounts.Length];
+            bLocks = new object[neuronCounts.Length];
+            for (int i = 0; i < wLocks.Length; i++)
+            {
+                wLocks[i] = new object();
+                bLocks[i] = new object();
+            }
         }
 
         //TODO - B - not the cleanest interface in the world
@@ -215,14 +226,14 @@ namespace GANN.NN
                             //lock (syncLocks[1])
                             for (int i = 1; i < weightGrad.Length; i++)
                             {
-                                lock (weightGradChange[i])
+                                lock (wLocks[i])
                                     weightGradChange[i] += weightGrad[i];
                             }
 
                             //lock (syncLocks[2])
                             for (int i = 1; i < weightGrad.Length; i++)
                             {
-                                lock (biasesGradChange[i])
+                                lock (bLocks[i])
                                     biasesGradChange[i] += biasesGrad[i];
                             }
                         }
@@ -230,7 +241,7 @@ namespace GANN.NN
 
                     averageDiff /= n;
 
-                    //Logger.Log("Av diff", averageDiff.ToString());
+                    Logger.Log("Av diff", averageDiff.ToString());
 
                     for (int i = 1; i < weightGradChange.Length; i++)
                     {
@@ -244,7 +255,7 @@ namespace GANN.NN
                         weights[w] = weights[w] - gradientVelocity * weightGradChange[w];
                         biases[w] = biases[w] - gradientVelocity * biasesGradChange[w];
                     }
-                    Console.WriteLine($"Batch {e + 1}/{b + 1} completed");
+                    //Console.WriteLine($"Batch {e + 1}/{b + 1} completed");
                 }
                 ;
             }
@@ -390,7 +401,6 @@ namespace GANN.NN
             }
 
             accuracy /= sumMat;
-
             return new double[] { accuracy };
         }
 
@@ -409,6 +419,11 @@ namespace GANN.NN
             }
             sw.Flush();
             sw.Close();
+        }
+
+        public override string ToString()
+        {
+            return Hyperparameters.ToString();
         }
     }
 }

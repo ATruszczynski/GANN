@@ -49,5 +49,10 @@ namespace GANN.NN.LossFunctions
             }
             return tmp.d.CompareTo(d);
         }
+
+        public override string ToString()
+        {
+            return $"QD{d}";
+        }
     }
 }

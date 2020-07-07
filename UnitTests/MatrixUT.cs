@@ -206,5 +206,33 @@ namespace UnitTests
             Assert.AreEqual(1, a[1, 0]);
             Assert.AreEqual(124452, a[2, 0]);
         }
+
+        [TestMethod]
+        public void MatrixAddition2()
+        {
+            MatrixAT1 a = new MatrixAT1(new double[,] { { 1, 2 }, { 3, 4 } });
+            MatrixAT1 b = new MatrixAT1(new double[,] { { 1, 1 }, { 1, 1 } });
+            MatrixAT1 c = new MatrixAT1(new double[,] { { 4, 1 }, { 0, 2 } });
+
+            MatrixAT1 sumAll = new MatrixAT1(new double[,] { { 6, 4 }, { 4, 7 } });
+            MatrixAT1 sumab = new MatrixAT1(new double[,] { { 2, 3 }, { 4, 5 } });
+
+            Assert.IsTrue(MatrixAT1.Compare(sumAll, a + b+ c));
+
+            a += b;
+
+            Assert.IsTrue(MatrixAT1.Compare(sumab, a));
+
+            a = new MatrixAT1(new double[,] { { 1, 2 }, { 3, 4 } });
+
+            a += b;
+            a += c;
+
+            Assert.IsTrue(MatrixAT1.Compare(sumAll, a));
+
+            a = new MatrixAT1(new double[,] { { 1, 2 }, { 3, 4 } });
+
+            Assert.IsTrue(MatrixAT1.Compare(a + b + c, b + c + a));
+        }
     }
 }

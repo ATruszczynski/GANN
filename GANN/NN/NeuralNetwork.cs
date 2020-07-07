@@ -16,5 +16,6 @@ namespace GANN.NN
         public abstract double[] Run(double[] input, out MatrixAT1[] ases, out MatrixAT1[] zs);
         public abstract double[] Test(double[][] inputs, double[][] outputs, string path = null, string logPath = null);
         public abstract void ModelToFile(string path);
+        public abstract override string ToString();
     }
 }

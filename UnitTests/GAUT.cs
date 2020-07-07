@@ -185,9 +185,12 @@ namespace UnitTests
             ga.Iterations = 70;
 
             string expected = "1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0";
-            var Chromosome = ga.Run(random);
+            (var score, var Chromosome) = ga.Run(random);
 
             Assert.AreEqual(expected, Chromosome.ToString());
+            Assert.AreEqual(20, score);
+
+            ga.Run(random);
         }
     }
 }

@@ -11,5 +11,6 @@ namespace GANN.NN.ActivationFunctions
         public abstract double Compute(int ind, MatrixAT1 zs);
         public abstract double ComputeDerivative(int ind, MatrixAT1 zs);
         public abstract ActivationFunction DeepCopy();
+        public abstract override string ToString();
     }
 }

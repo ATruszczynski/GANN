@@ -23,6 +23,7 @@ using GANN.NN.GradientStepStrategies;
 using GANN.NN.Parameters;
 using GANN.MathAT;
 using GANN.GA;
+using GANN;
 
 namespace GANN.MathAT
 {
@@ -205,7 +206,9 @@ namespace GANN.MathAT
 
             ga.Iterations = 25;
 
-            NNChromosome c = (NNChromosome)ga.Run(random);
+            (_, Chromosome cn) = ga.Run(random);
+
+            NNChromosome c = (NNChromosome)cn;
 
             c.NeuralNetwork.Test(testInput, testOutput, "confMat.txt");
 
@@ -228,22 +231,27 @@ namespace GANN.MathAT
 
         }
 
-        public static (double[][], double[][]) CountIO(int number, Random random)
+        public static (double[][], double[][]) CountIO(int howMany, int countTo, Random random)
         {
-            var inputs = new double[number][];
-            var outputs = new double[number][];
+            var inputs = new double[howMany][];
+            var outputs = new double[howMany][];
 
-            for (int i = 0; i < number; i++)
+            for (int i = 0; i < howMany; i++)
             {
-                int num = random.Next(11);
-                var swr = new SampleWithoutReplacement<int>(new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }, random);
-                var input = new double[10];
+                int num = random.Next(countTo + 1);
+                var optionsToChoose = new int[countTo];
+                for (int j = 0; j < countTo; j++)
+                {
+                    optionsToChoose[j] = j;
+                }
+                var swr = new SampleWithoutReplacement<int>(optionsToChoose, random);
+                var input = new double[countTo];
                 for (int j = 0; j < num; j++)
                 {
                     swr.GetNext(out int ind);
                     input[ind] = 1;
                 }
-                var output = new double[11];
+                var output = new double[countTo + 1];
                 output[num] = 1;
 
                 inputs[i] = input;
@@ -256,14 +264,46 @@ namespace GANN.MathAT
         public static void TestCount()
         {
             Random random = new Random(1001);
-            (var trainInput, var trainOutput) = CountIO(10000, random);
-            (var testInput, var testOutput) = CountIO(200, random);
+            (var trainInput, var trainOutput) = CountIO(2000, 10, random);
+            (var testInput, var testOutput) = CountIO(200, 10, random);
+            //(var trainInput, var trainOutput) = GenerateReverseIO(500, random);
+            //(var testInput, var testOutput) = GenerateReverseIO(200, random);
 
-            ANN nn = new ANN(new Hyperparameters(10, 11, new int[] { 100 } , mw: 0, lossFunc: new CrossEntropy(), gradStep: new DecayingGradientStep(3, 0.05)));
+            int networsk = 1;
+            int reps = 1;
+
+            ANN nn = null;
             //nn.masDeg = 1;
-            nn.ModelToFile("model0.txt");
-            nn.Train(trainInput, trainOutput, 5, 50);
+            for (int i = 0; i < networsk; i++)
+            {
+                //TODO - 0 - learn about lock
+                random = new Random(1001);
+                nn = new ANN(new Hyperparameters(trainInput[0].Length, trainOutput[0].Length, inNeuronCounts: new int[] { 1000 }), random);
+                
+                //nn = new ANN(new Hyperparameters(2, 2, mw: 0), random);
+                //nn.masDeg = 1;
+                nn.Train(trainInput, trainOutput, 10, 50);
+                for (int j = 0; j < reps; j++)
+                {
+                    //Console.WriteLine(nn.Run(testInput[0], out _, out _)[0]);
+                    Console.WriteLine("Accuracy: " + nn.Test(testInput, testOutput/*, "countconfusionmatrix.txt", "log2.txt"*/).Average());
+                }
+                Console.WriteLine("-------------------------------------");
+            }
             nn.ModelToFile("model.txt");
+            nn.Test(testInput, testOutput, "countconfusionmatrix.txt", "log2.txt");
+        }
+
+        public static void GANNN()
+        {
+            Random random = new Random(1001);
+            (var trainInput, var trainOutput) = CountIO(500, 3, random);
+            (var testInput, var testOutput) = CountIO(200, 3, random);
+
+            GANN gANN = new GANN(trainInput, trainOutput, testInput, testOutput, random);
+
+            var nn = gANN.GetGoodNN(2, 0.90, 20);
+
             Console.WriteLine("Accuracy: " + nn.Test(testInput, testOutput, "countconfusionmatrix.txt", "log2.txt").Average());
         }
     }

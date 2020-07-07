@@ -7,6 +7,7 @@ namespace GANN.GA.GA_Elements
 {
     public class NNChromosome : Chromosome
     {
+        //TODO - A - deep copy of NN?
         public ANN NeuralNetwork;
         public NNChromosome()
         {
@@ -21,6 +22,11 @@ namespace GANN.GA.GA_Elements
         {
             //TODO - B - deep copies are not having deep copy of random
             return new NNChromosome(new ANN(NeuralNetwork.Hyperparameters, NeuralNetwork.Random));
+        }
+
+        public override string ToString()
+        {
+            return NeuralNetwork.ToString();
         }
     }
 }

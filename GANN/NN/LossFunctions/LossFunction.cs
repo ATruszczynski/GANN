@@ -11,5 +11,6 @@ namespace GANN.NN.LossFunctions
         public abstract double Compute(MatrixAT1 output, MatrixAT1 expected);
         public abstract double ComputeDerivative(double output, double expected);
         public abstract LossFunction DeepCopy();
+        public abstract override string ToString();
     }
 }

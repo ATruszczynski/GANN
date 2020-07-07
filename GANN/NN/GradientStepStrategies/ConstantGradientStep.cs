@@ -35,5 +35,10 @@ namespace GANN.NN.GradientStepStrategies
             }
             return tmp.stepSize.CompareTo(stepSize);
         }
+
+        public override string ToString()
+        {
+            return $"CS{stepSize}";
+        }
     }
 }

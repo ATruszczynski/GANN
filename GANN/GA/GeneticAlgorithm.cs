@@ -13,6 +13,8 @@ namespace GANN.GA
 {
     public class GeneticAlgorithm
     {
+        //TODO - B - implement reset
+        //TODO - A - test multiple runs
         //TODO - B - enforce all paramaters present
         public double crossoverProbability = 0.5;
         public double mutationProbability = 1;
@@ -30,17 +32,16 @@ namespace GANN.GA
         public double BestScore = double.MinValue;
         public Chromosome BestSolution;
         object bestLock = new object();
-        public int maxDeg = -1;
+        public int maxDeg = 1;
         //TODO - B - parallel control?
         public Random random;
 
-        public Chromosome Run(Random rrandom)
+        public (double, Chromosome) Run(Random rrandom, bool reset = true)
         {
             random = rrandom;
-
-            Chromosome[] newPopulation = new Chromosome[PopulationCount];
             for (int iter = 0; iter < Iterations; iter++)
             {
+                Chromosome[] newPopulation = new Chromosome[PopulationCount];
                 double[] fitnesses = new double[PopulationCount];
 
                 Parallel.For(0, PopulationCount, new ParallelOptions { MaxDegreeOfParallelism = maxDeg }, i => 
@@ -93,9 +94,12 @@ namespace GANN.GA
             }
 
             if (maxF > BestScore)
+            {
+                BestScore = maxF;
                 BestSolution = maxC;
+            }
 
-            return BestSolution.DeepCopy();
+            return (BestScore, BestSolution.DeepCopy());
         }
 
         public Chromosome MaybeMutate(Chromosome c)

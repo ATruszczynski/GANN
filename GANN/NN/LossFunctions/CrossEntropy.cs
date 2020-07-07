@@ -51,5 +51,10 @@ namespace GANN.NN.LossFunctions
             //TODO - B - test
             return new CrossEntropy();
         }
+
+        public override string ToString()
+        {
+            return "CE";
+        }
     }
 }

@@ -47,5 +47,10 @@ namespace GANN.NN.GradientStepStrategies
             Current *= (1 - DecayRate);
             return result;
         }
+
+        public override string ToString()
+        {
+            return $"DS{Starting}-{DecayRate}";
+        }
     }
 }

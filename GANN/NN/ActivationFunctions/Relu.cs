@@ -39,5 +39,10 @@ namespace GANN.NN.ActivationFunctions
 
             return result;
         }
+
+        public override string ToString()
+        {
+            return "RL";
+        }
     }
 }
