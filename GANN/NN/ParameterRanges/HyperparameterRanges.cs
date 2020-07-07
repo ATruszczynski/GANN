@@ -13,7 +13,7 @@ namespace GANN.NN.ParameterRanges
     public class HyperparameterRanges : Range
     {
         //TODO - B - implement changing probability of cs and mutation in GA
-
+        //TODO - A - different last act funciton
         public ContinuousRange WeightDistribution;
         public ContinuousRange StdDistribution;
         public DiscreteRange InternalLayerCountDistribution;
@@ -31,6 +31,12 @@ namespace GANN.NN.ParameterRanges
         {
             //TODO - B - implement
             throw new NotImplementedException();
+        }
+
+        public HyperparameterRanges(int intput, int output)
+        {
+            inputSize = intput;
+            outputSize = output;
         }
 
         public override object GetNext()

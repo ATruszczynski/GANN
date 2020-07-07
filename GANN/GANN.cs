@@ -14,9 +14,14 @@ namespace GANN
         public double[][] testInput;
         public double[][] testOutput;
 
-        public GANN(GeneticAlgorithm ga)
+        public GANN(int inputSize, int outputSize)
         {
             GeneticAlgorithm = ga;
+        }
+
+        public ANN GetGoodNN(int maxIt, double desiredAcc)
+        {
+            throw new NotImplementedException();
         }
     }
 }

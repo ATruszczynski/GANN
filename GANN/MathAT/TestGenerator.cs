@@ -168,16 +168,14 @@ namespace GANN.MathAT
             GeneticAlgorithm ga = new GeneticAlgorithm();
             ga.CrossoverOperator = new NNBasicCrossoverOperator();
 
-            var hp = new HyperparameterRanges();
+            var hp = new HyperparameterRanges(trainInput[0].Length, trainOutput[0].Length);
             hp.WeightDistribution = new ContinuousRange(new UniformContinuousRangeDistribution(random, -1, 1));
             hp.StdDistribution = new ContinuousRange(new UniformContinuousRangeDistribution(random, -1, 1));
-            hp.InternalLayerCountDistribution = new DiscreteRange(new UniformDiscreteRangeDistribution(random, 1, 5));
-            hp.NeuronCountDistribution = new DiscreteRange(new UniformDiscreteRangeDistribution(random, 1, 20));
+            hp.InternalLayerCountDistribution = new DiscreteRange(new UniformDiscreteRangeDistribution(random, 1, 3));
+            hp.NeuronCountDistribution = new DiscreteRange(new UniformDiscreteRangeDistribution(random, 1, 100));
             hp.ActFuncDist = new SetRange<ActivationFunction>(new ActivationFunction[] { new Relu() }, new UniformDiscreteRangeDistribution(random, 0, 1));
-            hp.LossFuncDist = new SetRange<LossFunction>(new LossFunction[] { new QuadDiff() }, new UniformDiscreteRangeDistribution(random, 0, 1));
-            hp.GradStratDist = new SetRange<GradientStepStrategy>(new GradientStepStrategy[] { new ConstantGradientStep(0.5), new ConstantGradientStep(1) }, new UniformDiscreteRangeDistribution(random, 0, 2));
-            hp.inputSize = trainInput[0].Length;
-            hp.outputSize = trainOutput[0].Length;
+            hp.LossFuncDist = new SetRange<LossFunction>(new LossFunction[] { new QuadDiff(), new QuadDiff(0.5), new CrossEntropy() }, new UniformDiscreteRangeDistribution(random, 0, 3));
+            hp.GradStratDist = new SetRange<GradientStepStrategy>(new GradientStepStrategy[] { new ConstantGradientStep(0.5), new ConstantGradientStep(1), new ConstantGradientStep(0.01) }, new UniformDiscreteRangeDistribution(random, 0, 2));
             hp.outputAct = new Sigma();
 
             ga.MutationOperator = new NNBasicMutationOperator(hp);
@@ -189,7 +187,6 @@ namespace GANN.MathAT
             nnff.trainOutputs = trainOutput;
             nnff.testInputs = testInput;
             nnff.testOutputs = testOutput;
-            ga.FitnessFunction = new NNFitnessFunc();
 
             ga.FitnessFunction = nnff;
 

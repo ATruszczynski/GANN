@@ -134,7 +134,7 @@ namespace GANN.NN
             //    Console.WriteLine("All negative zs");
 
             bool neg = true;
-            for (int i = 0; i < zs.Length; i++)
+            for (int i = 0; i < zs[zs.Length - 1].Rows; i++)
             {
                 if(zs[zs.Length - 1][i, 0] > 0)
                 {
@@ -171,7 +171,7 @@ namespace GANN.NN
                     //TODO - C - could speed up by not reinitializng matrixes
                     (MatrixAT1[] weightGradChange, MatrixAT1[] biasesGradChange, _) = InitialiseComponents();
                     double averageDiff = 0;
-
+                    //TODO - 0 - this should NOT be nondeterministic
                     //for (int inputInd = startIndInc; inputInd < endIndExc; inputInd++)
                     //{
                     var listOfTasks = Utility.SeparateForTasks(startIndInc, endIndExc, maxTasks);
@@ -230,7 +230,7 @@ namespace GANN.NN
 
                     averageDiff /= n;
 
-                    Logger.Log("Av diff", averageDiff.ToString());
+                    //Logger.Log("Av diff", averageDiff.ToString());
 
                     for (int i = 1; i < weightGradChange.Length; i++)
                     {

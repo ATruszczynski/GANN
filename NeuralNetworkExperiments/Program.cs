@@ -66,7 +66,8 @@ namespace NeuralNetworkExperiments
             //    Console.WriteLine(c.ToString());
             //}
 
-            TestGenerator.TestCount();
+            TestGenerator.TTTTest();
+
         }
     }
 }
