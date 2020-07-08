@@ -243,17 +243,19 @@ namespace GANN.NN
 
                     Logger.Log("Av diff", averageDiff.ToString());
 
-                    for (int i = 1; i < weightGradChange.Length; i++)
-                    {
-                        weightGradChange[i] = 1d / n * weightGradChange[i];
-                        biasesGradChange[i] = 1d / n * biasesGradChange[i];
-                    }
+                    //TODO - A - is that ok?
+                    //for (int i = 1; i < weightGradChange.Length; i++)
+                    //{
+                    //    weightGradChange[i] = 1d / n * weightGradChange[i];
+                    //    biasesGradChange[i] = 1d / n * biasesGradChange[i];
+                    //}
+
+                    (weightGradChange, biasesGradChange) = GradientStepStrategy.GetStepSize(averageDiff, weightGradChange, biasesGradChange);
 
                     for (int w = 1; w < neuronCounts.Length; w++)
                     {
-                        double gradientVelocity = GradientStepStrategy.GetStepSize(averageDiff);
-                        weights[w] = weights[w] - gradientVelocity * weightGradChange[w];
-                        biases[w] = biases[w] - gradientVelocity * biasesGradChange[w];
+                        weights[w] = weights[w] - weightGradChange[w];
+                        biases[w] = biases[w] - biasesGradChange[w];
                     }
                     //Console.WriteLine($"Batch {e + 1}/{b + 1} completed");
                 }

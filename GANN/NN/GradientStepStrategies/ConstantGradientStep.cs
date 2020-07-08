@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GANN.MathAT;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -18,10 +19,7 @@ namespace GANN.NN.GradientStepStrategies
             return new ConstantGradientStep(stepSize);
         }
 
-        public override double GetStepSize(double avDiff)
-        {
-            return stepSize;
-        }
+        
         public override int CompareTo(object obj)
         {
             ConstantGradientStep tmp;
@@ -39,6 +37,18 @@ namespace GANN.NN.GradientStepStrategies
         public override string ToString()
         {
             return $"CS{stepSize}";
+        }
+
+        public override (MatrixAT1[], MatrixAT1[]) GetStepSize(double avDiff, MatrixAT1[] updateW, MatrixAT1[] updateB)
+        {
+            MatrixAT1[] resW = new MatrixAT1[updateW.Length];
+            MatrixAT1[] resB = new MatrixAT1[updateB.Length];
+            for (int i = 1; i < updateW.Length; i++)
+            {
+                resW[i] = stepSize * updateW[i];
+                resB[i] = stepSize * updateB[i];
+            }
+            return (resW, resB);
         }
     }
 }

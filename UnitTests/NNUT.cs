@@ -406,7 +406,7 @@ namespace UnitTests
         public void DeteminismTest()
         {
             Random random = new Random(1001);
-            (var trainInput, var trainOutput) = TestGenerator.CountIO(1000, 10, random);
+            (var trainInput, var trainOutput) = TestGenerator.CountIO(500, 10, random);
             (var testInput, var testOutput) = TestGenerator.CountIO(50, 10,  random);
             //(var trainInput, var trainOutput) = TestGenerator.GenerateReverseIO(10, random);
             //(var testInput, var testOutput) = TestGenerator.GenerateReverseIO(50, random);
@@ -556,9 +556,9 @@ namespace UnitTests
             for (int i = 0; i < networsk; i++)
             {
                 random = new Random(1001);
-                nn = new ANN(new Hyperparameters(trainInput[0].Length, trainOutput[0].Length, inNeuronCounts: new int[] { 8 }), random);
+                nn = new ANN(new Hyperparameters(trainInput[0].Length, trainOutput[0].Length, inNeuronCounts: new int[] { 8 }, gradStep: new ConstantGradientStep(0.01)), random);
 
-                nn.Train(trainInput, trainOutput, 5, 50);
+                nn.Train(trainInput, trainOutput, 10, 50);
             }
             Assert.AreEqual(1d, nn.Test(testInput, testOutput/*, "countconfusionmatrix.txt", "log2.txt"*/).Average());
         }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GANN.MathAT;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -41,11 +42,18 @@ namespace GANN.NN.GradientStepStrategies
             return new DecayingGradientStep(Starting, DecayRate);
         }
 
-        public override double GetStepSize(double avDiff)
+        public override (MatrixAT1[], MatrixAT1[]) GetStepSize(double avDiff, MatrixAT1[] updateW, MatrixAT1[] updateB)
         {
             double result = Current;
+
+            for (int i = 1; i < updateW.Length; i++)
+            {
+                updateW[i] = Current * updateW[i];
+                updateB[i] = Current * updateB[i];
+            }
+
             Current *= (1 - DecayRate);
-            return result;
+            return (updateW, updateB);
         }
 
         public override string ToString()

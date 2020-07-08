@@ -50,5 +50,23 @@ namespace UnitTests.NNElems
 
             Assert.AreEqual(0, sigma.CompareTo(new Sigma()));
         }
+
+        [TestMethod]
+        public void SoftmaxtTest()
+        {
+            var sm = new Softmax();
+
+            MatrixAT1 zs = new MatrixAT1(new double[,] { { 1 }, { 2 }, { 0.5 } });
+            var sm1 = sm.Compute(0, zs);
+            var sm2 = sm.Compute(1, zs);
+            var sm3 = sm.Compute(2, zs);
+            Assert.IsTrue(NNUT.CloseCompare(0.23, sm1, 1e-2));
+            Assert.IsTrue(NNUT.CloseCompare(0.63, sm2, 1e-2));
+            Assert.IsTrue(NNUT.CloseCompare(0.14, sm3, 1e-2));
+
+            Assert.IsTrue(NNUT.CloseCompare(sm1*(1 - sm1), sm.ComputeDerivative(0,zs), 1e-4));
+            Assert.IsTrue(NNUT.CloseCompare(sm2 * (1 - sm2), sm.ComputeDerivative(1, zs), 1e-4));
+            Assert.IsTrue(NNUT.CloseCompare(sm3 * (1 - sm3), sm.ComputeDerivative(2, zs), 1e-4));
+        }
     }
 }
