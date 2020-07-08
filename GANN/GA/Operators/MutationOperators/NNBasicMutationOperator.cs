@@ -49,11 +49,11 @@ namespace GANN.GA.Operators.MutationOperators
         {
             List<int> result = new List<int>();
 
-            if (Ranges.WeightDistribution.Min != Ranges.WeightDistribution.Max)
-                result.Add(0); //weights can be mutated
+            //if (Ranges.WeightDistribution.Min != Ranges.WeightDistribution.Max)
+            //    result.Add(0); //weights can be mutated
 
-            if (Ranges.StdDistribution.Min != Ranges.StdDistribution.Max)
-                result.Add(1); //std can be mutated
+            //if (Ranges.StdDistribution.Min != Ranges.StdDistribution.Max)
+            //    result.Add(1); //std can be mutated
 
             if (nn.LayerCount - 2 < Ranges.InternalLayerCountDistribution.Max)
                 result.Add(2); //layer can be added

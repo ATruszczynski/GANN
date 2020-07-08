@@ -330,7 +330,7 @@ namespace UnitTests
         public void NNFromHP1InternalLayer()
         {
             PseudoRandom pr = new PseudoRandom(0);
-            Hyperparameters hp = new Hyperparameters(2, 2, new int[] { 1 },1, 1, new ActivationFunction[] { new Sigma() }, new Relu(), new QuadDiff(22), new ConstantGradientStep(0.5));
+            Hyperparameters hp = new Hyperparameters(2, 2, new int[] { 1 }, new ActivationFunction[] { new Sigma() }, new Relu(), new QuadDiff(22), new ConstantGradientStep(0.5), 1, 1);
             ANN nn = new ANN(hp, pr);
 
             Assert.AreEqual(3, nn.neuronCounts.Length);

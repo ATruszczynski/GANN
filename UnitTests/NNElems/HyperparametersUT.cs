@@ -34,10 +34,10 @@ namespace UnitTests.NNElems
         {
             Hyperparameters hp = new Hyperparameters
                 (
-                    2, 3, new int[] { 2 }, 2, 0.5,
+                    2, 3, new int[] { 2 },
                     new ActivationFunction[] { new Sigma() },
                     new Relu(), new QuadDiff(2),
-                    new ConstantGradientStep(0.666)
+                    new ConstantGradientStep(0.666), 2, 0.5
                 );
 
             Assert.AreEqual(2, hp.inputSize);

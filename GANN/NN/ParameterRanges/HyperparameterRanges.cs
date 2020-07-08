@@ -14,8 +14,8 @@ namespace GANN.NN.ParameterRanges
     {
         //TODO - B - implement changing probability of cs and mutation in GA
         //TODO - A - different last act funciton
-        public ContinuousRange WeightDistribution;
-        public ContinuousRange StdDistribution;
+        //public ContinuousRange WeightDistribution;
+        //public ContinuousRange StdDistribution;
         public DiscreteRange InternalLayerCountDistribution;
         public DiscreteRange NeuronCountDistribution;
         public SetRange<ActivationFunction> ActFuncDist;
@@ -44,8 +44,8 @@ namespace GANN.NN.ParameterRanges
             //TODO - B - change names of props
             //TODO - B - test tc
             //TODO - C - can there be layer count == 0?
-            double meanW = (double)WeightDistribution.GetNext();
-            double stdW = (double)StdDistribution.GetNext();
+            //double meanW = (double)WeightDistribution.GetNext();
+            //double stdW = (double)StdDistribution.GetNext();
             var internalNeuronCounts = new int[(int)InternalLayerCountDistribution.GetNext()];
             for (int i = 0; i < internalNeuronCounts.Length; i++)
             {
@@ -67,8 +67,6 @@ namespace GANN.NN.ParameterRanges
                     inputSize,
                     outputSize,
                     internalNeuronCounts,
-                    meanW,
-                    stdW,
                     ActivationFunctions,
                     aggAct,
                     LossFunction,

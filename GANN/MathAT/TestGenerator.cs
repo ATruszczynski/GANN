@@ -170,8 +170,8 @@ namespace GANN.MathAT
             ga.CrossoverOperator = new NNBasicCrossoverOperator();
 
             var hp = new HyperparameterRanges(trainInput[0].Length, trainOutput[0].Length);
-            hp.WeightDistribution = new ContinuousRange(new UniformContinuousRangeDistribution(random, -1, 1));
-            hp.StdDistribution = new ContinuousRange(new UniformContinuousRangeDistribution(random, -1, 1));
+            //hp.WeightDistribution = new ContinuousRange(new UniformContinuousRangeDistribution(random, -1, 1));
+            //hp.StdDistribution = new ContinuousRange(new UniformContinuousRangeDistribution(random, -1, 1));
             hp.InternalLayerCountDistribution = new DiscreteRange(new UniformDiscreteRangeDistribution(random, 1, 3));
             hp.NeuronCountDistribution = new DiscreteRange(new UniformDiscreteRangeDistribution(random, 1, 100));
             hp.ActFuncDist = new SetRange<ActivationFunction>(new ActivationFunction[] { new Relu() }, new UniformDiscreteRangeDistribution(random, 0, 1));

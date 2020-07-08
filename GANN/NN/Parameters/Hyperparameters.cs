@@ -25,7 +25,7 @@ namespace GANN.NN.Parameters
         public LossFunction LossFunction;
         public GradientStepStrategy GradientStepStrategy;
 
-        public Hyperparameters(int inpSize, int outSize, int[] inNeuronCounts = null, double mw = 0, double sw = -1, ActivationFunction[] intActFuns = null, ActivationFunction aggregateActFunc = null, LossFunction lossFunc = null, GradientStepStrategy gradStep = null)
+        public Hyperparameters(int inpSize, int outSize, int[] inNeuronCounts = null, ActivationFunction[] intActFuns = null, ActivationFunction aggregateActFunc = null, LossFunction lossFunc = null, GradientStepStrategy gradStep = null, double mw = 0, double sw = -1)
         {
             //TODO - A - validation
             //TODO - B - variable names in many classes
@@ -102,7 +102,7 @@ namespace GANN.NN.Parameters
                 acts[i] = InternalActivationFunctions[i].DeepCopy();
             }
 
-            Hyperparameters hp = new Hyperparameters(inputSize, outputSize, nc, meanW, stdW, acts, AggFunc.DeepCopy(), LossFunction.DeepCopy(), GradientStepStrategy.DeepCopy());
+            Hyperparameters hp = new Hyperparameters(inputSize, outputSize, nc, acts, AggFunc.DeepCopy(), LossFunction.DeepCopy(), GradientStepStrategy.DeepCopy(), meanW, stdW);
 
 
 

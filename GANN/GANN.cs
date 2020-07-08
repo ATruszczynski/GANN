@@ -38,8 +38,6 @@ namespace GANN
             else
                 Random = random;
             HypereparametersRange = new HyperparameterRanges(trainInput[0].Length, trainOutput[0].Length);
-            HypereparametersRange.WeightDistribution = new ContinuousRange(new UniformContinuousRangeDistribution(random, -1, 1));
-            HypereparametersRange.StdDistribution = new ContinuousRange(new UniformContinuousRangeDistribution(random, 0, 1));
             HypereparametersRange.InternalLayerCountDistribution = new DiscreteRange(new UniformDiscreteRangeDistribution(random, 0, 2));
             HypereparametersRange.NeuronCountDistribution = new DiscreteRange(new UniformDiscreteRangeDistribution(random, 1, 200));
             HypereparametersRange.ActFuncDist = new SetRange<ActivationFunction>(new ActivationFunction[] { new Relu() }, new UniformDiscreteRangeDistribution(random, 0, 1));
