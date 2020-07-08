@@ -58,7 +58,7 @@ namespace GANN
             nnff.trainOutputs = trainOutput;
             nnff.testInputs = testInput;
             nnff.testOutputs = testOutput;
-            nnff.epochs = 10;
+            nnff.epochs = 20;
 
             GeneticAlgorithm.FitnessFunction = nnff;
 
@@ -70,21 +70,21 @@ namespace GANN
             NNChromosome[] population = new NNChromosome[popCount];
             for (int i = 0; i < popCount; i++)
             {
-                population[i] = new NNChromosome(new ANN((Hyperparameters)HypereparametersRange.GetNext(), Random));
+                population[i] = new NNChromosome((Hyperparameters)HypereparametersRange.GetNext());
             }
             GeneticAlgorithm.population = population;
 
-            ANN nn = null;
+            Hyperparameters nn = null;
             int it = 0;
             double score = -1;
             while(it < maxIt && score < desiredScore)
             {
                 Chromosome cnn = null;
                 (score, cnn) =  GeneticAlgorithm.Run(Random);
-                nn = (cnn as NNChromosome).NeuralNetwork;
+                nn = (cnn as NNChromosome).Hyperparameters;
                 it++;
             }
-            return nn;
+            return new ANN(nn);
         }
     }
 }

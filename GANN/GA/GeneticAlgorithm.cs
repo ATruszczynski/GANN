@@ -46,7 +46,7 @@ namespace GANN.GA
 
                 Parallel.For(0, PopulationCount, new ParallelOptions { MaxDegreeOfParallelism = maxDeg }, i => 
                 {
-                    fitnesses[i] = FitnessFunction.ComputeFitness(population[i]);
+                    fitnesses[i] = FitnessFunction.ComputeFitness(population[i].DeepCopy());
                     lock(bestLock)
                     {
                         if(fitnesses[i] > BestScore)
@@ -56,7 +56,7 @@ namespace GANN.GA
                         }
                     }
                 });
-
+                //TODO - B -  remove superfluous DeepCopies
                 BestSolution = BestSolution.DeepCopy();
 
                 for (int pop = 0; pop < PopulationCount; pop++)

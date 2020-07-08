@@ -198,7 +198,7 @@ namespace GANN.MathAT
             {
                 Hyperparameters param = (Hyperparameters)hp.GetNext();
 
-                ga.population[i] = new NNChromosome(new ANN(param, random));
+                ga.population[i] = new NNChromosome(param);
             }
 
             ga.crossoverProbability = 0.25;
@@ -210,11 +210,13 @@ namespace GANN.MathAT
 
             NNChromosome c = (NNChromosome)cn;
 
-            c.NeuralNetwork.Test(testInput, testOutput, "confMat.txt");
+            var a = new ANN(c.Hyperparameters, random);
+
+            a.Test(testInput, testOutput, "confMat.txt");
 
             Console.WriteLine(ga.FitnessFunction.ComputeFitness(c));
 
-            var res = c.NeuralNetwork.Run(new double[] { 0, 2, 2, 1, 1, 1, 0, 0, 2 }, out _, out _);
+            var res = a.Run(new double[] { 0, 2, 2, 1, 1, 1, 0, 0, 2 }, out _, out _);
             Console.WriteLine($"{res[0]},{res[1]},{res[2]},{res[3]}");
         }
 

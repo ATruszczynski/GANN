@@ -15,28 +15,26 @@ namespace GANN.GA.Operators.CrossoverOperators
         {
             NNChromosome cnn1 = (NNChromosome)ch1;
             NNChromosome cnn2 = (NNChromosome)ch2;
-            ANN nn1 = (ANN)cnn1.NeuralNetwork;
-            ANN nn2 = (ANN)cnn2.NeuralNetwork;
-            Hyperparameters hp1 = nn1.Hyperparameters;
-            Hyperparameters hp2 = nn2.Hyperparameters;
+            Hyperparameters hp1 = cnn1.Hyperparameters;
+            Hyperparameters hp2 = cnn2.Hyperparameters;
 
             double p = random.NextDouble();
 
-            if (p <= 0.5)
-            {
-                double w = hp1.meanW;
-                hp1.meanW = hp2.meanW;
-                hp2.meanW = w;
-            }
+            //if (p <= 0.5)
+            //{
+            //    double w = hp1.meanW;
+            //    hp1.meanW = hp2.meanW;
+            //    hp2.meanW = w;
+            //}
 
-            p = random.NextDouble();
+            //p = random.NextDouble();
 
-            if (p <= 0.5)
-            {
-                double std = hp1.stdW;
-                hp1.stdW = hp2.stdW;
-                hp2.stdW = std;
-            }
+            //if (p <= 0.5)
+            //{
+            //    double std = hp1.stdW;
+            //    hp1.stdW = hp2.stdW;
+            //    hp2.stdW = std;
+            //}
 
             p = random.NextDouble();
 
@@ -69,8 +67,8 @@ namespace GANN.GA.Operators.CrossoverOperators
                 hp2.InternalActivationFunctions = acts;
             }
 
-            cnn1.NeuralNetwork = new ANN(hp1, nn1.Random);
-            cnn2.NeuralNetwork = new ANN(hp2, nn2.Random);
+            cnn1.Hyperparameters = hp1;
+            cnn2.Hyperparameters = hp2;
 
             return (cnn1, cnn2);
         }

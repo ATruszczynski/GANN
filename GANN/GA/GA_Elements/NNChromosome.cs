@@ -1,4 +1,5 @@
 ﻿using GANN.NN;
+using GANN.NN.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,25 +9,25 @@ namespace GANN.GA.GA_Elements
     public class NNChromosome : Chromosome
     {
         //TODO - A - deep copy of NN?
-        public ANN NeuralNetwork;
+        public Hyperparameters Hyperparameters;
         public NNChromosome()
         {
 
         }
 
-        public NNChromosome(ANN nn)
+        public NNChromosome(Hyperparameters hyperparameters)
         {
-            NeuralNetwork = nn;
+            Hyperparameters = hyperparameters;
         }
         public override Chromosome DeepCopy()
         {
             //TODO - B - deep copies are not having deep copy of random
-            return new NNChromosome(new ANN(NeuralNetwork.Hyperparameters.DeepCopy(), NeuralNetwork.Random));
+            return new NNChromosome(Hyperparameters.DeepCopy());
         }
 
         public override string ToString()
         {
-            return NeuralNetwork.ToString();
+            return Hyperparameters.ToString();
         }
     }
 }

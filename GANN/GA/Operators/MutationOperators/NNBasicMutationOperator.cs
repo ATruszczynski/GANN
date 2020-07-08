@@ -32,15 +32,13 @@ namespace GANN.GA.Operators.MutationOperators
         {
             NNChromosome nnc = (NNChromosome)m;
 
-            ANN nn = (ANN)nnc.NeuralNetwork;
-
-            Hyperparameters hp = nn.Hyperparameters;
+            Hyperparameters hp = nnc.Hyperparameters;
 
             hp = (Hyperparameters)Ranges.GetNext();
 
             nnc = new NNChromosome();
 
-            nnc.NeuralNetwork = new ANN(hp, nn.Random);
+            nnc.Hyperparameters = hp;
 
             return nnc;
         }
