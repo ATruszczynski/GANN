@@ -166,9 +166,11 @@ namespace GANN.NN
         public override void Train(double[][] inputs, double[][] outputs, int epochs, int batchSize)
         {
             //TODO - B - test on more than 1 batch
+            
             double batches = Ceiling((double)inputs.Length / (double)batchSize);
             for (int e = 0; e < epochs; e++)
             {
+                double errorSum = 0;
                 for (int b = 0; b < batches; b++)
                 {
                     int startIndInc = b * batchSize;
@@ -238,7 +240,7 @@ namespace GANN.NN
                             }
                         }
                     });
-
+                    errorSum += averageDiff;
                     averageDiff /= n;
 
                     Logger.Log("Av diff", averageDiff.ToString());
@@ -249,7 +251,8 @@ namespace GANN.NN
                     //    weightGradChange[i] = 1d / n * weightGradChange[i];
                     //    biasesGradChange[i] = 1d / n * biasesGradChange[i];
                     //}
-
+                    if (e == 70)
+                        ;
                     (weightGradChange, biasesGradChange) = GradientStepStrategy.GetStepSize(averageDiff, weightGradChange, biasesGradChange);
 
                     for (int w = 1; w < neuronCounts.Length; w++)
@@ -260,6 +263,7 @@ namespace GANN.NN
                     //Console.WriteLine($"Batch {e + 1}/{b + 1} completed");
                 }
                 ;
+                Console.WriteLine("Error average:" + errorSum / inputs.Length / outputs[0].Length);
             }
 
         }

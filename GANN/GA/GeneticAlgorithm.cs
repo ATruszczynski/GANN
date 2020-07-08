@@ -62,7 +62,7 @@ namespace GANN.GA
                 for (int pop = 0; pop < PopulationCount; pop++)
                 {
                     //TODO - B - this computes fitnesses like n times too many times
-                    Chromosome chosen = SamplingStrategy.Sample(population, fitnesses, random);
+                    Chromosome chosen = SamplingStrategy.Sample(population, fitnesses, random).DeepCopy();
 
                     chosen = MaybeMutate(chosen);
                     bool did = MaybeCrossover(chosen, fitnesses, out Chromosome[] crossRes);
@@ -85,7 +85,7 @@ namespace GANN.GA
             for (int i = 0; i < population.Length; i++)
             {
                 //TODO - B - Remove args from fitness and any other where it makes no sense
-                double f = FitnessFunction.ComputeFitness(population[i]);
+                double f = FitnessFunction.ComputeFitness(population[i].DeepCopy());
                 if(f > maxF)
                 {
                     maxF = f;
@@ -101,14 +101,14 @@ namespace GANN.GA
 
             return (BestScore, BestSolution.DeepCopy());
         }
-
+        //TODO - 0 - remove weigh and dev changes from ranges
         public Chromosome MaybeMutate(Chromosome c)
         {
             double pm = random.NextDouble();
 
             if(pm <= mutationProbability)
             {
-                c = MutationOperator.Mutate(c, random);
+                c = MutationOperator.Mutate(c, random).DeepCopy();
             }
 
             return c;
@@ -125,7 +125,7 @@ namespace GANN.GA
             if(pc <= crossoverProbability)
             {
                 did = true;
-                Chromosome c2 = SamplingStrategy.Sample(population, fitnesses, random);
+                Chromosome c2 = SamplingStrategy.Sample(population, fitnesses, random).DeepCopy();
                 c2 = MaybeMutate(c2);
 
                 (c1, c2) = CrossoverOperator.Crossover(c1, c2, random);

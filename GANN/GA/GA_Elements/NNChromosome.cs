@@ -21,7 +21,7 @@ namespace GANN.GA.GA_Elements
         public override Chromosome DeepCopy()
         {
             //TODO - B - deep copies are not having deep copy of random
-            return new NNChromosome(new ANN(NeuralNetwork.Hyperparameters, NeuralNetwork.Random));
+            return new NNChromosome(new ANN(NeuralNetwork.Hyperparameters.DeepCopy(), NeuralNetwork.Random));
         }
 
         public override string ToString()

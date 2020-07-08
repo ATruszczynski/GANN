@@ -264,8 +264,8 @@ namespace GANN.MathAT
         public static void TestCount()
         {
             Random random = new Random(1001);
-            (var trainInput, var trainOutput) = CountIO(2000, 4, random);
-            (var testInput, var testOutput) = CountIO(200, 4, random);
+            (var trainInput, var trainOutput) = CountIO(1000, 10, random);
+            (var testInput, var testOutput) = CountIO(200, 10, random);
             //(var trainInput, var trainOutput) = GenerateReverseIO(500, random);
             //(var testInput, var testOutput) = GenerateReverseIO(200, random);
 
@@ -278,11 +278,11 @@ namespace GANN.MathAT
             {
                 //TODO - 0 - learn about lock
                 random = new Random(1001);
-                nn = new ANN(new Hyperparameters(trainInput[0].Length, trainOutput[0].Length, inNeuronCounts: new int[] { 8 }, gradStep: new ConstantGradientStep(0.01)), random);
+                nn = new ANN(new Hyperparameters(trainInput[0].Length, trainOutput[0].Length, inNeuronCounts: new int[] { 1024 }, gradStep: new MomentumStrategy(0.0001, 0.1)), random);
 
                 //nn = new ANN(new Hyperparameters(2, 2, mw: 0), random);
                 //nn.masDeg = 1;
-                nn.Train(trainInput, trainOutput, 200, 50);
+                nn.Train(trainInput, trainOutput, 100, 50);
                 for (int j = 0; j < reps; j++)
                 {
                     //Console.WriteLine(nn.Run(testInput[0], out _, out _)[0]);
@@ -302,8 +302,8 @@ namespace GANN.MathAT
 
             GANN gANN = new GANN(trainInput, trainOutput, testInput, testOutput, random);
 
-            var nn = gANN.GetGoodNN(2, 0.90, 20);
-
+            var nn = gANN.GetGoodNN(10, 0.90, 20);
+            Console.WriteLine(nn.ToString());
             Console.WriteLine("Accuracy: " + nn.Test(testInput, testOutput, "countconfusionmatrix.txt", "log2.txt").Average());
         }
     }

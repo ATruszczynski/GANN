@@ -5,12 +5,16 @@ using System.Text;
 
 namespace GANN.NN.GradientStepStrategies
 {
-    public abstract class GradientStepStrategy : IComparable
+    public abstract class GradientStepStrategy : IComparable, IDeepCopyable
     {
         //TODO - A - what parameters should that take?
         public abstract (MatrixAT1[], MatrixAT1[]) GetStepSize(double avDiff, MatrixAT1[] updateW, MatrixAT1[] updateB);
         public abstract GradientStepStrategy DeepCopy();
         public abstract int CompareTo(object obj);
         public abstract override string ToString();
+        object IDeepCopyable.DeepCopy()
+        {
+            return DeepCopy();
+        }
     }
 }

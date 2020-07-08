@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GANN.MathAT.Ranges
 {
-    public class SetRange<T>: Range where T : IComparable
+    public class SetRange<T>: Range where T : IComparable, IDeepCopyable
     {
         public DiscreteDistribution Distribution;
         public T[] Values;
@@ -18,7 +18,7 @@ namespace GANN.MathAT.Ranges
 
         public override object GetNext()
         {
-            return Values[(int)Distribution.GetNext()];
+            return Values[(int)Distribution.GetNext()].DeepCopy();
         }
 
         public override bool IsInRange(object value)
