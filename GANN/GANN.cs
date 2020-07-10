@@ -22,6 +22,9 @@ namespace GANN
 {
     class GANN
     {
+        //TODO - 0 - debug cross entropy + softmax
+        //TODO - A - add verbosity parameters to networks and GANN
+        //TODO - B - don't recalculate fitnesses of unchanged networks
         public GeneticAlgorithm GeneticAlgorithm;
         //public double[][] TrainInput;
         //public double[][] TrainOutput;
@@ -44,10 +47,10 @@ namespace GANN
             HypereparametersRange = new HyperparameterRanges(trainInput[0].Length, trainOutput[0].Length);
             HypereparametersRange.InternalLayerCountDistribution = new DiscreteRange(new UniformDiscreteRangeDistribution(random, 0, 2));
             HypereparametersRange.NeuronCountDistribution = new DiscreteRange(new UniformDiscreteRangeDistribution(random, 1, 200));
-            HypereparametersRange.ActFuncDist = new SetRange<ActivationFunction>(new ActivationFunction[] { new Relu() }, new UniformDiscreteRangeDistribution(random, 0, 1));
+            HypereparametersRange.InternalActFuncDist = new SetRange<ActivationFunction>(new ActivationFunction[] { new Relu() }, new UniformDiscreteRangeDistribution(random, 0, 1));
             HypereparametersRange.LossFuncDist = new SetRange<LossFunction>(new LossFunction[] { new QuadDiff(), new QuadDiff(0.5), new CrossEntropy() }, new UniformDiscreteRangeDistribution(random, 0, 3));
             HypereparametersRange.GradStratDist = new SetRange<GradientStepStrategy>(new GradientStepStrategy[] { new ConstantGradientStep(0.01), new ConstantGradientStep(1), new ConstantGradientStep(0.001), new MomentumStrategy(0.001, 0.1), new MomentumStrategy(0.01, 0.1) }, new UniformDiscreteRangeDistribution(random, 0, 5));
-            HypereparametersRange.outputAct = new Sigma();
+            HypereparametersRange.AggregateFunction = new SetRange<ActivationFunction>(new ActivationFunction[] { new Sigma()}, new UniformDiscreteRangeDistribution(random, 0, 1));
 
             GeneticAlgorithm = new GeneticAlgorithm();
 

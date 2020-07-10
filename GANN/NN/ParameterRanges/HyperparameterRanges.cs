@@ -14,17 +14,16 @@ namespace GANN.NN.ParameterRanges
     {
         //TODO - B - should that class be range?
         //TODO - B - implement changing probability of cs and mutation in GA
-        //TODO - A - different last act funciton
         //public ContinuousRange WeightDistribution;
         //public ContinuousRange StdDistribution;
         public DiscreteRange InternalLayerCountDistribution;
         public DiscreteRange NeuronCountDistribution;
-        public SetRange<ActivationFunction> ActFuncDist;
+        public SetRange<ActivationFunction> InternalActFuncDist;
+        public SetRange<ActivationFunction> AggregateFunction;
         public SetRange<LossFunction> LossFuncDist;
         public SetRange<GradientStepStrategy> GradStratDist;
         public int inputSize;
         public int outputSize;
-        public ActivationFunction outputAct;
 
         //TODO - B - validate if everything is initialised
 
@@ -55,10 +54,10 @@ namespace GANN.NN.ParameterRanges
             var ActivationFunctions = new ActivationFunction[internalNeuronCounts.Length];
             for (int i = 0; i < ActivationFunctions.Length; i++)
             {
-                ActivationFunctions[i] = (ActivationFunction)ActFuncDist.GetNext();
+                ActivationFunctions[i] = (ActivationFunction)InternalActFuncDist.GetNext();
             }
             //TODO - B - last func is output or agg
-            var aggAct = outputAct.DeepCopy();
+            var aggAct = (ActivationFunction)AggregateFunction.GetNext();
             var LossFunction = (LossFunction)LossFuncDist.GetNext();
             var GradientStepStrategy = (GradientStepStrategy)GradStratDist.GetNext();
 

@@ -4,7 +4,6 @@ using System.Text;
 
 namespace GANN.MathAT
 {
-    //TODO - A - make fitness func resitant to exceptions
     public enum MutateAction
     {
         AddLayer,

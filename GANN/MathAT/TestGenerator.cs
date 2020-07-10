@@ -174,10 +174,10 @@ namespace GANN.MathAT
             //hp.StdDistribution = new ContinuousRange(new UniformContinuousRangeDistribution(random, -1, 1));
             hp.InternalLayerCountDistribution = new DiscreteRange(new UniformDiscreteRangeDistribution(random, 1, 3));
             hp.NeuronCountDistribution = new DiscreteRange(new UniformDiscreteRangeDistribution(random, 1, 100));
-            hp.ActFuncDist = new SetRange<ActivationFunction>(new ActivationFunction[] { new Relu() }, new UniformDiscreteRangeDistribution(random, 0, 1));
+            hp.InternalActFuncDist = new SetRange<ActivationFunction>(new ActivationFunction[] { new Relu() }, new UniformDiscreteRangeDistribution(random, 0, 1));
             hp.LossFuncDist = new SetRange<LossFunction>(new LossFunction[] { new QuadDiff(), new QuadDiff(0.5), new CrossEntropy() }, new UniformDiscreteRangeDistribution(random, 0, 3));
             hp.GradStratDist = new SetRange<GradientStepStrategy>(new GradientStepStrategy[] { new ConstantGradientStep(0.5), new ConstantGradientStep(1), new ConstantGradientStep(0.01) }, new UniformDiscreteRangeDistribution(random, 0, 2));
-            hp.outputAct = new Sigma();
+            hp.AggregateFunction = new SetRange<ActivationFunction>(new ActivationFunction[] { new Sigma() }, new UniformDiscreteRangeDistribution(random, 0, 1));
 
             ga.MutationOperator = new NNBasicMutationOperator(hp);
             ga.SamplingStrategy = new RouletteSamplingStrategy();
@@ -278,7 +278,7 @@ namespace GANN.MathAT
             //nn.masDeg = 1;
             for (int i = 0; i < networsk; i++)
             {
-                //TODO - 0 - learn about lock
+                //TODO - D - learn about lock
                 random = new Random(1001);
                 nn = new ANN(new Hyperparameters(trainInput[0].Length, trainOutput[0].Length, inNeuronCounts: new int[] { 8 }, gradStep: new MomentumStrategy(0.001, 0.1)), random);
 
@@ -298,16 +298,15 @@ namespace GANN.MathAT
 
         public static void GANNN()
         {
-            //TODO - 0 - rework mutation opertor (and crossover operator too?)
             Random random = new Random(1001);
             (var trainInput, var trainOutput) = CountIO(500, 10, random);
             (var testInput, var testOutput) = CountIO(200, 10, random);
 
             GANN gANN = new GANN(trainInput, trainOutput, testInput, testOutput, random);
 
-            var nn = gANN.GetGoodANN(6, 0.90, 15);
+            var nn = gANN.GetGoodANN(6, 0.90, 1);
             Console.WriteLine(nn.ToString());
-            nn.Train(trainInput, trainOutput, 100, 50);
+            nn.Train(trainInput, trainOutput, 10, 50);
             Console.WriteLine("Accuracy: " + nn.Test(testInput, testOutput, "countconfusionmatrix.txt", "log2.txt").Average());
         }
     }

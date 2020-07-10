@@ -23,9 +23,6 @@ namespace NeuralNetworkExperiments
 {
     class Program
     {
-        //TODO - A - hyperparametes, range and distribution classes SUCKKKKKKK. Hyperparameters should have input output sizes too
-        //TODO - A - make GANN class
-        //TODO - A - make testing class
         static void Main(string[] args)
         {
             //MNIST m = new MNIST();

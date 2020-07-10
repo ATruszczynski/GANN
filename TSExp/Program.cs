@@ -15,7 +15,6 @@ namespace TSExp
     {
         static void Main(string[] args)
         {
-            //TODO - A - NN doesnt work with neuron counts only
             (var trainInputs, var trainOutputs, var testInputs, var testOutputs) = GreyScaleImageLoader.LoadToGreyScale(@"C:\Users\aleks\Desktop\Sign-Language-Digits-Dataset-master\Sign-Language-Digits-Dataset-master\Dataset");
             ANN ann = new ANN(new Hyperparameters(10000, 10, new int[] { 1000, 100 }, sw: 0.25,
                     intActFuns: new ActivationFunction[] { new Relu(), new Relu() },

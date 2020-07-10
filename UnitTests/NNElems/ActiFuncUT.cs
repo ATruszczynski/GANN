@@ -34,8 +34,6 @@ namespace UnitTests.NNElems
         [TestMethod]
         public void NNSigma()
         {
-            //TODO - A - NN should change all act functions at once in mutation?
-
             var zs = new MatrixAT1(new double[,] { { 0 }, { -1 }, { 2 } });
             Sigma sigma = new Sigma();
 

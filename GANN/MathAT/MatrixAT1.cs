@@ -25,7 +25,6 @@ namespace GANN.MathAT
 
         public MatrixAT1(double[] array, bool column = true)
         {
-            //TODO - 0 - test
             //TODO - C - Simplify
             if (!column)
             {

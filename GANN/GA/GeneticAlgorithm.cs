@@ -101,7 +101,6 @@ namespace GANN.GA
 
             return (BestScore, BestSolution.DeepCopy());
         }
-        //TODO - 0 - remove weigh and dev changes from ranges
         public Chromosome MaybeMutate(Chromosome c)
         {
             double pm = random.NextDouble();

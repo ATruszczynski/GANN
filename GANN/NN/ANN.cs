@@ -17,7 +17,8 @@ namespace GANN.NN
 {
     public class ANN : NeuralNetwork
     {
-        //TODO - 0 - make faster
+        //TODO - 0 - check math one more time
+        //TODO - B - make faster
         //TODO - D - remove needless pubilc
         //TODO - B - names from capital letters
 
@@ -41,7 +42,7 @@ namespace GANN.NN
         //TODO - B - alternative to Relu?
         //TODO - B - Add argument validation
         //TODO - B - custom edges
-        //TODO - A - hyperparameters as only property
+        //TODO - C - hyperparameters as only property?
         public ANN(Hyperparameters hyperparameters, Random random = null)
         {
             Hyperparameters = hyperparameters;
@@ -104,7 +105,6 @@ namespace GANN.NN
         //TODO - B - not the cleanest interface in the world
         public override double[] Run(double[] input, out MatrixAT1[] ases, out MatrixAT1[] zs)
         {
-            //TODO - 0 - test
             if (input.Length != neuronCounts[0])
                 throw new ArgumentException($"Wrong numbers of arguments in input - {input.Length} (expected {neuronCounts[0]})");
 
@@ -183,12 +183,7 @@ namespace GANN.NN
                     //TODO - C - could speed up by not reinitializng matrixes
                     (MatrixAT1[] weightGradChange, MatrixAT1[] biasesGradChange, _) = InitialiseComponents();
                     double averageDiff = 0;
-                    //TODO - 0 - this should NOT be nondeterministic
-                    //for (int inputInd = startIndInc; inputInd < endIndExc; inputInd++)
-                    //{
                     var listOfTasks = Utility.SeparateForTasks(startIndInc, endIndExc, maxTasks);
-                    //Parallel.For(startIndInc, endIndExc, new ParallelOptions { MaxDegreeOfParallelism = masDeg }, inputInd => 
-                    //{ 
                     Parallel.ForEach(listOfTasks, new ParallelOptions { MaxDegreeOfParallelism = masDeg }, task =>
                     {
                         foreach (var inputInd in task)
@@ -243,15 +238,7 @@ namespace GANN.NN
                     averageDiff /= n;
 
                     Logger.Log("Av diff", averageDiff.ToString());
-
-                    //TODO - A - is that ok?
-                    //for (int i = 1; i < weightGradChange.Length; i++)
-                    //{
-                    //    weightGradChange[i] = 1d / n * weightGradChange[i];
-                    //    biasesGradChange[i] = 1d / n * biasesGradChange[i];
-                    //}
-                    if (e == 70)
-                        ;
+                    
                     (weightGradChange, biasesGradChange) = GradientStepStrategy.GetStepSize(averageDiff, weightGradChange, biasesGradChange);
 
                     for (int w = 1; w < neuronCounts.Length; w++)
@@ -341,7 +328,6 @@ namespace GANN.NN
             {
                 for (int k = 0; k < wg_L.Columns; k++)
                 {
-                    //TODO - 0 - is math ok here?
                     wg_L[j, k] = a_Lminus1[k, 0] * bg_L[j, 0];
                 }
             }

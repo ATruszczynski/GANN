@@ -4,7 +4,7 @@ using System.Text;
 
 namespace GANN.MathAT
 {
-    //TODO - A - logger
+    //TODO - C - logger
     public class Utility
     {
         public static int Roulette(double[] values, Random random)

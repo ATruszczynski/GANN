@@ -7,7 +7,6 @@ namespace GANN
 {
     public class Logger
     {
-        //TODO - 0 - find first thing that change; write wg to ext array
         static string path = "log.txt";
         static StreamWriter sw;
         static Random random = new Random(1001);

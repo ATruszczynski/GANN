@@ -16,10 +16,7 @@ namespace GANN.GA.Operators.MutationOperators
 {
     public class NNBasicMutationOperator : MutationOperator
     {
-        //TODO - A - are layers a good idea? Should layers be in Hyperparameters instead?
-        //TODO - 0 - figure out how it will work
         //TODO - ? - repairs in GA
-        //TODO - A - layers aren't helping that much :/
         //TODO - A - test tc
 
         public HyperparameterRanges Ranges;
@@ -83,7 +80,7 @@ namespace GANN.GA.Operators.MutationOperators
             else if (mutation == ChangeActFunc)
             {
                 ActivationFunction af = hp.InternalActivationFunctions[0];
-                ActivationFunction naf = (ActivationFunction)Ranges.ActFuncDist.GetNeighbour(af);
+                ActivationFunction naf = (ActivationFunction)Ranges.InternalActFuncDist.GetNeighbour(af);
                 for (int i = 0; i < hp.InternalActivationFunctions.Length; i++)
                 {
                     hp.InternalActivationFunctions[i] = naf.DeepCopy();
@@ -127,7 +124,7 @@ namespace GANN.GA.Operators.MutationOperators
             {
                 result.Add(RemoveLayer); //layer can be removed
                 result.Add(ChangeNeuronCount); //layer neruron count can be changed
-                if(Ranges.ActFuncDist.Values.Length > 1)
+                if(Ranges.InternalActFuncDist.Values.Length > 1)
                     result.Add(ChangeActFunc); //layer act func can be changed
             }
 
