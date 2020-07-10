@@ -24,12 +24,26 @@ namespace GANN.NN.ActivationFunctions
 
         public override double Compute(int ind, MatrixAT1 zs)
         {
-            double z_i = Exp(zs[ind, 0]);
+            //TODO - A - test
+            var zs2 = zs.DeepCopy();
+            double max = double.MinValue;
+            for (int i = 0; i < zs2.Rows; i++)
+            {
+                if (zs2[i, 0] > max)
+                    max = zs2[i, 0];
+            }
+
+            for (int i = 0; i < zs2.Rows; i++)
+            {
+                zs2[i, 0] -= max;
+            }
+
+            double z_i = Exp(zs2[ind, 0]);
             double sum = 0;
 
-            for (int k = 0; k < zs.Rows; k++)
+            for (int k = 0; k < zs2.Rows; k++)
             {
-                double z_k = zs[k, 0];
+                double z_k = zs2[k, 0];
                 sum += Exp(z_k);
             }
 

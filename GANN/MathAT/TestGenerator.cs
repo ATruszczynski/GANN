@@ -266,7 +266,7 @@ namespace GANN.MathAT
         public static void TestCount()
         {
             Random random = new Random(1001);
-            (var trainInput, var trainOutput) = CountIO(1000, 3, random);
+            (var trainInput, var trainOutput) = CountIO(200, 3, random);
             (var testInput, var testOutput) = CountIO(200, 3, random);
             //(var trainInput, var trainOutput) = GenerateReverseIO(500, random);
             //(var testInput, var testOutput) = GenerateReverseIO(200, random);
@@ -280,11 +280,11 @@ namespace GANN.MathAT
             {
                 //TODO - D - learn about lock
                 random = new Random(1001);
-                nn = new ANN(new Hyperparameters(trainInput[0].Length, trainOutput[0].Length, inNeuronCounts: new int[] { 8 }, gradStep: new MomentumStrategy(0.001, 0.1)), random);
+                nn = new ANN(new Hyperparameters(trainInput[0].Length, trainOutput[0].Length, inNeuronCounts: new int[] { 10 }, intActFuns: new ActivationFunction[] { new Relu() }, aggregateActFunc: new Softmax(), lossFunc: new CrossEntropy(), gradStep: new MomentumStrategy(0.00001, 0.1)), random);
 
                 //nn = new ANN(new Hyperparameters(2, 2, mw: 0), random);
-                //nn.masDeg = 1;
-                nn.Train(trainInput, trainOutput, 100, 50);
+                nn.masDeg = 1;
+                nn.Train(trainInput, trainOutput, 1000, 50);
                 for (int j = 0; j < reps; j++)
                 {
                     //Console.WriteLine(nn.Run(testInput[0], out _, out _)[0]);

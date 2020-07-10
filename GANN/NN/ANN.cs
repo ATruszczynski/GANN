@@ -188,6 +188,8 @@ namespace GANN.NN
                     {
                         foreach (var inputInd in task)
                         {
+                            if (e > 36 && outputs[inputInd][0] == 1)
+                                ;
                             MatrixAT1[] ases = null;
                             MatrixAT1[] zs = null;
                             (MatrixAT1[] weightGrad, MatrixAT1[] biasesGrad, MatrixAT1[] activationsGrad) = InitialiseComponents();
@@ -195,12 +197,17 @@ namespace GANN.NN
                             {
                                 if (layer == LayerCount - 1)
                                 {
+                                    if (e == 21 && batches == 2 && inputInd == 49)
+                                        ;
                                     MatrixAT1 currOutput = new MatrixAT1(Run(inputs[inputInd], out ases, out zs));
 
                                     MatrixAT1 goodOutput = new MatrixAT1(outputs[inputInd]);
 
+                                    var loss = LossFunction.Compute(currOutput, goodOutput); //TODO - C - sumDiff into averageDiff
+                                    if (inputInd == 0 && e > 36)
+                                        ;
                                     lock (syncLocks[0])
-                                        averageDiff += LossFunction.Compute(currOutput, goodOutput); //TODO - C - sumDiff into averageDiff
+                                        averageDiff += loss;
 
                                     activationsGrad[layer] = CalculateLastLayerLossGradient(currOutput, goodOutput);
                                 }
@@ -249,7 +256,7 @@ namespace GANN.NN
                     //Console.WriteLine($"Batch {e + 1}/{b + 1} completed");
                 }
                 ;
-                //Console.WriteLine("Error average:" + errorSum / inputs.Length / outputs[0].Length);
+                Console.WriteLine("Error average:" + errorSum / inputs.Length / outputs[0].Length);
             }
 
         }
