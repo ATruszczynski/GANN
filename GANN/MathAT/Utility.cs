@@ -164,7 +164,7 @@ namespace GANN.MathAT
 
         public static double NeighbourOnCircleCont(double curr, double radius, double max, double min, Random random)
         {
-            //TODO - B - test
+            //TODO - A - test
             //TODO - C - not too close to orioginal value?
             var val = 2*(random.NextDouble() - 0.5);
             var step = val * radius;
@@ -184,7 +184,7 @@ namespace GANN.MathAT
 
         public static int NeighbourOnCircleDisc(int curr, int radius, int max, int min, Random random)
         {
-            //TODO - B - test
+            //TODO - A - test
             double p = random.NextDouble();
             int cand;
             if(p < 0.5)

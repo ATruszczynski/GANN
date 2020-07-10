@@ -24,7 +24,7 @@ namespace GANN.NN.Other
 
     //    public Layer(int counts, int prevCount, ActivationFunction actFun, Distribution dist):this(counts)
     //    {
-    //        //TODO - B - test tc
+    //        //TODO - A - test tc
     //        weights = new MatrixAT1(Count, prevCount);
     //        biases = new MatrixAT1(Count, 1);
     //        ActivationFunction = actFun;

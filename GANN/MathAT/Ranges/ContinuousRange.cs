@@ -31,7 +31,7 @@ namespace GANN.MathAT.Ranges
 
         public override object GetNeighbour(object obj)
         {
-            //TODO - B - test
+            //TODO - A - test
             double val = Utility.TryCastToDouble(obj);
             double neighRadius = neighbourTol * (Max - Min);
 

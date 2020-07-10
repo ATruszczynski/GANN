@@ -18,6 +18,7 @@ namespace GANN.MathAT.Ranges
 
         public override object GetNeighbour(object obj)
         {
+            //TODO - A - test
             T val = (T)obj;
             int ind = 0;
             for (; ind < Values.Length; ind++)

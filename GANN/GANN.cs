@@ -5,6 +5,7 @@ using GANN.GA.Operators.CrossoverOperators;
 using GANN.GA.Operators.MutationOperators;
 using GANN.GA.ReplacementStrategies;
 using GANN.GA.SamplingStrategies;
+using GANN.MathAT;
 using GANN.MathAT.Distributions;
 using GANN.MathAT.Ranges;
 using GANN.NN;
@@ -27,6 +28,8 @@ namespace GANN
         //public double[][] TestInput;
         //public double[][] TestOutput;
         public int stepSize = 2;
+        int initizalEp = 2; //TODO - B - parametrise
+        int initPop = 20;
 
         public HyperparameterRanges HypereparametersRange;
 
@@ -59,34 +62,55 @@ namespace GANN
             nnff.trainOutputs = trainOutput;
             nnff.testInputs = testInput;
             nnff.testOutputs = testOutput;
-            nnff.epochs = 100;
+            nnff.epochs = 2;
+            nnff.batches = 5 * trainOutput[0].Length;
 
             GeneticAlgorithm.FitnessFunction = nnff;
 
             GeneticAlgorithm.Iterations = 1;
         }
-
-        public ANN GetGoodNN(int maxIt, double desiredScore, int popCount = 10)
+        //TODO - B - resturcutre unit tests
+        public ANN GetGoodANN(int maxIt, double desiredScore, int initPopCount = 10)
         {
-            NNChromosome[] population = new NNChromosome[popCount];
-            GeneticAlgorithm.PopulationCount = popCount;
-            for (int i = 0; i < popCount; i++)
-            {
-                population[i] = new NNChromosome((Hyperparameters)HypereparametersRange.GetNext());
-            }
-            GeneticAlgorithm.population = population;
+            //TODO - A - test
+            ANN nn = null;
 
-            Hyperparameters nn = null;
-            int it = 0;
-            double score = -1;
-            while(it < maxIt && score < desiredScore)
+            var popHps = Preeliminaries(10 * initPopCount, initPopCount);
+            GeneticAlgorithm.population = new Chromosome[initPopCount];
+            for (int i = 0; i < popHps.Count; i++)
             {
-                Chromosome cnn = null;
-                (score, cnn) =  GeneticAlgorithm.Run(Random);
-                nn = (cnn as NNChromosome).Hyperparameters;
-                it++;
+                GeneticAlgorithm.population[i] = new NNChromosome(popHps[i]);
             }
-            return new ANN(nn);
+
+            for (int i = 0; i < maxIt; i++)
+            {
+                Console.WriteLine("desu");
+                GeneticAlgorithm.PopulationCount = initPopCount; //TODO - A - some mechanism for change
+                (GeneticAlgorithm.FitnessFunction as NNFitnessFunc).epochs = (int)Math.Pow(initizalEp, i + 1);
+                (double score, Chromosome ch) =  GeneticAlgorithm.Run(Random);
+                nn = new ANN((ch as NNChromosome).Hyperparameters);
+                if (score > desiredScore)
+                    break;
+            }
+
+            return nn;
+        }
+        //TODO - B - additional parametrization (epoch, batches, etc.)
+        public List<Hyperparameters> Preeliminaries(int toTest, int toRemain)
+        {
+            Console.WriteLine("Preelims started");
+            //TODO - B - solve clunky object arguments and returns with templates?
+            //TODO - A - test
+            LimitedCapacitySortedList<Hyperparameters> hps = new LimitedCapacitySortedList<Hyperparameters>(toRemain);
+            for (int i = 0; i < toTest; i++)
+            {
+                Hyperparameters hp = (Hyperparameters)HypereparametersRange.GetNext();
+                var score = GeneticAlgorithm.FitnessFunction.ComputeFitness(new NNChromosome(hp));
+                hps.Add(score, hp);
+                Console.WriteLine((double)i / (toTest - 1));
+            }
+
+            return hps.ExtractList();
         }
     }
 }

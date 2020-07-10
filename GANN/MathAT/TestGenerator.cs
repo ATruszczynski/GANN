@@ -299,13 +299,14 @@ namespace GANN.MathAT
         public static void GANNN()
         {
             Random random = new Random(1001);
-            (var trainInput, var trainOutput) = CountIO(500, 3, random);
-            (var testInput, var testOutput) = CountIO(200, 3, random);
+            (var trainInput, var trainOutput) = CountIO(500, 4, random);
+            (var testInput, var testOutput) = CountIO(200, 4, random);
 
             GANN gANN = new GANN(trainInput, trainOutput, testInput, testOutput, random);
 
-            var nn = gANN.GetGoodNN(10, 0.90, 20);
+            var nn = gANN.GetGoodANN(5, 0.90, 10);
             Console.WriteLine(nn.ToString());
+            nn.Train(trainInput, trainOutput, 100, 50);
             Console.WriteLine("Accuracy: " + nn.Test(testInput, testOutput, "countconfusionmatrix.txt", "log2.txt").Average());
         }
     }

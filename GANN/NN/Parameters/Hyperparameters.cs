@@ -30,7 +30,7 @@ namespace GANN.NN.Parameters
             //TODO - A - validation
             //TODO - B - variable names in many classes
             //TODO - C - should I deep copy arrays?
-            //TODO - B - test
+            //TODO - A - test
 
             inputSize = inpSize;
             outputSize = outSize;
@@ -89,7 +89,7 @@ namespace GANN.NN.Parameters
         //TODO - B - implement
         public Hyperparameters DeepCopy()
         {
-            //TODO - B - test
+            //TODO - A - test
             int[] nc = new int[internalNeuronCounts.Length];
             for (int i = 0; i < nc.Length; i++)
             {

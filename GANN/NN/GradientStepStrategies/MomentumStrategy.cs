@@ -21,7 +21,7 @@ namespace GANN.NN.GradientStepStrategies
 
         public override int CompareTo(object obj)
         {
-            //TODO - B - test
+            //TODO - A - test
             MomentumStrategy ms = null;
             try
             {
@@ -42,13 +42,13 @@ namespace GANN.NN.GradientStepStrategies
 
         public override GradientStepStrategy DeepCopy()
         {
-            //TODO - B - test
+            //TODO - A - test
             return new MomentumStrategy(StepSize, MomDecay);
         }
 
         public override (MatrixAT1[], MatrixAT1[]) GetStepSize(double avDiff, MatrixAT1[] updateW, MatrixAT1[] updateB)
         {
-            //TODO - B - test
+            //TODO - A - test
             if(WeightMom == null)
             {
                 WeightMom = new MatrixAT1[updateW.Length];
@@ -79,7 +79,7 @@ namespace GANN.NN.GradientStepStrategies
 
         public override string ToString()
         {
-            //TODO - B - test
+            //TODO - A - test
             return $"MS{StepSize}-{MomDecay}";
         }
     }

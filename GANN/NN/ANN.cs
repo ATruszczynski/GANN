@@ -165,7 +165,7 @@ namespace GANN.NN
 
         public override void Train(double[][] inputs, double[][] outputs, int epochs, int batchSize)
         {
-            //TODO - B - test on more than 1 batch
+            //TODO - A - test on more than 1 batch
             
             double batches = Ceiling((double)inputs.Length / (double)batchSize);
             for (int e = 0; e < epochs; e++)
@@ -263,7 +263,7 @@ namespace GANN.NN
                     //Console.WriteLine($"Batch {e + 1}/{b + 1} completed");
                 }
                 ;
-                Console.WriteLine("Error average:" + errorSum / inputs.Length / outputs[0].Length);
+                //Console.WriteLine("Error average:" + errorSum / inputs.Length / outputs[0].Length);
             }
 
         }
@@ -353,7 +353,7 @@ namespace GANN.NN
         public override double[] Test(double[][] inputs, double[][] outputs, string cmpath = null, string logPath = null)
         {
             //TODO - B - validation
-            //TODO - B - test tc
+            //TODO - A - test tc
             //TODO - B - add precision and recall
             int len = outputs[0].Length;
             MatrixAT1 confusionMatrix = new MatrixAT1(len, len);
@@ -384,7 +384,7 @@ namespace GANN.NN
                     sww.WriteLine(Utility.ArrayToString(result));
                 }
             }
-            Console.WriteLine("Test finished");
+            //Console.WriteLine("Test finished");
 
             if(cmpath != null)
             {
@@ -412,7 +412,7 @@ namespace GANN.NN
 
         public override void ModelToFile(string path)
         {
-            //TODO - B - test
+            //TODO - A - test
             StreamWriter sw = new StreamWriter(path);
 
             for (int i = 1; i < neuronCounts.Length; i++)

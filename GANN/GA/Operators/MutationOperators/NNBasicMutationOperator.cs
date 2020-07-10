@@ -17,7 +17,7 @@ namespace GANN.GA.Operators.MutationOperators
         //TODO - 0 - figure out how it will work
         //TODO - ? - repairs in GA
         //TODO - A - layers aren't helping that much :/
-        //TODO - B - test tc
+        //TODO - A - test tc
 
         public HyperparameterRanges Ranges;
         public double possOfHPChange = 0.5;

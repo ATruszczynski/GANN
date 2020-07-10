@@ -17,7 +17,7 @@ namespace UnitTests
     public class GAUT
     {
         //TODO - C - Move and test utility functions
-        //TODO - B - test matrix compare functions
+        //TODO - A - test matrix compare functions
         [TestMethod]
         public void InterFFTest()
         {

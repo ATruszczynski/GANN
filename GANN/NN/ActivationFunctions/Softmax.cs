@@ -10,7 +10,7 @@ namespace GANN.NN.ActivationFunctions
     {
         public override int CompareTo(object obj)
         {
-            //TODO - B - test
+            //TODO - A - test
             try
             {
                 var sm = (Softmax)obj;
@@ -44,7 +44,7 @@ namespace GANN.NN.ActivationFunctions
 
         public override ActivationFunction DeepCopy()
         {
-            //TODO - B - test
+            //TODO - A - test
             return new Softmax();
         }
 

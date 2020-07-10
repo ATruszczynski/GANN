@@ -10,7 +10,7 @@ namespace GANN.NN.LossFunctions
     {
         public override int CompareTo(object obj)
         {
-            //TODO - B - test
+            //TODO - A - test
             try
             {
                 CrossEntropy e = (CrossEntropy)obj;
@@ -24,7 +24,7 @@ namespace GANN.NN.LossFunctions
 
         public override double Compute(MatrixAT1 output, MatrixAT1 expected)
         {
-            //TODO - B - test
+            //TODO - A - test
             double ce = 0;
 
             for (int i = 0; i < output.Rows; i++)
@@ -39,7 +39,7 @@ namespace GANN.NN.LossFunctions
 
         public override double ComputeDerivative(double output, double expected)
         {
-            //TODO - B - test
+            //TODO - A - test
             double der = -expected/output;
             if (double.IsNaN(der))
                 throw new ArgumentException("Nan value");
@@ -48,7 +48,7 @@ namespace GANN.NN.LossFunctions
 
         public override LossFunction DeepCopy()
         {
-            //TODO - B - test
+            //TODO - A - test
             return new CrossEntropy();
         }
 
