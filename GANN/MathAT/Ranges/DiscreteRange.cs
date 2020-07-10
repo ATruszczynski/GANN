@@ -30,5 +30,14 @@ namespace GANN.MathAT.Ranges
         {
             return (int)RangeGenerator.GetNext();
         }
+
+        public override object GetNeighbour(object obj)
+        {
+            //TODO - B - test
+            var val = Utility.TryCastToInt(obj);
+            int radius = (int)Math.Ceiling((Max - Min) / neighbourTol);
+
+            return Utility.NeighbourOnCircleDisc(val, radius, Max, Min, RangeGenerator.Random);
+        }
     }
 }

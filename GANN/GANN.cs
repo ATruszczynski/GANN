@@ -26,6 +26,7 @@ namespace GANN
         //public double[][] TrainOutput;
         //public double[][] TestInput;
         //public double[][] TestOutput;
+        public int stepSize = 2;
 
         public HyperparameterRanges HypereparametersRange;
 
@@ -58,7 +59,7 @@ namespace GANN
             nnff.trainOutputs = trainOutput;
             nnff.testInputs = testInput;
             nnff.testOutputs = testOutput;
-            nnff.epochs = 20;
+            nnff.epochs = 100;
 
             GeneticAlgorithm.FitnessFunction = nnff;
 
@@ -68,6 +69,7 @@ namespace GANN
         public ANN GetGoodNN(int maxIt, double desiredScore, int popCount = 10)
         {
             NNChromosome[] population = new NNChromosome[popCount];
+            GeneticAlgorithm.PopulationCount = popCount;
             for (int i = 0; i < popCount; i++)
             {
                 population[i] = new NNChromosome((Hyperparameters)HypereparametersRange.GetNext());

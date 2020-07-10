@@ -164,6 +164,7 @@ namespace UnitTests
             ga.FitnessFunction = new InterchangableBinaryFF();
 
             int pop = 100;
+            ga.PopulationCount = pop;
             int len = 20;
             Random random = new Random(1001);
             ga.population = new Chromosome[pop];

@@ -11,6 +11,7 @@ namespace GANN.MathAT.Ranges
         public double Min { get => RangeGenerator.Min; }
         public double Max { get => RangeGenerator.Max; }
         public ContinuousRangeDistribution RangeGenerator;
+        //TODO - B - GetNeighbour is uniform only!
         public ContinuousRange(ContinuousRangeDistribution rangeGenerator)
         {
             RangeGenerator = rangeGenerator;
@@ -26,6 +27,15 @@ namespace GANN.MathAT.Ranges
         public override object GetNext()
         {
             return RangeGenerator.GetNext();
+        }
+
+        public override object GetNeighbour(object obj)
+        {
+            //TODO - B - test
+            double val = Utility.TryCastToDouble(obj);
+            double neighRadius = neighbourTol * (Max - Min);
+
+            return Utility.NeighbourOnCircleCont(val, neighRadius, Max, Min, RangeGenerator.Random);
         }
     }
 }

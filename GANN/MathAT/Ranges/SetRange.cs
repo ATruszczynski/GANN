@@ -16,6 +16,21 @@ namespace GANN.MathAT.Ranges
             Values = values;
         }
 
+        public override object GetNeighbour(object obj)
+        {
+            T val = (T)obj;
+            int ind = 0;
+            for (; ind < Values.Length; ind++)
+            {
+                if (Values[ind].CompareTo(val) == 0)
+                    break;
+            }
+
+            int radius = (int)Math.Ceiling(Values.Length / neighbourTol);
+
+            return Values[Utility.NeighbourOnCircleDisc(ind, radius, Values.Length, 0, Distribution.Random)];
+        }
+
         public override object GetNext()
         {
             return Values[(int)Distribution.GetNext()].DeepCopy();

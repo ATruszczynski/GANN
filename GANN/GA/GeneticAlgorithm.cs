@@ -26,7 +26,7 @@ namespace GANN.GA
         public FitnessFunction FitnessFunction;
 
         public Chromosome[] population;
-        public int PopulationCount { get => population.Length;  }
+        public int? PopulationCount;
         public int Iterations;
 
         public double BestScore = double.MinValue;
@@ -41,10 +41,10 @@ namespace GANN.GA
             random = rrandom;
             for (int iter = 0; iter < Iterations; iter++)
             {
-                Chromosome[] newPopulation = new Chromosome[PopulationCount];
-                double[] fitnesses = new double[PopulationCount];
+                Chromosome[] newPopulation = new Chromosome[PopulationCount.Value];
+                double[] fitnesses = new double[PopulationCount.Value];
 
-                Parallel.For(0, PopulationCount, new ParallelOptions { MaxDegreeOfParallelism = maxDeg }, i => 
+                Parallel.For(0, PopulationCount.Value, new ParallelOptions { MaxDegreeOfParallelism = maxDeg }, i => 
                 {
                     fitnesses[i] = FitnessFunction.ComputeFitness(population[i].DeepCopy());
                     lock(bestLock)

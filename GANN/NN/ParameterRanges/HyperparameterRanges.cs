@@ -12,6 +12,7 @@ namespace GANN.NN.ParameterRanges
 {
     public class HyperparameterRanges : Range
     {
+        //TODO - B - should that class be range?
         //TODO - B - implement changing probability of cs and mutation in GA
         //TODO - A - different last act funciton
         //public ContinuousRange WeightDistribution;
@@ -74,6 +75,28 @@ namespace GANN.NN.ParameterRanges
                 );
 
             return result;
+        }
+
+        public override object GetNeighbour(object obj)
+        {
+            //Hyperparameters hp = (Hyperparameters)obj;
+
+
+
+            //Hyperparameters result = new Hyperparameters
+            //    (
+            //        inputSize,
+            //        outputSize,
+            //        internalNeuronCounts,
+            //        ActivationFunctions,
+            //        aggAct,
+            //        LossFunction,
+            //        GradientStepStrategy
+            //    );
+
+            //return result;
+            //shoudl not be used
+            throw new NotImplementedException("This method should not be used");
         }
     }
 }

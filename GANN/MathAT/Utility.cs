@@ -161,5 +161,49 @@ namespace GANN.MathAT
             }
             return result;
         }
+
+        public static double NeighbourOnCircleCont(double curr, double radius, double max, double min, Random random)
+        {
+            //TODO - B - test
+            //TODO - C - not too close to orioginal value?
+            var val = 2*(random.NextDouble() - 0.5);
+            var step = val * radius;
+
+            var cand = curr + step;
+
+            var range = max - min;
+
+            while (cand < min)
+                cand += range;
+
+            while (cand > max)
+                cand -= range;
+
+            return cand;
+        }
+
+        public static int NeighbourOnCircleDisc(int curr, int radius, int max, int min, Random random)
+        {
+            //TODO - B - test
+            double p = random.NextDouble();
+            int cand;
+            if(p < 0.5)
+            {
+                cand = random.Next(curr - radius, curr);
+            }
+            else
+            {
+                cand = random.Next(curr, curr + radius);
+            }
+
+            var range = max - min + 1;
+
+            while (cand < min)
+                cand += range;
+            while (cand > max)
+                cand -= range;
+
+            return cand;
+        }
     }
 }
