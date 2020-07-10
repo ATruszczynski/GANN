@@ -31,7 +31,7 @@ namespace GANN.NN
         public int LayerCount { get => neuronCounts.Length; }
         object[] syncLocks = new object[] { new object(), new object(), new object() };
         public int masDeg = -1;
-        public int maxTasks = 16;
+        public int maxTasks = 12;
         object loggerLock = new object();
 
         object[] wLocks;
@@ -44,7 +44,6 @@ namespace GANN.NN
         //TODO - A - hyperparameters as only property
         public ANN(Hyperparameters hyperparameters, Random random = null)
         {
-            //TODO - 0 - parallel is incorrectly implemented
             Hyperparameters = hyperparameters;
 
             if (random == null)

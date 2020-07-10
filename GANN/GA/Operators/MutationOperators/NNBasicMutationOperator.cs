@@ -8,6 +8,9 @@ using GANN.NN.Parameters;
 using static GANN.MathAT.Utility;
 using GANN.MathAT;
 using GANN.NN.ActivationFunctions;
+using static GANN.MathAT.MutateAction;
+using GANN.NN.LossFunctions;
+using GANN.NN.GradientStepStrategies;
 
 namespace GANN.GA.Operators.MutationOperators
 {
@@ -28,24 +31,88 @@ namespace GANN.GA.Operators.MutationOperators
             MaxMutNumber = maxMutNumber;
         }
         //TODO - B - random as property
-        public override Chromosome Mutate(Chromosome m, Random radoms)
+        public override Chromosome Mutate(Chromosome m, Random random)
         {
             NNChromosome nnc = (NNChromosome)m;
 
             Hyperparameters hp = nnc.Hyperparameters;
 
-            hp = (Hyperparameters)Ranges.GetNext();
+            var  possibleMutations = Define(hp);
+            MutateAction mutation = possibleMutations[random.Next(possibleMutations.Count)];
+
+
+            if (mutation == AddLayer)
+            {
+                int ind = random.Next(hp.internalNeuronCounts.Length + 1);
+                int newNeuronCount = (int)Ranges.NeuronCountDistribution.GetNext();
+                int[] newInternalNC = new int[hp.internalNeuronCounts.Length + 1];
+                int oldInd = 0;
+                for (int i = 0; i < newInternalNC.Length; i++)
+                {
+                    if (i != ind)
+                    {
+                        newInternalNC[i] = hp.internalNeuronCounts[oldInd++];
+                    }
+                    else
+                    {
+                        newInternalNC[i] = newNeuronCount;
+                    }
+                }
+                hp.internalNeuronCounts = newInternalNC;
+            }
+            else if (mutation == RemoveLayer)
+            {
+                int ind = random.Next(hp.internalNeuronCounts.Length);
+                int[] newInternalNC = new int[hp.internalNeuronCounts.Length - 1];
+                int newInd = 0;
+                for (int i = 0; i < hp.internalNeuronCounts.Length; i++)
+                {
+                    if(i != ind)
+                    {
+                        newInternalNC[newInd++] = hp.internalNeuronCounts[i];
+                    }
+                }
+                hp.internalNeuronCounts = newInternalNC;
+                
+            }
+            else if (mutation == ChangeNeuronCount)
+            {
+                int ind = random.Next(hp.internalNeuronCounts.Length);
+                hp.internalNeuronCounts[ind] = (int)Ranges.NeuronCountDistribution.GetNeighbour(hp.internalNeuronCounts[ind]);
+            }
+            else if (mutation == ChangeActFunc)
+            {
+                ActivationFunction af = hp.InternalActivationFunctions[0];
+                ActivationFunction naf = (ActivationFunction)Ranges.ActFuncDist.GetNeighbour(af);
+                for (int i = 0; i < hp.InternalActivationFunctions.Length; i++)
+                {
+                    hp.InternalActivationFunctions[i] = naf.DeepCopy();
+                }
+            }
+            else if (mutation == ChangeLossFunction)
+            {
+                LossFunction nfl = (LossFunction)Ranges.LossFuncDist.GetNeighbour(hp.LossFunction);
+                hp.LossFunction = nfl;
+            }
+            else if (mutation == ChangeGradientStrat)
+            {
+                hp.GradientStepStrategy = (GradientStepStrategy)Ranges.GradStratDist.GetNeighbour(hp.GradientStepStrategy);
+            }
+            else
+            {
+                throw new ArgumentException("Da fuq?");
+            }
 
             nnc = new NNChromosome();
 
-            nnc.Hyperparameters = hp;
+            nnc.Hyperparameters = hp.DeepCopy();
 
             return nnc;
         }
 
-        int[] Define(ANN nn)
+        List<MutateAction> Define(Hyperparameters hp)
         {
-            List<int> result = new List<int>();
+            List<MutateAction> result = new List<MutateAction>();
 
             //if (Ranges.WeightDistribution.Min != Ranges.WeightDistribution.Max)
             //    result.Add(0); //weights can be mutated
@@ -53,24 +120,24 @@ namespace GANN.GA.Operators.MutationOperators
             //if (Ranges.StdDistribution.Min != Ranges.StdDistribution.Max)
             //    result.Add(1); //std can be mutated
 
-            if (nn.LayerCount - 2 < Ranges.InternalLayerCountDistribution.Max)
-                result.Add(2); //layer can be added
+            if (hp.LayerCount - 2 < Ranges.InternalLayerCountDistribution.Max)
+                result.Add(AddLayer); //layer can be added
 
-            if (nn.LayerCount > 2)
+            if (hp.LayerCount > 2)
             {
-                result.Add(3); //layer can be removed
-                result.Add(4); //layer neruron count can be changed
+                result.Add(RemoveLayer); //layer can be removed
+                result.Add(ChangeNeuronCount); //layer neruron count can be changed
                 if(Ranges.ActFuncDist.Values.Length > 1)
-                    result.Add(5); //layer act func can be changed
+                    result.Add(ChangeActFunc); //layer act func can be changed
             }
 
             if (Ranges.LossFuncDist.Values.Length > 1)
-                result.Add(6); //loss function can be changed
+                result.Add(ChangeLossFunction); //loss function can be changed
 
             if (Ranges.GradStratDist.Values.Length > 1)
-                result.Add(7);
+                result.Add(ChangeGradientStrat);
 
-            return result.ToArray();
+            return result;
         }
     }
 }

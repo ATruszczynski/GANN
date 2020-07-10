@@ -298,13 +298,14 @@ namespace GANN.MathAT
 
         public static void GANNN()
         {
+            //TODO - 0 - rework mutation opertor (and crossover operator too?)
             Random random = new Random(1001);
-            (var trainInput, var trainOutput) = CountIO(500, 4, random);
-            (var testInput, var testOutput) = CountIO(200, 4, random);
+            (var trainInput, var trainOutput) = CountIO(500, 10, random);
+            (var testInput, var testOutput) = CountIO(200, 10, random);
 
             GANN gANN = new GANN(trainInput, trainOutput, testInput, testOutput, random);
 
-            var nn = gANN.GetGoodANN(5, 0.90, 10);
+            var nn = gANN.GetGoodANN(6, 0.90, 15);
             Console.WriteLine(nn.ToString());
             nn.Train(trainInput, trainOutput, 100, 50);
             Console.WriteLine("Accuracy: " + nn.Test(testInput, testOutput, "countconfusionmatrix.txt", "log2.txt").Average());
