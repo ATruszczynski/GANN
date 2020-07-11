@@ -16,10 +16,10 @@ namespace GANN.NN.Parameters
         //TODO - C - internal neurons to hidden
         public int inputSize = -1;
         public int outputSize = -1;
-        public int[] internalNeuronCounts;
+        public int[] InternalNeuronCounts;
         public double meanW;
         public double stdW;
-        public int LayerCount { get => internalNeuronCounts.Length + 2; }
+        public int LayerCount { get => InternalNeuronCounts.Length + 2; }
         public ActivationFunction[] InternalActivationFunctions;
         public ActivationFunction AggFunc;
         public LossFunction LossFunction;
@@ -36,9 +36,9 @@ namespace GANN.NN.Parameters
             outputSize = outSize;
 
             if (inNeuronCounts == null)
-                internalNeuronCounts = new int[0];
+                InternalNeuronCounts = new int[0];
             else
-                internalNeuronCounts = inNeuronCounts;
+                InternalNeuronCounts = inNeuronCounts;
 
             meanW = mw;
 
@@ -58,8 +58,8 @@ namespace GANN.NN.Parameters
             }
             else
             {
-                InternalActivationFunctions = new ActivationFunction[internalNeuronCounts.Length];
-                for (int i = 0; i < internalNeuronCounts.Length; i++)
+                InternalActivationFunctions = new ActivationFunction[InternalNeuronCounts.Length];
+                for (int i = 0; i < InternalNeuronCounts.Length; i++)
                 {
                     InternalActivationFunctions[i] = defaultActInner.DeepCopy();
                 }
@@ -90,13 +90,13 @@ namespace GANN.NN.Parameters
         public Hyperparameters DeepCopy()
         {
             //TODO - A - test
-            int[] nc = new int[internalNeuronCounts.Length];
+            int[] nc = new int[InternalNeuronCounts.Length];
             for (int i = 0; i < nc.Length; i++)
             {
-                nc[i] = internalNeuronCounts[i];
+                nc[i] = InternalNeuronCounts[i];
             }
 
-            ActivationFunction[] acts = new ActivationFunction[internalNeuronCounts.Length];
+            ActivationFunction[] acts = new ActivationFunction[InternalNeuronCounts.Length];
             for (int i = 0; i < acts.Length; i++)
             {
                 acts[i] = InternalActivationFunctions[i].DeepCopy();
@@ -120,9 +120,9 @@ namespace GANN.NN.Parameters
 
             result += inputSize + "|-|";
 
-            for (int i = 0; i < internalNeuronCounts.Length; i++)
+            for (int i = 0; i < InternalNeuronCounts.Length; i++)
             {
-                result += internalNeuronCounts[i] + "|" + InternalActivationFunctions[i].ToString() + "|";
+                result += InternalNeuronCounts[i] + "|" + InternalActivationFunctions[i].ToString() + "|";
             }
 
             result += outputSize + "|" + AggFunc.ToString() + "|" + LossFunction.ToString() + "|" + GradientStepStrategy.ToString();

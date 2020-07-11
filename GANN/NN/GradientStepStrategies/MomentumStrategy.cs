@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GANN.NN.GradientStepStrategies
 {
-    class MomentumStrategy : GradientStepStrategy
+    public class MomentumStrategy : GradientStepStrategy
     {
         MatrixAT1[] WeightMom;
         MatrixAT1[] BiasMom;

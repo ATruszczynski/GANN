@@ -79,7 +79,9 @@ namespace GANN
             ANN nn = null;
 
             var popHps = Preeliminaries(10 * initPopCount, initPopCount);
+
             GeneticAlgorithm.population = new Chromosome[initPopCount];
+
             for (int i = 0; i < popHps.Count; i++)
             {
                 GeneticAlgorithm.population[i] = new NNChromosome(popHps[i]);

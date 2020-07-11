@@ -40,42 +40,42 @@ namespace GANN.GA.Operators.MutationOperators
 
             if (mutation == AddLayer)
             {
-                int ind = random.Next(hp.internalNeuronCounts.Length + 1);
+                int ind = random.Next(hp.InternalNeuronCounts.Length + 1);
                 int newNeuronCount = (int)Ranges.NeuronCountDistribution.GetNext();
-                int[] newInternalNC = new int[hp.internalNeuronCounts.Length + 1];
+                int[] newInternalNC = new int[hp.InternalNeuronCounts.Length + 1];
                 int oldInd = 0;
                 for (int i = 0; i < newInternalNC.Length; i++)
                 {
                     if (i != ind)
                     {
-                        newInternalNC[i] = hp.internalNeuronCounts[oldInd++];
+                        newInternalNC[i] = hp.InternalNeuronCounts[oldInd++];
                     }
                     else
                     {
                         newInternalNC[i] = newNeuronCount;
                     }
                 }
-                hp.internalNeuronCounts = newInternalNC;
+                hp.InternalNeuronCounts = newInternalNC;
             }
             else if (mutation == RemoveLayer)
             {
-                int ind = random.Next(hp.internalNeuronCounts.Length);
-                int[] newInternalNC = new int[hp.internalNeuronCounts.Length - 1];
+                int ind = random.Next(hp.InternalNeuronCounts.Length);
+                int[] newInternalNC = new int[hp.InternalNeuronCounts.Length - 1];
                 int newInd = 0;
-                for (int i = 0; i < hp.internalNeuronCounts.Length; i++)
+                for (int i = 0; i < hp.InternalNeuronCounts.Length; i++)
                 {
                     if(i != ind)
                     {
-                        newInternalNC[newInd++] = hp.internalNeuronCounts[i];
+                        newInternalNC[newInd++] = hp.InternalNeuronCounts[i];
                     }
                 }
-                hp.internalNeuronCounts = newInternalNC;
+                hp.InternalNeuronCounts = newInternalNC;
                 
             }
             else if (mutation == ChangeNeuronCount)
             {
-                int ind = random.Next(hp.internalNeuronCounts.Length);
-                hp.internalNeuronCounts[ind] = (int)Ranges.NeuronCountDistribution.GetNeighbour(hp.internalNeuronCounts[ind]);
+                int ind = random.Next(hp.InternalNeuronCounts.Length);
+                hp.InternalNeuronCounts[ind] = (int)Ranges.NeuronCountDistribution.GetNeighbour(hp.InternalNeuronCounts[ind]);
             }
             else if (mutation == ChangeActFunc)
             {

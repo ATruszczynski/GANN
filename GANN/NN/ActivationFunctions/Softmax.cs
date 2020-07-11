@@ -38,6 +38,8 @@ namespace GANN.NN.ActivationFunctions
                 zs2[i, 0] -= max;
             }
 
+            //zs2 = zs;
+
             double z_i = Exp(zs2[ind, 0]);
             double sum = 0;
 

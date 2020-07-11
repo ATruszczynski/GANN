@@ -72,5 +72,25 @@ namespace UnitTests.Math
             Assert.IsFalse(gSet.IsInRange(new ConstantGradientStep(0.75)));
             Assert.IsFalse(set.IsInRange(new ConstantGradientStep(0.75)));
         }
+
+        [TestMethod]
+        public void GetNeighbourCont()
+        {
+            PseudoRandom prop = new PseudoRandom(0);
+            ContinuousRange cr = new ContinuousRange(new UniformContinuousRangeDistribution(prop, 0, 1));
+            cr.neighbourTol = 0.1;
+
+            Assert.IsTrue(NNUT.CloseCompare(0.95, (double)cr.GetNeighbour(0.05), 1e-6));
+        }
+
+        [TestMethod]
+        public void GetNeighbourDisc()
+        {
+            PseudoRandom prop = new PseudoRandom(0, 0);
+            DiscreteRange cr = new DiscreteRange(new UniformDiscreteRangeDistribution(prop, 0, 3));
+            cr.neighbourTol = 0.1;
+
+            Assert.AreEqual(0, cr.GetNeighbour(1));
+        }
     }
 }

@@ -162,7 +162,7 @@ namespace GANN.MathAT
             return result;
         }
 
-        public static double NeighbourOnCircleCont(double curr, double radius, double max, double min, Random random)
+        public static double NeighbourOnCircleCont(double curr, double radius, double min, double max, Random random)
         {
             //TODO - A - test
             //TODO - C - not too close to orioginal value?
@@ -176,14 +176,16 @@ namespace GANN.MathAT
             while (cand < min)
                 cand += range;
 
-            while (cand > max)
+            while (cand >= max)
                 cand -= range;
 
             return cand;
         }
 
-        public static int NeighbourOnCircleDisc(int curr, int radius, int max, int min, Random random)
+        public static int NeighbourOnCircleDisc(int curr, int radius, int min, int max, Random random)
         {
+            if (radius == 0)
+                throw new ArgumentException("Operation doesn't make sense with radius 0");
             //TODO - A - test
             double p = random.NextDouble();
             int cand;
@@ -193,14 +195,14 @@ namespace GANN.MathAT
             }
             else
             {
-                cand = random.Next(curr, curr + radius);
+                cand = random.Next(curr + 1, curr + radius + 1);
             }
 
-            var range = max - min + 1;
+            var range = max - min;
 
             while (cand < min)
                 cand += range;
-            while (cand > max)
+            while (cand >= max)
                 cand -= range;
 
             return cand;

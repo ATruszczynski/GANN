@@ -52,13 +52,13 @@ namespace GANN.NN
             else
                 Random = random;
 
-            neuronCounts = new int[hyperparameters.internalNeuronCounts.Length + 2];
+            neuronCounts = new int[hyperparameters.InternalNeuronCounts.Length + 2];
             neuronCounts[0] = hyperparameters.inputSize;
             neuronCounts[neuronCounts.Length - 1] = hyperparameters.outputSize;
 
             for (int i = 1; i < neuronCounts.Length - 1; i++)
             {
-                neuronCounts[i] = hyperparameters.internalNeuronCounts[i - 1];
+                neuronCounts[i] = hyperparameters.InternalNeuronCounts[i - 1];
             }
 
             activationFuncs = new ActivationFunction[neuronCounts.Length];

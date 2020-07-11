@@ -31,11 +31,10 @@ namespace GANN.MathAT.Ranges
 
         public override object GetNeighbour(object obj)
         {
-            //TODO - A - test
             double val = Utility.TryCastToDouble(obj);
             double neighRadius = neighbourTol * (Max - Min);
 
-            return Utility.NeighbourOnCircleCont(val, neighRadius, Max, Min, RangeGenerator.Random);
+            return Utility.NeighbourOnCircleCont(val, neighRadius, Min, Max, RangeGenerator.Random);
         }
     }
 }

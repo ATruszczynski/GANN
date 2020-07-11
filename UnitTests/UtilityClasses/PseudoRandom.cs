@@ -29,22 +29,36 @@ namespace UnitTests.UtilityClasses
 
         public override int Next(int minValue, int maxValue)
         {
-            return Next();
+            int v = Next();
+            if (v < minValue || v >= maxValue)
+                throw new ArgumentException("Not in range");
+            return v;
         }
 
         public override int Next(int maxValue)
         {
-            return Next();
+            int v = Next();
+            if (v >= maxValue)
+                throw new ArgumentException("Not in range");
+            return v;
         }
 
         public override int Next()
         {
-            return (int)NextDouble();
+            return (int)InternalNext();
         }
 
         public override double NextDouble()
         {
+            return InternalNext(true);
+        }
+
+        double InternalNext(bool isFloat = false)
+        {
+            //TODO - B - test not in ranges
             double result = cycleList[ind];
+            if (isFloat && (result < 0 || result >= 1))
+                throw new ArgumentException("Not in range");
             ind = (ind + 1) % cycleList.Length;
             return result;
         }

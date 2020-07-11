@@ -19,7 +19,7 @@ namespace UnitTests.NNElems
 
             Assert.AreEqual(2, hp.inputSize);
             Assert.AreEqual(3, hp.outputSize);
-            Assert.AreEqual(0, hp.internalNeuronCounts.Length);
+            Assert.AreEqual(0, hp.InternalNeuronCounts.Length);
             Assert.AreEqual(0, hp.meanW);
             Assert.AreEqual(1, hp.stdW);
             Assert.AreEqual(2, hp.LayerCount);
@@ -42,8 +42,8 @@ namespace UnitTests.NNElems
 
             Assert.AreEqual(2, hp.inputSize);
             Assert.AreEqual(3, hp.outputSize);
-            Assert.AreEqual(1, hp.internalNeuronCounts.Length);
-            Assert.AreEqual(2, hp.internalNeuronCounts[0]);
+            Assert.AreEqual(1, hp.InternalNeuronCounts.Length);
+            Assert.AreEqual(2, hp.InternalNeuronCounts[0]);
             Assert.AreEqual(2, hp.meanW);
             Assert.AreEqual(0.5, hp.stdW);
             Assert.AreEqual(3, hp.LayerCount);
@@ -64,8 +64,8 @@ namespace UnitTests.NNElems
 
             Assert.AreEqual(2, hp.inputSize);
             Assert.AreEqual(3, hp.outputSize);
-            Assert.AreEqual(1, hp.internalNeuronCounts.Length);
-            Assert.AreEqual(2, hp.internalNeuronCounts[0]);
+            Assert.AreEqual(1, hp.InternalNeuronCounts.Length);
+            Assert.AreEqual(2, hp.InternalNeuronCounts[0]);
             Assert.AreEqual(0, hp.meanW);
             Assert.AreEqual(1, hp.stdW);
             Assert.AreEqual(3, hp.LayerCount);

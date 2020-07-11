@@ -13,17 +13,16 @@ namespace UnitTests.TestUtilityTests
         [TestMethod]
         public void PseudoRandomGeneratorTest()
         {
-            PseudoRandom pr = new PseudoRandom(0.2, 0.8, 1);
+            PseudoRandom pr = new PseudoRandom(0.2, 0.8);
 
             Assert.AreEqual(0.2, pr.NextDouble());
             Assert.AreEqual(0.8, pr.NextDouble());
-            Assert.AreEqual(1, pr.NextDouble());
             Assert.AreEqual(0.2, pr.NextDouble());
             Assert.AreEqual(0.8, pr.NextDouble());
-            Assert.AreEqual(1, pr.NextDouble());
             Assert.AreEqual(0.2, pr.NextDouble());
             Assert.AreEqual(0.8, pr.NextDouble());
-            Assert.AreEqual(1, pr.NextDouble());
+
+            pr = new PseudoRandom(0.2, 0.8, 1);
 
             Assert.AreEqual(0, pr.Next());
             Assert.AreEqual(0, pr.Next());

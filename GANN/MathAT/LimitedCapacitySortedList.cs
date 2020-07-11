@@ -18,7 +18,6 @@ namespace GANN.MathAT
 
         public void Add(double score, T add)
         {
-            //TODO - A - test
             list.Add((score, add));
             list.Sort((x, y) => y.Item1.CompareTo(x.Item1));
             while (list.Count > Max)
@@ -27,7 +26,6 @@ namespace GANN.MathAT
 
         public List<T> ExtractList()
         {
-            //TODO - A - test
             var result = new List<T>();
             for (int i = 0; i < list.Count; i++)
             {

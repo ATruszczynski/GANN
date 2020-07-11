@@ -1,4 +1,6 @@
 ﻿using GANN.MathAT;
+using GANN.NN.ActivationFunctions;
+using GANN.NN.LossFunctions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -141,6 +143,57 @@ namespace UnitTests.Math
             Assert.AreEqual(1, res[0][0]);
             Assert.AreEqual(2, res[1][0]);
             Assert.AreEqual(3, res[2][0]);
+        }
+
+        [TestMethod]
+        [Timeout(1000)]
+        public void ChooseOnCycleContTest()
+        {
+            PseudoRandom pr = new PseudoRandom(0.25, 0.75);
+            double res1 = NeighbourOnCircleCont(0.1, 0.05, 0.0, 0.2, pr);
+            double res2 = NeighbourOnCircleCont(0.1, 0.05, 0.0, 0.2, pr);
+            Assert.IsTrue(NNUT.CloseCompare(0.075, res1, 1e-6));
+            Assert.IsTrue(NNUT.CloseCompare(0.125, res2, 1e-6));
+
+
+            res1 = NeighbourOnCircleCont(0.1, 0.4, 0.0, 1, pr);
+            res2 = NeighbourOnCircleCont(0.9, 0.4, 0.0, 1, pr);
+            Assert.IsTrue(NNUT.CloseCompare(0.9, res1, 1e-6));
+            Assert.IsTrue(NNUT.CloseCompare(0.1, res2, 1e-6));
+        }
+
+        [TestMethod]
+        [Timeout(1000)]
+        public void ChooseOnCycleDiscTest()
+        {
+            PseudoRandom pr = new PseudoRandom(0.1, 1, 0.9, 3,
+                                               0.1, -1, 0.9, 12);
+
+            int res1 = NeighbourOnCircleDisc(2, 3, 0, 10, pr);
+            int res2 = NeighbourOnCircleDisc(2, 1, 0, 10, pr);
+            Assert.AreEqual(1, res1);
+            Assert.AreEqual(3, res2);
+
+            res1 = NeighbourOnCircleDisc(1, 3, 0, 10, pr);
+            res2 = NeighbourOnCircleDisc(9, 3, 0, 10, pr);
+            Assert.AreEqual(9, res1);
+            Assert.AreEqual(2, res2);
+        }
+        //TODO - C - test names jesus
+        [TestMethod]
+        public void SortedListTest()
+        {
+            var lc = new LimitedCapacitySortedList<LossFunction>(2);
+
+            lc.Add(1, new QuadDiff(1));
+            lc.Add(2, new QuadDiff(2));
+            lc.Add(0, new QuadDiff(0));
+            lc.Add(-1, new QuadDiff(-1));
+
+            var l = lc.ExtractList();
+            Assert.AreEqual(2, l.Count);
+            Assert.AreEqual(0, l[0].CompareTo(new QuadDiff(2)));
+            Assert.AreEqual(0, l[1].CompareTo(new QuadDiff(1)));
         }
     }
 
