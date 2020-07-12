@@ -7,11 +7,11 @@ namespace GANN.NN.GradientStepStrategies
 {
     public class MomentumStrategy : GradientStepStrategy
     {
-        MatrixAT1[] WeightMom;
-        MatrixAT1[] BiasMom;
+        public MatrixAT1[] WeightMom;
+        public MatrixAT1[] BiasMom;
 
-        double MomDecay;
-        double StepSize;
+        public double MomDecay;
+        public double StepSize;
 
         public MomentumStrategy(double stepSize, double momDecay)
         {
@@ -21,7 +21,6 @@ namespace GANN.NN.GradientStepStrategies
 
         public override int CompareTo(object obj)
         {
-            //TODO - A - test
             MomentumStrategy ms = null;
             try
             {
@@ -36,19 +35,16 @@ namespace GANN.NN.GradientStepStrategies
             if (comp != 0)
                 return comp;
 
-
             return StepSize.CompareTo(ms.StepSize);
         }
 
         public override GradientStepStrategy DeepCopy()
         {
-            //TODO - A - test
             return new MomentumStrategy(StepSize, MomDecay);
         }
 
         public override (MatrixAT1[], MatrixAT1[]) GetStepSize(double avDiff, MatrixAT1[] updateW, MatrixAT1[] updateB)
         {
-            //TODO - A - test
             if(WeightMom == null)
             {
                 WeightMom = new MatrixAT1[updateW.Length];
@@ -67,19 +63,21 @@ namespace GANN.NN.GradientStepStrategies
                     BiasMom[i] = (1 - MomDecay) * BiasMom[i];
                 }
             }
-
+            MatrixAT1[] resw = new MatrixAT1[WeightMom.Length];
+            MatrixAT1[] resb = new MatrixAT1[WeightMom.Length];
             for (int i = 1; i < updateW.Length; i++)
             {
                 WeightMom[i] += StepSize * updateW[i];
+                resw[i] = WeightMom[i].DeepCopy();
                 BiasMom[i] += StepSize * updateB[i];
+                resb[i] = BiasMom[i].DeepCopy();
             }
 
-            return (WeightMom, BiasMom);
+            return (resw, resb);
         }
 
         public override string ToString()
         {
-            //TODO - A - test
             return $"MS{StepSize}-{MomDecay}";
         }
     }

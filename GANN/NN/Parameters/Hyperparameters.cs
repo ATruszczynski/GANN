@@ -30,7 +30,6 @@ namespace GANN.NN.Parameters
             //TODO - A - validation
             //TODO - B - variable names in many classes
             //TODO - C - should I deep copy arrays?
-            //TODO - A - test
 
             inputSize = inpSize;
             outputSize = outSize;
@@ -86,10 +85,8 @@ namespace GANN.NN.Parameters
         }
 
 
-        //TODO - B - implement
         public Hyperparameters DeepCopy()
         {
-            //TODO - A - test
             int[] nc = new int[InternalNeuronCounts.Length];
             for (int i = 0; i < nc.Length; i++)
             {
@@ -103,8 +100,6 @@ namespace GANN.NN.Parameters
             }
 
             Hyperparameters hp = new Hyperparameters(inputSize, outputSize, nc, acts, AggFunc.DeepCopy(), LossFunction.DeepCopy(), GradientStepStrategy.DeepCopy(), meanW, stdW);
-
-
 
             return hp;
         }

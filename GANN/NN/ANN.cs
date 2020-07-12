@@ -404,7 +404,7 @@ namespace GANN.NN
 
         public override void ModelToFile(string path)
         {
-            //TODO - A - test
+            //TODO - B - network to file funciton and test it
             StreamWriter sw = new StreamWriter(path);
 
             for (int i = 1; i < neuronCounts.Length; i++)

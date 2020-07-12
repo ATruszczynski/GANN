@@ -3,6 +3,7 @@ using GANN.GA.GA_Elements;
 using GANN.MathAT;
 using GANN.NN;
 using GANN.NN.ActivationFunctions;
+using GANN.NN.LossFunctions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -65,6 +66,15 @@ namespace UnitTests.NNElems
             Assert.IsTrue(NNUT.CloseCompare(sm1*(1 - sm1), sm.ComputeDerivative(0,zs), 1e-4));
             Assert.IsTrue(NNUT.CloseCompare(sm2 * (1 - sm2), sm.ComputeDerivative(1, zs), 1e-4));
             Assert.IsTrue(NNUT.CloseCompare(sm3 * (1 - sm3), sm.ComputeDerivative(2, zs), 1e-4));
+
+            Assert.AreEqual(0, sm.CompareTo(new Softmax()));
+            Assert.AreEqual(int.MinValue, sm.CompareTo(new QuadDiff()));
+            Assert.AreEqual(int.MinValue, sm.CompareTo(new Sigma()));
+
+            Assert.AreEqual(0, sm.DeepCopy().CompareTo(new Softmax()));
+            Assert.AreEqual(0, sm.CompareTo(sm.DeepCopy()));
+
+            Assert.AreEqual("SM", sm.ToString());
         }
     }
 }

@@ -75,5 +75,34 @@ namespace UnitTests.NNElems
             Assert.AreEqual(0, hp.LossFunction.CompareTo(new QuadDiff()));
             Assert.AreEqual(0, hp.GradientStepStrategy.CompareTo(new ConstantGradientStep()));
         }
+
+        [TestMethod]
+        public void DeepCopyTest()
+        {
+            Hyperparameters hp = new Hyperparameters
+                (
+                    2, 3, new int[] { 2 },
+                    new ActivationFunction[] { new Sigma() },
+                    new Relu(), new QuadDiff(2),
+                    new ConstantGradientStep(0.666), 2, 0.5
+                );
+
+            Hyperparameters hp2 = hp.DeepCopy();
+
+            Assert.AreEqual(2, hp2.inputSize);
+            Assert.AreEqual(3, hp2.outputSize);
+            Assert.AreEqual(1, hp2.InternalNeuronCounts.Length);
+            Assert.AreEqual(2, hp2.InternalNeuronCounts[0]);
+            Assert.AreEqual(2, hp2.meanW);
+            Assert.AreEqual(0.5, hp2.stdW);
+            Assert.AreEqual(3, hp2.LayerCount);
+            Assert.AreEqual(1, hp2.InternalActivationFunctions.Length);
+            Assert.AreEqual(0, hp2.InternalActivationFunctions[0].CompareTo(new Sigma()));
+            Assert.AreEqual(0, hp2.AggFunc.CompareTo(new Relu()));
+            Assert.AreEqual(0, hp2.LossFunction.CompareTo(new QuadDiff(2)));
+            Assert.AreEqual(0, hp2.GradientStepStrategy.CompareTo(new ConstantGradientStep(0.666)));
+
+
+        }
     }
 }

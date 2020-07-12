@@ -20,7 +20,6 @@ namespace GANN.MathAT.Ranges
         {
             if (Values.Length < 2)
                 throw new ArgumentException($"Operation doesnt make sense with {Values.Length} elements to choose from");
-            //TODO - A - test
             T val = (T)obj;
             int ind = 0;
             for (; ind < Values.Length; ind++)
@@ -29,7 +28,7 @@ namespace GANN.MathAT.Ranges
                     break;
             }
 
-            int radius = (int)Math.Ceiling(Values.Length / neighbourTol);
+            int radius = (int)Math.Ceiling(Values.Length * neighbourTol);
 
             return Values[Utility.NeighbourOnCircleDisc(ind, radius, 0, Values.Length, Distribution.Random)];
         }

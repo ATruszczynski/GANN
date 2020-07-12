@@ -52,7 +52,7 @@ namespace UnitTests.Math
         [TestMethod]
         public void SetRangeRangeTest()
         {
-            PseudoRandom pr = new PseudoRandom(0, 1);
+            PseudoRandom pr = new PseudoRandom(0, 1, 0, 1, 0, 0, 0, -1);
             var relu = new Relu();
             var sigma = new Sigma();
             SetRange<ActivationFunction> set = new SetRange<ActivationFunction>(new ActivationFunction[] { relu, sigma }, new UniformDiscreteRangeDistribution(pr, 0,2));
@@ -71,6 +71,9 @@ namespace UnitTests.Math
             Assert.IsTrue(gSet.IsInRange(new ConstantGradientStep(0.5)));
             Assert.IsFalse(gSet.IsInRange(new ConstantGradientStep(0.75)));
             Assert.IsFalse(set.IsInRange(new ConstantGradientStep(0.75)));
+
+            Assert.AreEqual(0, g1.CompareTo(gSet.GetNeighbour(g2)));
+            Assert.AreEqual(0, g2.CompareTo(gSet.GetNeighbour(g1)));
         }
 
         [TestMethod]
@@ -86,6 +89,7 @@ namespace UnitTests.Math
         [TestMethod]
         public void GetNeighbourDisc()
         {
+            //TODO - B - test here sucks
             PseudoRandom prop = new PseudoRandom(0, 0);
             DiscreteRange cr = new DiscreteRange(new UniformDiscreteRangeDistribution(prop, 0, 3));
             cr.neighbourTol = 0.1;

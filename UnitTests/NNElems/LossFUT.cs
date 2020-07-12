@@ -34,6 +34,20 @@ namespace UnitTests.NNElems
             var ceed = ce.ComputeDerivative(output[1,0], expected[1,0]);
             Assert.IsTrue(NNUT.CloseCompare(cee, 0.510826, 1e-4));
             Assert.IsTrue(NNUT.CloseCompare(ceed, -1.66666, 1e-4));
+
+            expected = new MatrixAT1(new double[,] { { 0 }, { 0 }, { 1 } });
+            output = new MatrixAT1(new double[,] { { 0.15 }, { 0.6 }, { 0.25 } });
+            cee = ce.Compute(output, expected);
+            ceed = ce.ComputeDerivative(output[2, 0], expected[2, 0]);
+            Assert.IsTrue(NNUT.CloseCompare(cee, 1.38629, 1e-4));
+            Assert.IsTrue(NNUT.CloseCompare(ceed, -4, 1e-4));
+
+            Assert.AreEqual(0, ce.CompareTo(new CrossEntropy()));
+            Assert.AreEqual(int.MinValue, ce.CompareTo(new QuadDiff()));
+            Assert.AreEqual(0, ce.DeepCopy().CompareTo(new CrossEntropy()));
+            Assert.AreEqual(0, ce.CompareTo(ce.DeepCopy()));
+
+            Assert.AreEqual("CE", ce.ToString());
         }
     }
 }

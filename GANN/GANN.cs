@@ -25,6 +25,7 @@ namespace GANN
         //TODO - 0 - debug cross entropy + softmax
         //TODO - A - add verbosity parameters to networks and GANN
         //TODO - B - don't recalculate fitnesses of unchanged networks
+        //TODO - A - add analysing part of population in preelims
         public GeneticAlgorithm GeneticAlgorithm;
         //public double[][] TrainInput;
         //public double[][] TrainOutput;

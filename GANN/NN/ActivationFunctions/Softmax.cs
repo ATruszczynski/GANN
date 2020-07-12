@@ -10,7 +10,6 @@ namespace GANN.NN.ActivationFunctions
     {
         public override int CompareTo(object obj)
         {
-            //TODO - A - test
             try
             {
                 var sm = (Softmax)obj;
@@ -24,7 +23,6 @@ namespace GANN.NN.ActivationFunctions
 
         public override double Compute(int ind, MatrixAT1 zs)
         {
-            //TODO - A - test
             var zs2 = zs.DeepCopy();
             double max = double.MinValue;
             for (int i = 0; i < zs2.Rows; i++)
@@ -60,7 +58,6 @@ namespace GANN.NN.ActivationFunctions
 
         public override ActivationFunction DeepCopy()
         {
-            //TODO - A - test
             return new Softmax();
         }
 
