@@ -5,6 +5,7 @@ using GANN.GA.Operators.CrossoverOperators;
 using GANN.GA.Operators.MutationOperators;
 using GANN.GA.ReplacementStrategies;
 using GANN.GA.SamplingStrategies;
+using GANN.MathAT;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,6 @@ namespace UnitTests
     public class GAUT
     {
         //TODO - C - Move and test utility functions
-        //TODO - A - test matrix compare functions
         [TestMethod]
         public void InterFFTest()
         {
@@ -192,6 +192,56 @@ namespace UnitTests
             Assert.AreEqual(20, score);
 
             ga.Run(random);
+        }
+
+        [TestMethod]
+        public void DeepCopyingTest()
+        {
+            //TODO - A - change mutate and crossover order
+            //TODO - A - check if deep copy bug from GANN still occurs
+            GeneticAlgorithm ga = new GeneticAlgorithm();
+            ga.CrossoverOperator = new MockCO();
+            ga.MutationOperator = new MockMO();
+            ga.SamplingStrategy = new RouletteSamplingStrategy();
+            ga.ReplacementStrategy = new GenerationalReplacementStrategy();
+            ga.FitnessFunction = new MockFF();
+
+            int pop = 2;
+            ga.Iterations = 1;
+            ga.PopulationCount = pop;
+            ga.mutationProbability = 1;
+            ga.crossoverProbability = 1;
+            PseudoRandom random = new PseudoRandom(0, 0, 0, 0.999);
+            var startPop = new Chromosome[] { new MockChromosome(new MatrixAT1(new double[,] { { 2 } })), new MockChromosome(new MatrixAT1(new double[,] { { 3 } })) };
+            ga.population = startPop;
+
+            ga.Run(random);
+
+            Assert.AreEqual(2, (startPop[0] as MockChromosome).m[0, 0]);
+            Assert.AreEqual(3, (startPop[1] as MockChromosome).m[0, 0]);
+            Assert.AreEqual(1, (ga.population[0] as MockChromosome).m[0, 0]);
+            Assert.AreEqual(1, (ga.population[1] as MockChromosome).m[0, 0]);
+            Assert.AreEqual(1, (ga.BestSolution as MockChromosome).m[0, 0]);
+
+            (startPop[0] as MockChromosome).m[0, 0] = 4;
+            (startPop[1] as MockChromosome).m[0, 0] = 5; 
+            Assert.AreEqual(4, (startPop[0] as MockChromosome).m[0, 0]);
+            Assert.AreEqual(5, (startPop[1] as MockChromosome).m[0, 0]);
+            Assert.AreEqual(1, (ga.population[0] as MockChromosome).m[0, 0]);
+            Assert.AreEqual(1, (ga.population[1] as MockChromosome).m[0, 0]);
+
+            (ga.population[0] as MockChromosome).m[0, 0] = 2;
+            (ga.population[1] as MockChromosome).m[0, 0] = 3;
+            Assert.AreEqual(2, (ga.population[0] as MockChromosome).m[0, 0]);
+            Assert.AreEqual(3, (ga.population[1] as MockChromosome).m[0, 0]);
+            Assert.AreEqual(1, (ga.BestSolution as MockChromosome).m[0, 0]);
+
+            ga.Run(random);
+            Assert.AreEqual(4, (startPop[0] as MockChromosome).m[0, 0]);
+            Assert.AreEqual(5, (startPop[1] as MockChromosome).m[0, 0]);
+            Assert.AreEqual(1, (ga.population[0] as MockChromosome).m[0, 0]);
+            Assert.AreEqual(1, (ga.population[1] as MockChromosome).m[0, 0]);
+            Assert.AreEqual(1, (ga.BestSolution as MockChromosome).m[0, 0]);
         }
     }
 }

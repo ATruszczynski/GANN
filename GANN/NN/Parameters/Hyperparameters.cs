@@ -87,13 +87,14 @@ namespace GANN.NN.Parameters
 
         public Hyperparameters DeepCopy()
         {
+            //TODO - B - could notice not matching lenghts of arrays in more places
             int[] nc = new int[InternalNeuronCounts.Length];
             for (int i = 0; i < nc.Length; i++)
             {
                 nc[i] = InternalNeuronCounts[i];
             }
 
-            ActivationFunction[] acts = new ActivationFunction[InternalNeuronCounts.Length];
+            ActivationFunction[] acts = new ActivationFunction[InternalActivationFunctions.Length];
             for (int i = 0; i < acts.Length; i++)
             {
                 acts[i] = InternalActivationFunctions[i].DeepCopy();

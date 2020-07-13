@@ -35,33 +35,29 @@ namespace GANN.GA
         public int maxDeg = 1;
         //TODO - B - parallel control?
         public Random random;
+        double[] fitnesses;
 
         public (double, Chromosome) Run(Random rrandom, bool reset = true)
         {
             random = rrandom;
+
+            var tmpPopulation = new Chromosome[PopulationCount.Value];
+
+            for (int i = 0; i < PopulationCount.Value; i++)
+            {
+                tmpPopulation[i] = population[i].DeepCopy();
+            }
+            population = tmpPopulation;
+
             for (int iter = 0; iter < Iterations; iter++)
             {
-                Chromosome[] newPopulation = new Chromosome[PopulationCount.Value];
-                double[] fitnesses = new double[PopulationCount.Value];
-
-                Parallel.For(0, PopulationCount.Value, new ParallelOptions { MaxDegreeOfParallelism = maxDeg }, i => 
-                {
-                    fitnesses[i] = FitnessFunction.ComputeFitness(population[i].DeepCopy());
-                    lock(bestLock)
-                    {
-                        if(fitnesses[i] > BestScore)
-                        {
-                            BestScore = fitnesses[i];
-                            BestSolution = population[i];
-                        }
-                    }
-                });
+                CalculateFitnessesOfCurrentPopulationAndSaveBest();
                 //TODO - B -  remove superfluous DeepCopies
-                BestSolution = BestSolution.DeepCopy();
+
+                Chromosome[] newPopulation = new Chromosome[PopulationCount.Value];
 
                 for (int pop = 0; pop < PopulationCount; pop++)
                 {
-                    //TODO - B - this computes fitnesses like n times too many times
                     Chromosome chosen = SamplingStrategy.Sample(population, fitnesses, random).DeepCopy();
 
                     chosen = MaybeMutate(chosen);
@@ -79,27 +75,9 @@ namespace GANN.GA
                 population = ReplacementStrategy.Replace(population, newPopulation);
             }
 
-            double maxF = double.MinValue;
-            Chromosome maxC = null;
+            CalculateFitnessesOfCurrentPopulationAndSaveBest();
 
-            for (int i = 0; i < population.Length; i++)
-            {
-                //TODO - B - Remove args from fitness and any other where it makes no sense
-                double f = FitnessFunction.ComputeFitness(population[i].DeepCopy());
-                if(f > maxF)
-                {
-                    maxF = f;
-                    maxC = population[i];
-                }
-            }
-
-            if (maxF > BestScore)
-            {
-                BestScore = maxF;
-                BestSolution = maxC;
-            }
-
-            return (BestScore, BestSolution.DeepCopy());
+            return (BestScore, BestSolution);
         }
         public Chromosome MaybeMutate(Chromosome c)
         {
@@ -107,7 +85,7 @@ namespace GANN.GA
 
             if(pm <= mutationProbability)
             {
-                c = MutationOperator.Mutate(c, random).DeepCopy();
+                c = MutationOperator.Mutate(c, random);
             }
 
             return c;
@@ -132,6 +110,24 @@ namespace GANN.GA
             }
 
             return did;
+        }
+
+        void CalculateFitnessesOfCurrentPopulationAndSaveBest()
+        {
+            fitnesses = new double[PopulationCount.Value];
+
+            Parallel.For(0, PopulationCount.Value, new ParallelOptions { MaxDegreeOfParallelism = maxDeg }, i =>
+            {
+                fitnesses[i] = FitnessFunction.ComputeFitness(population[i]);
+                lock (bestLock)
+                {
+                    if (fitnesses[i] > BestScore)
+                    {
+                        BestScore = fitnesses[i];
+                        BestSolution = population[i];
+                    }
+                }
+            });
         }
     }
 }

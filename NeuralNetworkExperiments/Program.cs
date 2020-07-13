@@ -64,7 +64,7 @@ namespace NeuralNetworkExperiments
             //    Console.WriteLine(c.ToString());
             //}
 
-            TestGenerator.TestCount();
+            TestGenerator.GANNN();
             //Logger.FlushClose();
 
         }

@@ -21,56 +21,61 @@ namespace GANN.GA.Operators.MutationOperators
 
         public HyperparameterRanges Ranges;
         public double possOfHPChange = 0.5;
-        public int MaxMutNumber = 2;
-        public NNBasicMutationOperator(HyperparameterRanges ranges, int maxMutNumber = 2)
+        public NNBasicMutationOperator(HyperparameterRanges ranges)
         {
             Ranges = ranges;
-            MaxMutNumber = maxMutNumber;
         }
         //TODO - B - random as property
         public override Chromosome Mutate(Chromosome m, Random random)
         {
+            //TODO - B - add range validation
             NNChromosome nnc = (NNChromosome)m;
 
             Hyperparameters hp = nnc.Hyperparameters;
 
-            var  possibleMutations = Define(hp);
+            var  possibleMutations = GetPossibleMutations(hp);
             MutateAction mutation = possibleMutations[random.Next(possibleMutations.Count)];
-
 
             if (mutation == AddLayer)
             {
                 int ind = random.Next(hp.InternalNeuronCounts.Length + 1);
                 int newNeuronCount = (int)Ranges.NeuronCountDistribution.GetNext();
+                ActivationFunction newAf = (ActivationFunction)Ranges.InternalActFuncDist.GetNext();
                 int[] newInternalNC = new int[hp.InternalNeuronCounts.Length + 1];
+                ActivationFunction[] newInternalAF = new ActivationFunction[hp.InternalNeuronCounts.Length + 1];
                 int oldInd = 0;
                 for (int i = 0; i < newInternalNC.Length; i++)
                 {
                     if (i != ind)
                     {
+                        newInternalAF[i] = hp.InternalActivationFunctions[oldInd].DeepCopy();
                         newInternalNC[i] = hp.InternalNeuronCounts[oldInd++];
                     }
                     else
                     {
+                        newInternalAF[i] = newAf;
                         newInternalNC[i] = newNeuronCount;
                     }
                 }
                 hp.InternalNeuronCounts = newInternalNC;
+                hp.InternalActivationFunctions = newInternalAF;
             }
             else if (mutation == RemoveLayer)
             {
                 int ind = random.Next(hp.InternalNeuronCounts.Length);
                 int[] newInternalNC = new int[hp.InternalNeuronCounts.Length - 1];
+                ActivationFunction[] newAf = new ActivationFunction[hp.InternalActivationFunctions.Length - 1];
                 int newInd = 0;
                 for (int i = 0; i < hp.InternalNeuronCounts.Length; i++)
                 {
                     if(i != ind)
                     {
+                        newAf[newInd] = hp.InternalActivationFunctions[i];
                         newInternalNC[newInd++] = hp.InternalNeuronCounts[i];
                     }
                 }
                 hp.InternalNeuronCounts = newInternalNC;
-                
+                hp.InternalActivationFunctions = newAf;
             }
             else if (mutation == ChangeNeuronCount)
             {
@@ -79,6 +84,7 @@ namespace GANN.GA.Operators.MutationOperators
             }
             else if (mutation == ChangeActFunc)
             {
+                //TODO - A - ranges should not allow to get neighbour of something out of range
                 ActivationFunction af = hp.InternalActivationFunctions[0];
                 ActivationFunction naf = (ActivationFunction)Ranges.InternalActFuncDist.GetNeighbour(af);
                 for (int i = 0; i < hp.InternalActivationFunctions.Length; i++)
@@ -107,7 +113,7 @@ namespace GANN.GA.Operators.MutationOperators
             return nnc;
         }
 
-        List<MutateAction> Define(Hyperparameters hp)
+        List<MutateAction> GetPossibleMutations(Hyperparameters hp)
         {
             List<MutateAction> result = new List<MutateAction>();
 
@@ -117,10 +123,10 @@ namespace GANN.GA.Operators.MutationOperators
             //if (Ranges.StdDistribution.Min != Ranges.StdDistribution.Max)
             //    result.Add(1); //std can be mutated
 
-            if (hp.LayerCount - 2 < Ranges.InternalLayerCountDistribution.Max)
+            if (hp.LayerCount - 2 < Ranges.InternalLayerCountDistribution.Max - 1)
                 result.Add(AddLayer); //layer can be added
 
-            if (hp.LayerCount > 2)
+            if (hp.LayerCount > 2 && hp.LayerCount - 1 >= Ranges.InternalLayerCountDistribution.Min)
             {
                 result.Add(RemoveLayer); //layer can be removed
                 result.Add(ChangeNeuronCount); //layer neruron count can be changed

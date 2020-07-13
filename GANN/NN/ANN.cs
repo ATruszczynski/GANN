@@ -179,7 +179,6 @@ namespace GANN.NN
                     if (n == 0)
                         break;
 
-
                     //TODO - C - could speed up by not reinitializng matrixes
                     (MatrixAT1[] weightGradChange, MatrixAT1[] biasesGradChange, _) = InitialiseComponents();
                     double averageDiff = 0;
